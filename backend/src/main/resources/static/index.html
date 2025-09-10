@@ -3,115 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BioMeta - Saúde Inteligente</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <title>BioMeta - Conecte-se com sua saúde e treino</title>
+    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="shortcut icon" type="image/x-icon" href="img/logo.png">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="logo">BioMeta</div>
-        <ul class="nav-links">
-            <li><a href="#sobre">Sobre</a></li>
-            <li><a href="#recursos">Recursos</a></li>
-            <li><a href="#planos">Planos</a></li>
-            <li><a href="#contato">Contato</a></li>
-        </ul>
-        <div class="auth-buttons">
-            <a href="/login.html" class="btn btn-outline">Entrar</a>
-            <a href="/register.html" class="btn btn-primary">Cadastrar</a>
-        </div>
-    </nav>
 
-    <section class="hero">
+    <header id="header">
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo">
+                    <i class="fas fa-dumbbell"></i> BioMeta
+                </a>
+                <ul class="nav-links">
+                    <li><a href="#hero">Início</a></li>
+                    <li><a href="#about">Sobre</a></li>
+                    <li><a href="#features">Funcionalidades</a></li>
+                    <li><a href="#differentiators">Diferenciais</a></li>
+                </ul>
+                <div class="nav-cta">
+                    <a href="#" class="btn">Comece Agora</a>
+                </div>
+                <div class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section id="hero" class="hero">
         <div class="hero-content">
-            <h1 class="animate-slide">Transforme sua saúde com <span>BioMeta</span></h1>
-            <p class="animate-slide">Acompanhamento nutricional e de treinos personalizado.</p>
-            <a href="#recursos" class="btn btn-primary animate-slide">Comece agora</a>
-        </div>
-        <div class="hero-image animate-float">
-            <img src="/img/hero.jpg" alt="App BioMeta">
+            <h1>BioMeta – Conecte-se com sua saúde e treino</h1>
+            <p>Acompanhe treinos, registre sua dieta e participe da comunidade fitness.</p>
+            <a href="#" class="btn">Comece Agora</a>
         </div>
     </section>
 
-    <section id="sobre" class="section">
-        <h2>Por que escolher BioMeta?</h2>
-        <div class="cards">
-            <div class="card animate-card">
-                <i class="fas fa-utensils"></i>
-                <h3>Nutrição precisa</h3>
-                <p>Planos alimentares baseados em suas metas.</p>
-            </div>
-            <div class="card animate-card">
-                <i class="fas fa-dumbbell"></i>
-                <h3>Treinos inteligentes</h3>
-                <p>Exercícios adaptados ao seu nível.</p>
-            </div>
-            <div class="card animate-card">
-                <i class="fas fa-chart-line"></i>
-                <h3>Progresso detalhado</h3>
-                <p>Gráficos e relatórios semanais.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="recursos" class="section bg-light">
-        <h2>Recursos Avançados</h2>
-        <div class="feature-grid">
-            <div class="feature animate-slide">
-                <img src="/images/dashboard.png" alt="Dashboard">
-                <div>
-                    <h3>Painel intuitivo</h3>
-                    <p>Acompanhe calorias, macros e evolução física.</p>
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">Sobre a Plataforma</h2>
+            <div class="about-content">
+                <div class="about-text hidden">
+                    <h2>Integre treinos, dieta e comunidade em um só lugar</h2>
+                    <p>BioMeta é a plataforma completa para quem busca evoluir no fitness e na saúde. Acompanhe seu progresso, conquiste metas e conecte-se com outros usuários em uma comunidade motivadora.</p>
+                    <p>Com recursos de gamificação, acompanhamento nutricional e planos de treino personalizados, você terá tudo que precisa para alcançar seus objetivos.</p>
+                    <a href="#" class="btn">Saiba Mais</a>
+                </div>
+                <div class="about-image hidden">
+                    <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Mulher se exercitando">
                 </div>
             </div>
-            <div class="feature animate-slide">
-                <div>
-                    <h3>Alertas personalizados</h3>
-                    <p>Lembretes para refeições, água e treinos.</p>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Funcionalidades Principais</h2>
+            <div class="features-grid">
+                <div class="feature-card hidden">
+                    <div class="feature-icon">
+                        <i class="fas fa-dumbbell"></i>
+                    </div>
+                    <h3>Performance</h3>
+                    <p>Crie, acompanhe e evolua nos seus exercícios com planos adaptados ao seu nível e objetivos.</p>
                 </div>
-                <img src="/images/notifications.png" alt="Notificações">
+                <div class="feature-card hidden">
+                    <div class="feature-icon">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h3>Plano Alimentar</h3>
+                    <p>Registre refeições e acompanhe macronutrientes automaticamente para manter sua dieta equilibrada.</p>
+                </div>
+                <div class="feature-card hidden">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Comunidade</h3>
+                    <p>Converse, siga amigos e acompanhe conquistas em uma rede social focada em fitness e saúde.</p>
+                </div>
+                <div class="feature-card hidden">
+                    <div class="feature-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3>Gamificação</h3>
+                    <p>Ganhe pontos, complete desafios semanais e desbloqueie medalhas para manter a motivação alta.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <section id="planos" class="section">
-        <h2>Escolha seu Plano</h2>
-        <div class="pricing-cards">
-            <div class="pricing-card animate-card">
-                <h3>Básico</h3>
-                <div class="price">R$29<span>/mês</span></div>
-                <ul>
-                    <li>Plano alimentar genérico</li>
-                    <li>Treinos básicos</li>
-                </ul>
-                <a href="#" class="btn btn-outline">Assinar</a>
-            </div>
-            <div class="pricing-card featured animate-card">
-                <div class="badge">Popular</div>
-                <h3>Premium</h3>
-                <div class="price">R$59<span>/mês</span></div>
-                <ul>
-                    <li>Plano personalizado</li>
-                    <li>Treinos avançados</li>
-                    <li>Acompanhamento profissional</li>
-                </ul>
-                <a href="#" class="btn btn-primary">Assinar</a>
+    <section id="differentiators" class="differentiators">
+        <div class="container">
+            <h2 class="section-title">Diferenciais</h2>
+            <div class="diff-grid">
+                <div class="diff-item hidden">
+                    <div class="diff-icon">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <div class="diff-content">
+                        <h3>Navegação fácil</h3>
+                        <p>Visual moderno e fácil de usar, para que você foque no que realmente importa: seus resultados.</p>
+                    </div>
+                </div>
+                <div class="diff-item hidden">
+                    <div class="diff-icon">
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <div class="diff-content">
+                        <h3>Foco em metas e progresso real</h3>
+                        <p>Acompanhe sua evolução com gráficos e relatórios detalhados para visualizar seu progresso.</p>
+                    </div>
+                </div>
+                <div class="diff-item hidden">
+                    <div class="diff-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <div class="diff-content">
+                        <h3>Gamificação e motivação diária</h3>
+                        <p>Sistema de recompensas que transforma a jornada fitness em uma experiência divertida e viciante.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <footer id="contato">
-        <div class="footer-content">
-            <div class="footer-logo">BioMeta</div>
-            <div class="footer-links">
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-whatsapp"></i></a>
-                <a href="#"><i class="far fa-envelope"></i></a>
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>BioMeta</h3>
+                    <p>Sua plataforma completa para fitness, nutrição e comunidade.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="#hero">Início</a></li>
+                        <li><a href="#about">Sobre</a></li>
+                        <li><a href="#features">Funcionalidades</a></li>
+                        <li><a href="#differentiators">Diferenciais</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Suporte</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contato</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 BioMeta. Todos os direitos reservados.</p>
             </div>
         </div>
-        <p class="copyright">© 2025 BioMeta. Todos os direitos reservados.</p>
     </footer>
 
-    <script src="/js/script.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>
