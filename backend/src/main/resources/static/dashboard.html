@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioMeta - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="shortcut icon" type="image/x-icon" href="img/logo.png">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="#" class="logo">
+                <i class="fas fa-dumbbell"></i> BioMeta
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="#" class="active"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#"><i class="fas fa-users"></i> Comunidade</a></li>
+                <li><a href="#"><i class="fas fa-dumbbell"></i> Treinos</a></li>
+                <li><a href="#"><i class="fas fa-utensils"></i> Dieta</a></li>
+                <li><a href="#"><i class="fas fa-running"></i> Atividades</a></li>
+            </ul>
+            
+            <div class="user-profile">
+                <div class="user-avatar" id="userAvatar">JC</div>
+                <div class="user-info" id="userInfo">João Carlos</div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <section class="welcome-section">
+            <h1>Bem-vindo, <span id="userName">João Carlos</span>!</h1>
+            <p id="currentDate">Segunda-feira, 15 de Janeiro de 2024</p>
+        </section>
+        
+        <section>
+            <h2>Resumo Diário</h2>
+            <div class="dashboard-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-dumbbell"></i> Meta de Treino</h3>
+                    </div>
+                    <p>3 de 4 exercícios concluídos</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-utensils"></i> Meta de Dieta</h3>
+                    </div>
+                    <p>3 de 5 refeições concluídas</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title"><i class="fas fa-trophy"></i> Pontuação</h3>
+                    </div>
+                    <p>1,250 pontos hoje | 8,540 pontos totais</p>
+                </div>
+            </div>
+        </section>
+        
+        <div id="errorMessage" class="error"></div>
+    </main>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
