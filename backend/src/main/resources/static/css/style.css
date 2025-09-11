@@ -9,7 +9,6 @@
   --transition: all 0.3s ease;
 }
 
-/* Reset e estilos base */
 * {
   margin: 0;
   padding: 0;
@@ -77,7 +76,6 @@ section {
   border-radius: 2px;
 }
 
-/* Header e Navegação - MODIFICADA */
 header {
   position: fixed;
   top: 0;
@@ -87,7 +85,7 @@ header {
   background: rgba(255, 255, 255, 0.95);
   box-shadow: var(--shadow);
   transition: var(--transition);
-  height: 80px; /* Altura fixa */
+  height: 80px;
   display: flex;
   align-items: center;
 }
@@ -144,7 +142,6 @@ header {
   cursor: pointer;
 }
 
-/* Hero Section - COMPLETAMENTE MODIFICADA */
 .hero {
   padding: 0;
   height: 100vh;
@@ -198,7 +195,6 @@ header {
   animation: fadeIn 1s ease 0.6s both;
 }
 
-/* Sobre */
 .about {
   background: white;
 }
@@ -236,7 +232,6 @@ header {
   box-shadow: var(--shadow);
 }
 
-/* Funcionalidades */
 .features {
   background: var(--light);
 }
@@ -277,7 +272,6 @@ header {
   color: var(--text);
 }
 
-/* Diferenciais */
 .differentiators {
   background: white;
 }
@@ -306,7 +300,6 @@ header {
   color: var(--dark);
 }
 
-/* Footer */
 footer {
   background: var(--dark);
   color: white;
@@ -383,7 +376,6 @@ footer {
   font-size: 0.9rem;
 }
 
-/* Animações */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -427,7 +419,6 @@ footer {
   }
 }
 
-/* Classes para animação de scroll */
 .hidden {
   opacity: 0;
   transform: translateY(50px);
@@ -439,7 +430,6 @@ footer {
   transform: translateY(0);
 }
 
-/* Responsividade */
 @media (max-width: 992px) {
   .about-content {
     flex-direction: column;

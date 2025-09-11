@@ -29,7 +29,6 @@ public class RegisterRequest {
     private Double height;
     private Double weight;
 
-    // Getters e Setters
     public String getFirstName() { return firstName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
     

@@ -9,7 +9,6 @@ public class AuthRequest {
     @NotBlank
     private String password;
 
-    // Getters e Setters
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
     

@@ -14,7 +14,6 @@ public class AuthResponse {
         this.email = email;
     }
 
-    // Getters e Setters
     public String getToken() { return token; }
     public void setToken(String token) { this.token = token; }
     
