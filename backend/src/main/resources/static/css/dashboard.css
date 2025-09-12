@@ -79,6 +79,7 @@ header {
   display: flex;
   align-items: center;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .user-avatar {
@@ -92,6 +93,12 @@ header {
   margin-right: 10px;
   color: var(--primary);
   font-weight: bold;
+  text-decoration: none;
+}
+
+.user-info {
+  color: inherit;          /* mantém a mesma cor que já estava */
+  text-decoration: none;   /* tira o sublinhado */
 }
 
 .main-content {
