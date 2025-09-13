@@ -433,40 +433,197 @@ header {
     color: #c0392b;
 }
 
-/* Resumo Nutricional */
-.nutrition-summary {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    margin-bottom: 20px;
+/* Tabela de Nutrição por Alimento */
+.food-nutrition-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.nutrition-item {
+.food-nutrition-table th {
+    background-color: var(--primary-light);
+    padding: 10px;
     text-align: center;
+    font-weight: 600;
+    color: var(--dark);
+    border: 1px solid #ddd;
+    font-size: 0.8rem;
+}
+
+.food-nutrition-table td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+    font-size: 0.9rem;
+}
+
+.food-nutrition-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Remover o grid antigo */
+.food-nutrition {
+    display: none;
+}
+
+/* Tabela de Resumo Nutricional */
+.nutrition-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+
+.nutrition-table th {
+    background-color: var(--primary-light);
+    padding: 12px;
+    text-align: center;
+    font-weight: 600;
+    color: var(--dark);
+    border: 1px solid #ddd;
+}
+
+.nutrition-table td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+    font-weight: 500;
+}
+
+.nutrition-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.nutrition-table tr:hover {
+    background-color: var(--light);
+}
+
+/* Configurações de Meta */
+.goal-settings {
+    margin-top: 20px;
     padding: 15px;
     background: var(--light);
     border-radius: 10px;
 }
 
-.nutrition-value {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--primary);
-    margin: 5px 0;
-}
-
-.nutrition-label {
+.goal-settings label {
+    display: block;
+    margin-bottom: 8px;
     font-weight: 600;
     color: var(--dark);
 }
 
-.nutrition-unit {
-    font-size: 0.8rem;
-    color: #777;
+.goal-input-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
 }
 
-.nutrition-goal {
-    margin-top: 20px;
+.goal-input-container input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+/* Ações de Alimento */
+.food-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.food-action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.complete-btn {
+    padding: 6px 12px;
+    background: var(--secondary);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: var(--transition);
+}
+
+.complete-btn:hover {
+    background: #27ae60;
+}
+
+.complete-btn.completed {
+    background: #95a5a6;
+}
+
+.delete-food-btn {
+    padding: 6px 12px;
+    background: var(--danger);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: var(--transition);
+}
+
+.delete-food-btn:hover {
+    background: #c0392b;
+}
+
+/* Refeição com contador de calorias */
+.meal-item-with-calories {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.meal-calories {
+    font-size: 0.8rem;
+    color: var(--primary);
+    font-weight: 600;
+    background: var(--primary-light);
+    padding: 4px 8px;
+    border-radius: 12px;
+}
+
+/* Alimento concluído */
+.food-item.completed {
+    opacity: 0.7;
+    background: #f8f9fa;
+}
+
+.food-item.completed .food-description {
+    text-decoration: line-through;
+}
+
+/* Responsividade para tabela */
+@media (max-width: 768px) {
+    .nutrition-table {
+        font-size: 0.8rem;
+    }
+    
+    .nutrition-table th,
+    .nutrition-table td {
+        padding: 8px 4px;
+    }
+    
+    .goal-input-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .food-action-buttons {
+        flex-direction: column;
+        gap: 5px;
+    }
 }
 
 .goal-progress {
@@ -498,6 +655,14 @@ header {
 .progress-percentage {
     font-size: 0.8rem;
     color: #777;
+}
+
+/* Texto de dados aproximados */
+.approximation-label {
+    font-size: 0.8rem;
+    color: #f39c12;
+    font-style: italic;
+    margin-left: 8px;
 }
 
 /* Responsividade */

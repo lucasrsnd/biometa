@@ -5,6 +5,7 @@ public class NutritionResponse {
     private double protein;
     private double carbs;
     private double fat;
+    private boolean simulated; // Campo para indicar se são dados simulados
     
     // Construtores
     public NutritionResponse() {}
@@ -14,6 +15,7 @@ public class NutritionResponse {
         this.protein = protein;
         this.carbs = carbs;
         this.fat = fat;
+        this.simulated = false;
     }
     
     // Getters e Setters
@@ -28,4 +30,7 @@ public class NutritionResponse {
     
     public double getFat() { return fat; }
     public void setFat(double fat) { this.fat = fat; }
+    
+    public boolean isSimulated() { return simulated; }
+    public void setSimulated(boolean simulated) { this.simulated = simulated; }
 }
