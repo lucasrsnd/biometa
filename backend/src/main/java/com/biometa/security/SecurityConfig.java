@@ -54,7 +54,7 @@ public class SecurityConfig {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .authorizeHttpRequests(authz -> authz
                 .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/", "/index", "/index.html", "/login.html", "/register.html", "/dashboard.html", "/treinos.html", "/perfil.html", "/js/**", "/css/**", "/images/**").permitAll()
+                .requestMatchers("/", "/index", "/index.html", "/login.html", "/register.html", "/dashboard.html", "/treinos.html", "/perfil.html", "/dieta.html", "/js/**", "/css/**", "/images/**").permitAll()
                 .anyRequest().authenticated()
             );
 

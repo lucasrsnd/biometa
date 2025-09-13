@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioMeta - Minha Dieta</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/dieta.css">
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="dashboard.html" class="logo">
+                    <i class="fas fa-dumbbell"></i> BioMeta
+                </a>
+                
+                <ul class="nav-links">
+                    <li><a href="dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="#"><i class="fas fa-users"></i> Comunidade</a></li>
+                    <li><a href="treinos.html"><i class="fas fa-dumbbell"></i> Treinos</a></li>
+                    <li><a href="dieta.html" class="active"><i class="fas fa-utensils"></i> Dieta</a></li>
+                    <li><a href="#"><i class="fas fa-running"></i> Atividades</a></li>
+                </ul>
+                
+                <a href="perfil.html" class="user-profile">
+                    <div class="user-avatar" id="navbarAvatar"></div>
+                    <div class="user-info" id="navbarName"></div>
+                </a>
+                
+                <div class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="main-content">
+        <div class="container">
+            <h1 class="page-title">Minha Dieta</h1>
+            
+            <div class="diet-grid">
+                <!-- Seção de Criação de Refeições -->
+                <section class="diet-section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-plus-circle"></i> Criar Nova Refeição</h2>
+                        </div>
+                        
+                        <form id="mealForm" class="meal-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="mealName">Nome da Refeição</label>
+                                    <input type="text" id="mealName" placeholder="Ex: Café da manhã" required>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-full" style="margin-top: 25px;">
+                                        <i class="fas fa-plus"></i> Criar Refeição
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Refeição Selecionada -->
+                    <div class="card" id="selectedMealCard" style="display: none;">
+                        <div class="card-header">
+                            <h2><i class="fas fa-utensils"></i> <span id="selectedMealName">Refeição</span></h2>
+                            <button class="btn btn-outline btn-small" id="addFoodBtn">
+                                <i class="fas fa-plus"></i> Add Alimento
+                            </button>
+                        </div>
+                        
+                        <!-- Formulário para Adicionar Alimento (inicialmente oculto) -->
+                        <div id="foodFormContainer" style="display: none;">
+                            <form id="foodForm" class="food-form">
+                                <div class="form-row">
+                                    <div class="form-group full-width">
+                                        <label for="foodDescription">Descrição do Alimento</label>
+                                        <input type="text" id="foodDescription" placeholder="Ex: 7 biscoitos de maizena" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-actions">
+                                    <button type="button" class="btn btn-outline" id="cancelFoodBtn">Cancelar</button>
+                                    <button type="submit" class="btn">Adicionar Alimento</button>
+                                </div>
+                            </form>
+                            <hr style="margin: 20px 0;">
+                        </div>
+                        
+                        <!-- Lista de Alimentos da Refeição -->
+                        <div class="foods-list" id="foodsList">
+                            <div class="empty-state" id="emptyState">
+                                <i class="fas fa-utensils"></i>
+                                <p>Nenhum alimento nesta refeição.</p>
+                                <p>Clique em "Add Alimento" para começar!</p>
+                            </div>
+                            <!-- Os alimentos serão adicionados aqui via JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <!-- Mensagem quando nenhuma refeição está selecionada -->
+                    <div class="card" id="noMealSelectedCard">
+                        <div class="empty-state">
+                            <i class="fas fa-clipboard-list"></i>
+                            <p>Nenhuma refeição selecionada.</p>
+                            <p>Selecione uma refeição da lista ao lado ou crie uma nova.</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Seção Lateral com Resumo e Lista de Refeições -->
+                <section class="side-section">
+                    <!-- Resumo Nutricional -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-chart-pie"></i> Resumo do Dia</h2>
+                        </div>
+                        
+                        <div class="nutrition-summary">
+                            <div class="nutrition-item">
+                                <div class="nutrition-label">Calorias</div>
+                                <div class="nutrition-value" id="totalCalories">0</div>
+                                <div class="nutrition-unit">kcal</div>
+                            </div>
+                            
+                            <div class="nutrition-item">
+                                <div class="nutrition-label">Proteínas</div>
+                                <div class="nutrition-value" id="totalProtein">0</div>
+                                <div class="nutrition-unit">g</div>
+                            </div>
+                            
+                            <div class="nutrition-item">
+                                <div class="nutrition-label">Carboidratos</div>
+                                <div class="nutrition-value" id="totalCarbs">0</div>
+                                <div class="nutrition-unit">g</div>
+                            </div>
+                            
+                            <div class="nutrition-item">
+                                <div class="nutrition-label">Gorduras</div>
+                                <div class="nutrition-value" id="totalFat">0</div>
+                                <div class="nutrition-unit">g</div>
+                            </div>
+                        </div>
+                        
+                        <div class="nutrition-goal">
+                            <div class="goal-progress">
+                                <div class="progress-label">Meta diária: <span id="calorieGoal">2000</span> kcal</div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="calorieProgress"></div>
+                                </div>
+                                <div class="progress-percentage" id="caloriePercentage">0%</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Lista de Refeições -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-list"></i> Minhas Refeições</h2>
+                        </div>
+                        
+                        <div class="meals-list" id="mealsList">
+                            <div class="empty-state" id="noMealsState">
+                                <i class="fas fa-utensils"></i>
+                                <p>Você ainda não criou nenhuma refeição.</p>
+                                <p>Use o formulário ao lado para criar sua primeira refeição!</p>
+                            </div>
+                            <!-- As refeições serão adicionadas aqui via JavaScript -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/dieta.js"></script>
+</body>
+</html>
