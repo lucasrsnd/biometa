@@ -71,24 +71,6 @@ a {
     color: white;
 }
 
-.btn-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: var(--primary);
-    color: white;
-    cursor: pointer;
-    transition: var(--transition);
-}
-
-.btn-icon:hover {
-    background: #2980b9;
-    transform: scale(1.1);
-}
-
 /* Header e Navegação */
 header {
     position: fixed;
@@ -117,6 +99,7 @@ header {
     color: var(--primary);
     display: flex;
     align-items: center;
+    flex: 1;
 }
 
 .logo i {
@@ -126,7 +109,8 @@ header {
 .nav-links {
     display: flex;
     list-style: none;
-    margin-left: 40px;
+    justify-content: center;
+    flex: 2;
 }
 
 .nav-links li {
@@ -158,6 +142,8 @@ header {
     align-items: center;
     cursor: pointer;
     transition: var(--transition);
+    justify-content: flex-end;
+    flex: 1;
 }
 
 .user-profile:hover {
@@ -198,6 +184,7 @@ header {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 25px;
+    align-items: start;
 }
 
 /* Cards */
@@ -243,48 +230,10 @@ header {
     gap: 20px;
 }
 
-.profile-image-section {
-    text-align: center;
-}
-
-.profile-image {
-    position: relative;
-    width: 150px;
-    height: 150px;
-    margin: 0 auto 15px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 4px solid var(--primary-light);
-}
-
-.profile-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.image-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: var(--transition);
-}
-
-.profile-image:hover .image-overlay {
-    opacity: 1;
-}
-
 .profile-form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 20px;
 }
 
 .form-row {
@@ -295,6 +244,10 @@ header {
 .form-group {
     flex: 1;
     margin-bottom: 15px;
+}
+
+.form-group.full-width {
+    flex: 3;
 }
 
 .form-group label {
@@ -339,20 +292,27 @@ header {
     text-align: center;
 }
 
-.imc-value {
-    font-size: 3rem;
-    font-weight: bold;
-    color: var(--primary);
+.imc-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
     margin: 15px 0;
 }
 
+.imc-value {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--primary);
+}
+
 .imc-classification {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 600;
-    margin-bottom: 20px;
     padding: 8px 15px;
     border-radius: 20px;
-    display: inline-block;
+    background-color: #f39c12;
+    color: white;
 }
 
 .imc-scale {
@@ -371,6 +331,8 @@ header {
     height: 100%;
     border-radius: 10px;
     transition: var(--transition);
+    width: 75%;
+    background-color: #f39c12;
 }
 
 .scale-labels {
@@ -399,7 +361,7 @@ header {
 }
 
 .points-value {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     font-weight: bold;
     color: var(--primary);
 }
@@ -413,6 +375,7 @@ header {
     margin: 20px 0 15px;
     color: var(--dark);
     font-size: 1.1rem;
+    text-align: center;
 }
 
 .badges-grid {
@@ -426,14 +389,14 @@ header {
 }
 
 .badge-icon {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 8px;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
 }
 
 .badge-icon.gold {
@@ -457,8 +420,9 @@ header {
 }
 
 .badge-name {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: var(--text);
+    text-align: center;
 }
 
 /* Responsividade */
@@ -467,12 +431,17 @@ header {
         grid-template-columns: 1fr;
     }
     
-    .nav-links {
-        margin-left: 20px;
-    }
-    
     .nav-links li {
         margin: 0 10px;
+    }
+    
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .form-group.full-width {
+        flex: 1;
     }
 }
 
@@ -494,7 +463,6 @@ header {
         transition: var(--transition);
         box-shadow: var(--shadow);
         padding-top: 40px;
-        margin-left: 0;
     }
     
     .nav-links.active {
@@ -509,13 +477,13 @@ header {
         display: none;
     }
     
-    .form-row {
-        flex-direction: column;
-        gap: 0;
-    }
-    
     .badges-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .imc-display {
+        flex-direction: column;
+        gap: 10px;
     }
 }
 
@@ -538,5 +506,25 @@ header {
     
     .badges-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .navbar {
+        flex-wrap: wrap;
+    }
+    
+    .logo {
+        flex: 1;
+    }
+    
+    .nav-links {
+        order: 3;
+        flex-basis: 100%;
+        margin-top: 15px;
+        justify-content: center;
+    }
+    
+    .user-profile {
+        flex: 1;
+        justify-content: flex-end;
     }
 }

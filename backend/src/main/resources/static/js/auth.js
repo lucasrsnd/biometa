@@ -23,17 +23,18 @@ async function handleRegister(e) {
   const height = document.getElementById("height").value;
   const weight = document.getElementById("weight").value;
 
-  const userData = {
-    firstName,
-    lastName,
-    email,
-    password,
-    gender,
-    birthDate,
-    country,
-    height: height ? parseFloat(height) : null,
-    weight: weight ? parseFloat(weight) : null,
-  };
+  // Coletar dados do formulário com tratamento de decimais
+const userData = {
+    firstName: document.getElementById('firstName').value,
+    lastName: document.getElementById('lastName').value,
+    email: document.getElementById('email').value,
+    password: document.getElementById('password').value,
+    gender: document.getElementById('gender').value,
+    birthDate: document.getElementById('birthDate').value,
+    country: document.getElementById('country').value,
+    height: document.getElementById('height').value ? parseFloat(document.getElementById('height').value) : null,
+    weight: document.getElementById('weight').value ? parseFloat(document.getElementById('weight').value) : null
+};
 
   try {
     const response = await fetch("/api/auth/register", {

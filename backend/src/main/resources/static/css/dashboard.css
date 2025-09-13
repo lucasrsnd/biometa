@@ -97,8 +97,14 @@ header {
 }
 
 .user-info {
-  color: inherit;          /* mantém a mesma cor que já estava */
-  text-decoration: none;   /* tira o sublinhado */
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.user-info:hover {
+  color: var(--primary);
 }
 
 .main-content {

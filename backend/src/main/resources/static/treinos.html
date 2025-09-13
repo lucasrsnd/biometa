@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioMeta - Meus Treinos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/treinos.css">
+</head>
+
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="dashboard.html" class="logo">
+                    <i class="fas fa-dumbbell"></i> BioMeta
+                </a>
+
+                <ul class="nav-links">
+                    <li><a href="dashboard.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="#"><i class="fas fa-users"></i> Comunidade</a></li>
+                    <li><a href="treinos.html" class="active"><i class="fas fa-dumbbell"></i> Treinos</a></li>
+                    <li><a href="#"><i class="fas fa-utensils"></i> Dieta</a></li>
+                    <li><a href="#"><i class="fas fa-running"></i> Atividades</a></li>
+                </ul>
+
+                <a href="perfil.html" class="user-profile">
+                    <div class="user-avatar" id="navbarAvatar"></div>
+                    <div class="user-info" id="navbarName"></div>
+                </a>
+
+                <div class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="main-content">
+        <div class="container">
+            <h1 class="page-title">Meus Treinos</h1>
+
+            <div class="workout-grid">
+                <!-- Seção de Fichas e Exercícios -->
+                <section class="workout-section">
+                    <!-- Criação de Nova Ficha -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-plus-circle"></i> Criar Nova Ficha</h2>
+                        </div>
+
+                        <form id="workoutForm" class="workout-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="workoutName">Nome da Ficha</label>
+                                    <input type="text" id="workoutName" placeholder="Ex: Peito e Tríceps" required>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-full" style="margin-top: 25px;">
+                                        <i class="fas fa-plus"></i> Criar Ficha
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Ficha Selecionada -->
+                    <div class="card" id="selectedWorkoutCard" style="display: none;">
+                        <div class="card-header">
+                            <h2><i class="fas fa-dumbbell"></i> <span id="selectedWorkoutName">Ficha A</span></h2>
+                            <button class="btn btn-outline btn-small" id="addExerciseBtn">
+                                <i class="fas fa-plus"></i> Add Exercício
+                            </button>
+                        </div>
+
+                        <!-- Formulário para Adicionar Exercício (inicialmente oculto) -->
+                        <div id="exerciseFormContainer" style="display: none;">
+                            <form id="exerciseForm" class="exercise-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="exerciseName">Nome do Exercício</label>
+                                        <input type="text" id="exerciseName" placeholder="Ex: Supino reto" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="exerciseSets">Séries</label>
+                                        <input type="number" id="exerciseSets" min="1" max="10" value="3" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exerciseReps">Repetições</label>
+                                        <input type="number" id="exerciseReps" min="1" max="50" value="12" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exerciseWeight">Carga (kg)</label>
+                                        <input type="number" id="exerciseWeight" min="0" step="0.5" value="20" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-actions">
+                                    <button type="button" class="btn btn-outline"
+                                        id="cancelExerciseBtn">Cancelar</button>
+                                    <button type="submit" class="btn">Adicionar Exercício</button>
+                                </div>
+                            </form>
+                            <hr style="margin: 20px 0;">
+                        </div>
+
+                        <!-- Lista de Exercícios da Ficha -->
+                        <div class="exercises-list" id="exercisesList">
+                            <div class="empty-state" id="emptyState">
+                                <i class="fas fa-dumbbell"></i>
+                                <p>Nenhum exercício nesta ficha.</p>
+                                <p>Clique em "Add Exercício" para começar!</p>
+                            </div>
+                            <!-- Os exercícios serão adicionados aqui via JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Mensagem quando nenhuma ficha está selecionada -->
+                    <div class="card" id="noWorkoutSelectedCard">
+                        <div class="empty-state">
+                            <i class="fas fa-clipboard-list"></i>
+                            <p>Nenhuma ficha selecionada.</p>
+                            <p>Selecione uma ficha da lista ao lado ou crie uma nova.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Seção Lateral com Cronômetro e Lista de Fichas -->
+                <section class="side-section">
+                    <!-- Cronômetro de Treino -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-stopwatch"></i> Cronômetro de Treino</h2>
+                        </div>
+
+                        <div class="timer-container">
+                            <div class="timer-display" id="timerDisplay">00:00:00</div>
+
+                            <div class="timer-controls">
+                                <button class="btn btn-timer" id="startTimer">
+                                    <i class="fas fa-play"></i> Iniciar
+                                </button>
+                                <button class="btn btn-timer" id="pauseTimer" disabled>
+                                    <i class="fas fa-pause"></i> Pausar
+                                </button>
+                                <button class="btn btn-timer" id="resetTimer">
+                                    <i class="fas fa-rotate-left"></i> Zerar
+                                </button>
+                            </div>
+
+                            <div class="timer-input">
+                                <label for="customTime">Definir tempo alvo (minutos):</label>
+                                <input type="number" id="customTime" min="1" max="240" value="60" placeholder="60">
+                                <button class="btn btn-small" id="setTimeBtn">Definir</button>
+                            </div>
+
+                            <div class="timer-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="progressFill"></div>
+                                </div>
+                                <div class="progress-text" id="progressText">0% do tempo alvo</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lista de Fichas -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-clipboard-list"></i> Minhas Fichas</h2>
+                        </div>
+
+                        <div class="workouts-list" id="workoutsList">
+                            <div class="empty-state" id="noWorkoutsState">
+                                <i class="fas fa-clipboard"></i>
+                                <p>Você ainda não criou nenhuma ficha.</p>
+                                <p>Use o formulário ao lado para criar sua primeira ficha!</p>
+                            </div>
+                            <!-- As fichas serão adicionadas aqui via JavaScript -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/treinos.js"></script>
+</body>
+
+</html>
