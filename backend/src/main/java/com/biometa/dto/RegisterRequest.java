@@ -1,5 +1,7 @@
 package com.biometa.dto;
 
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -26,7 +28,11 @@ public class RegisterRequest {
     private String gender;
     private LocalDate birthDate;
     private String country;
+
+    @DecimalMin(value = "0.5", message = "Altura deve ser no mínimo 0.5m")
+    @DecimalMax(value = "2.5", message = "Altura deve ser no máximo 2.5m")
     private Double height;
+    
     private Double weight;
 
     public String getFirstName() { return firstName; }

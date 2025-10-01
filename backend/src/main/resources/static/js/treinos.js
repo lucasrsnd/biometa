@@ -24,6 +24,20 @@ function loadUserData() {
     document.getElementById('navbarName').textContent = `${userData.firstName || 'Usuário'} ${userData.lastName || 'BioMeta'}`;
 }
 
+// ========== FUNÇÕES DE USUÁRIO ========== //
+
+// Obter ID do usuário atual
+function getCurrentUserId() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    return user ? user.id : null;
+}
+
+// Obter chave específica do usuário
+function getUserKey(key) {
+    const userId = getCurrentUserId();
+    return userId ? `${key}_${userId}` : key;
+}
+
 // Configurar event listeners
 function setupEventListeners() {
     // Formulário de ficha
@@ -152,9 +166,8 @@ function createWorkout(e) {
 
 // Salvar ficha no localStorage
 function saveWorkout(workout) {
-    let workouts = JSON.parse(localStorage.getItem('workouts')) || [];
+    let workouts = JSON.parse(localStorage.getItem(getUserKey('workouts'))) || [];
     
-    // Verificar se já existe uma ficha com este ID (para atualização)
     const index = workouts.findIndex(w => w.id === workout.id);
     
     if (index !== -1) {
@@ -163,18 +176,17 @@ function saveWorkout(workout) {
         workouts.push(workout);
     }
     
-    localStorage.setItem('workouts', JSON.stringify(workouts));
+    localStorage.setItem(getUserKey('workouts'), JSON.stringify(workouts));
 }
 
 // Carregar fichas salvas
 function loadSavedWorkouts() {
-    const workouts = JSON.parse(localStorage.getItem('workouts')) || [];
+    const workouts = JSON.parse(localStorage.getItem(getUserKey('workouts'))) || [];
     
     if (workouts.length > 0) {
         document.getElementById('noWorkoutsState').style.display = 'none';
         workouts.forEach(workout => renderWorkout(workout));
         
-        // Selecionar a primeira ficha por padrão
         if (!selectedWorkoutId) {
             selectWorkout(workouts[0].id);
         }

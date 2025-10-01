@@ -8,6 +8,11 @@ import com.biometa.security.CustomUserDetails;
 import com.biometa.security.JwtUtil;
 import com.biometa.service.UserService;
 import jakarta.validation.Valid;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,33 +36,81 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
+        // Validar força da senha
+        String password = registerRequest.getPassword();
+        List<String> passwordErrors = validatePassword(password);
+
+        if (!passwordErrors.isEmpty()) {
+            String errorMessage = "Senha fraca: " + String.join(", ", passwordErrors);
+            return ResponseEntity.badRequest().body(errorMessage);
+        }
+
         if (userService.existsByEmail(registerRequest.getEmail())) {
             return ResponseEntity.badRequest().body("Erro: Email já está em uso!");
         }
 
-        User user = new User(registerRequest.getFirstName(), registerRequest.getLastName(), 
-                            registerRequest.getEmail(), registerRequest.getPassword());
+        User user = new User(registerRequest.getFirstName(), registerRequest.getLastName(),
+                registerRequest.getEmail(), registerRequest.getPassword());
         user.setGender(registerRequest.getGender());
         user.setBirthDate(registerRequest.getBirthDate());
         user.setCountry(registerRequest.getCountry());
         user.setHeight(registerRequest.getHeight());
         user.setWeight(registerRequest.getWeight());
 
-        userService.createUser(user);
+        User savedUser = userService.createUser(user);
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Usuário registrado com sucesso!");
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody AuthRequest authRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword()));
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword()));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        String jwt = jwtUtil.generateToken(userDetails);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+            String jwt = jwtUtil.generateToken(userDetails);
 
-        return ResponseEntity.ok(new AuthResponse(jwt, userDetails.getFirstName(), 
-                userDetails.getLastName(), userDetails.getUsername()));
+            // Buscar o usuário completo para obter o ID
+            Optional<User> user = userService.findByEmail(userDetails.getUsername());
+            
+            if (user.isPresent()) {
+                AuthResponse authResponse = new AuthResponse(
+                    jwt, 
+                    userDetails.getFirstName(), 
+                    userDetails.getLastName(), 
+                    userDetails.getUsername(),
+                    user.get().getId() // Adicionar o ID do usuário
+                );
+                return ResponseEntity.ok(authResponse);
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não encontrado");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("E-mail ou senha incorretos");
+        }
+    }
+
+    private List<String> validatePassword(String password) {
+        List<String> errors = new ArrayList<>();
+
+        if (password.length() < 8) {
+            errors.add("mínimo 8 caracteres");
+        }
+        if (!password.matches(".*[A-Z].*")) {
+            errors.add("pelo menos uma letra maiúscula");
+        }
+        if (!password.matches(".*[a-z].*")) {
+            errors.add("pelo menos uma letra minúscula");
+        }
+        if (!password.matches(".*[0-9].*")) {
+            errors.add("pelo menos um número");
+        }
+        if (!password.matches(".*[!@#$%&*].*")) {
+            errors.add("pelo menos um caractere especial (!@#$%&*)");
+        }
+
+        return errors;
     }
 }

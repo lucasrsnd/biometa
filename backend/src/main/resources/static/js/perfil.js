@@ -38,8 +38,14 @@ async function loadUserData() {
             // Atualizar navbar
             updateNavbar(userData);
             
-            // Salvar dados no localStorage para uso offline
-            localStorage.setItem('user', JSON.stringify(userData));
+            // Salvar dados no localStorage para uso offline (PRESERVANDO O ID)
+            const currentUser = JSON.parse(localStorage.getItem('user')) || {};
+            const updatedUser = { ...currentUser, ...userData };
+            // Garantir que o ID não seja perdido
+            if (currentUser.id && !updatedUser.id) {
+                updatedUser.id = currentUser.id;
+            }
+            localStorage.setItem('user', JSON.stringify(updatedUser));
             
         } else if (response.status === 401) {
             // Token inválido ou expirado
@@ -189,9 +195,14 @@ async function saveProfile(e) {
     
     try {
         // Em uma implementação real, enviaria para a API
-        // Por enquanto, vamos apenas atualizar o localStorage
+        // Por enquanto, vamos apenas atualizar o localStorage PRESERVANDO O ID
         const currentUser = JSON.parse(localStorage.getItem('user')) || {};
-        const updatedUser = {...currentUser, ...userData};
+        const updatedUser = { 
+            ...currentUser, 
+            ...userData,
+            // GARANTIR QUE O ID NÃO SEJA PERDIDO
+            id: currentUser.id
+        };
         
         // Recalcular idade
         if (userData.birthDate) {
