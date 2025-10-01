@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioMeta - Planejamento</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/planejamento.css">
+    <link rel="shortcut icon" type="image/x-icon" href="/img/logo.png">
+</head>
+
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="dashboard.html" class="logo">
+                    <i class="fas fa-dumbbell"></i> BioMeta
+                </a>
+
+                <ul class="nav-links">
+                    <li><a href="dashboard.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="planejamento.html" class="active"><i class="fas fa-calendar"></i> Planejamento</a></li>
+                    <li><a href="treinos.html"><i class="fas fa-dumbbell"></i> Treinos</a></li>
+                    <li><a href="dieta.html"><i class="fas fa-utensils"></i> Dieta</a></li>
+                    <li><a href="#"><i class="fas fa-tint"></i> Hidratação</a></li>
+                </ul>
+
+                <a href="perfil.html" class="user-profile">
+                    <div class="user-avatar" id="navbarAvatar"></div>
+                    <div class="user-info" id="navbarName"></div>
+                </a>
+
+                <div class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="main-content">
+        <div class="container">
+            <h1 class="page-title">Meu Planejamento</h1>
+
+            <div class="planning-grid">
+                <!-- Seção Agenda -->
+                <section class="planning-section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-calendar-alt"></i> Agenda 2025</h2>
+                            <button class="btn btn-outline btn-small" id="addEventBtn">
+                                <i class="fas fa-plus"></i> Add Evento
+                            </button>
+                        </div>
+
+                        <!-- Controles do Calendário -->
+                        <div class="calendar-controls">
+                            <button class="btn-calendar" id="prevYear">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <div class="current-year" id="currentYear">2025</div>
+                            <button class="btn-calendar" id="nextYear">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+
+                        <!-- Calendário -->
+                        <div class="calendar-container">
+                            <div class="calendar" id="calendar">
+                                <!-- O calendário será gerado via JavaScript -->
+                            </div>
+                        </div>
+
+                        <!-- Eventos do Dia Selecionado -->
+                        <div class="day-events" id="dayEvents" style="display: none;">
+                            <div class="day-events-header">
+                                <h3>Eventos para <span id="selectedDate"></span></h3>
+                                <button class="btn btn-small" id="addEventToDay">
+                                    <i class="fas fa-plus"></i> Add Evento
+                                </button>
+                            </div>
+                            <div class="events-list" id="eventsList">
+                                <!-- Eventos serão adicionados aqui -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Seção Lateral -->
+                <section class="side-section">
+                    <!-- To-Do List -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-tasks"></i> To-Do List</h2>
+                            <button class="btn btn-outline btn-small" id="addTaskBtn">
+                                <i class="fas fa-plus"></i> Add Tarefa
+                            </button>
+                        </div>
+
+                        <!-- Formulário para Nova Tarefa (inicialmente oculto) -->
+                        <div id="taskFormContainer" style="display: none;">
+                            <form id="taskForm" class="task-form">
+                                <div class="form-group">
+                                    <input type="text" id="taskTitle" placeholder="Título da tarefa" required>
+                                </div>
+                                <div class="form-group">
+                                    <select id="taskColumn">
+                                        <option value="todo">A Fazer</option>
+                                        <option value="doing">Fazendo</option>
+                                        <option value="done">Feito</option>
+                                    </select>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="button" class="btn btn-outline" id="cancelTaskBtn">Cancelar</button>
+                                    <button type="submit" class="btn">Adicionar</button>
+                                </div>
+                            </form>
+                            <hr style="margin: 15px 0;">
+                        </div>
+
+                        <!-- Kanban Board -->
+                        <div class="kanban-board">
+                            <div class="kanban-column">
+                                <div class="column-header todo">
+                                    <h3>A Fazer</h3>
+                                    <span class="task-count" id="todoCount">0</span>
+                                </div>
+                                <div class="column-content" id="todoColumn" data-column="todo">
+                                    <!-- Tarefas A Fazer -->
+                                </div>
+                            </div>
+
+                            <div class="kanban-column">
+                                <div class="column-header doing">
+                                    <h3>Fazendo</h3>
+                                    <span class="task-count" id="doingCount">0</span>
+                                </div>
+                                <div class="column-content" id="doingColumn" data-column="doing">
+                                    <!-- Tarefas Fazendo -->
+                                </div>
+                            </div>
+
+                            <div class="kanban-column">
+                                <div class="column-header done">
+                                    <h3>Feito</h3>
+                                    <span class="task-count" id="doneCount">0</span>
+                                </div>
+                                <div class="column-content" id="doneColumn" data-column="done">
+                                    <!-- Tarefas Feitas -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notas do Dia -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-sticky-note"></i> Notas do Dia</h2>
+                            <button class="btn btn-outline btn-small" id="saveNotesBtn">
+                                <i class="fas fa-save"></i> Salvar
+                            </button>
+                        </div>
+
+                        <div class="notes-container">
+                            <div class="notes-date" id="notesDate">
+                                <!-- Data atual será preenchida via JavaScript -->
+                            </div>
+                            <textarea id="dailyNotes" placeholder="Escreva suas observações, ideias ou lembretes para hoje..."></textarea>
+                            <div class="notes-info">
+                                <span id="notesCount">0</span> caracteres
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal para Adicionar Evento -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Adicionar Evento</h3>
+                <span class="close">&times;</span>
+            </div>
+            <form id="eventForm">
+                <div class="form-group">
+                    <label for="eventTitle">Título do Evento</label>
+                    <input type="text" id="eventTitle" required>
+                </div>
+                <div class="form-group">
+                    <label for="eventDescription">Descrição</label>
+                    <textarea id="eventDescription" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="eventDate">Data</label>
+                    <input type="date" id="eventDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="eventColor">Cor</label>
+                    <select id="eventColor">
+                        <option value="#3498db" style="color: #3498db;">● Azul</option>
+                        <option value="#2ecc71" style="color: #2ecc71;">● Verde</option>
+                        <option value="#e74c3c" style="color: #e74c3c;">● Vermelho</option>
+                        <option value="#f39c12" style="color: #f39c12;">● Laranja</option>
+                        <option value="#9b59b6" style="color: #9b59b6;">● Roxo</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" id="cancelEventBtn">Cancelar</button>
+                    <button type="submit" class="btn">Salvar Evento</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/planejamento.js"></script>
+</body>
+
+</html>

@@ -114,7 +114,7 @@ function loadSavedMeals() {
         document.getElementById('noMealsState').style.display = 'none';
         meals.forEach(meal => renderMeal(meal));
         
-        if (!selectedMealId) {
+        if (!selectedMealId && meals.length > 0) {
             selectMeal(meals[0].id);
         }
     }
@@ -171,7 +171,7 @@ function renderMeal(meal) {
 
 // Selecionar refeição
 function selectMeal(mealId) {
-    const meals = JSON.parse(localStorage.getItem('meals')) || [];
+    const meals = JSON.parse(localStorage.getItem(getUserKey('meals'))) || []; // CORREÇÃO AQUI
     const meal = meals.find(m => m.id === mealId);
     
     if (!meal) return;
@@ -262,7 +262,7 @@ function addFood(e) {
         fat: fat
     };
     
-    const meals = JSON.parse(localStorage.getItem('meals')) || [];
+    const meals = JSON.parse(localStorage.getItem(getUserKey('meals'))) || []; // CORREÇÃO AQUI
     const mealIndex = meals.findIndex(m => m.id === selectedMealId);
     
     if (mealIndex === -1) return;
@@ -283,7 +283,7 @@ function addFood(e) {
                 addToDailySummary(nutrition);
             }
             
-            localStorage.setItem('meals', JSON.stringify(meals));
+            localStorage.setItem(getUserKey('meals'), JSON.stringify(meals)); // CORREÇÃO AQUI
             renderFoods(meals[mealIndex].foods);
             renderMeal(meals[mealIndex]);
         }
@@ -298,7 +298,7 @@ function addFood(e) {
         };
         
         meals[mealIndex].foods.push(food);
-        localStorage.setItem('meals', JSON.stringify(meals));
+        localStorage.setItem(getUserKey('meals'), JSON.stringify(meals)); // CORREÇÃO AQUI
         renderFoods(meals[mealIndex].foods);
         renderMeal(meals[mealIndex]);
     }
@@ -379,7 +379,7 @@ function renderFoods(foods) {
 
 // Editar alimento
 function editFood(foodId) {
-    const meals = JSON.parse(localStorage.getItem('meals')) || [];
+    const meals = JSON.parse(localStorage.getItem(getUserKey('meals'))) || []; // CORREÇÃO AQUI
     const mealIndex = meals.findIndex(m => m.id === selectedMealId);
     
     if (mealIndex === -1) return;
@@ -400,7 +400,7 @@ function editFood(foodId) {
 
 // Alternar conclusão do alimento
 function toggleFoodCompletion(foodId, completed) {
-    const meals = JSON.parse(localStorage.getItem('meals')) || [];
+    const meals = JSON.parse(localStorage.getItem(getUserKey('meals'))) || []; // CORREÇÃO AQUI
     const mealIndex = meals.findIndex(m => m.id === selectedMealId);
     
     if (mealIndex === -1) return;
@@ -426,7 +426,7 @@ function toggleFoodCompletion(foodId, completed) {
         }
     }
     
-    localStorage.setItem('meals', JSON.stringify(meals));
+    localStorage.setItem(getUserKey('meals'), JSON.stringify(meals)); // CORREÇÃO AQUI
     renderFoods(meals[mealIndex].foods);
 }
 
@@ -436,7 +436,7 @@ function deleteFood(foodId) {
         return;
     }
     
-    const meals = JSON.parse(localStorage.getItem('meals')) || [];
+    const meals = JSON.parse(localStorage.getItem(getUserKey('meals'))) || []; // CORREÇÃO AQUI
     const mealIndex = meals.findIndex(m => m.id === selectedMealId);
     
     if (mealIndex !== -1) {
@@ -452,7 +452,7 @@ function deleteFood(foodId) {
             
             // Remover o alimento
             meals[mealIndex].foods.splice(foodIndex, 1);
-            localStorage.setItem('meals', JSON.stringify(meals));
+            localStorage.setItem(getUserKey('meals'), JSON.stringify(meals)); // CORREÇÃO AQUI
             
             // Atualizar visualização
             renderFoods(meals[mealIndex].foods);
@@ -467,7 +467,7 @@ function deleteMeal(mealId) {
         return;
     }
     
-    let meals = JSON.parse(localStorage.getItem('meals')) || [];
+    let meals = JSON.parse(localStorage.getItem(getUserKey('meals'))) || []; // CORREÇÃO AQUI
     
     // Remover alimentos concluídos do resumo antes de excluir
     const mealToDelete = meals.find(m => m.id === mealId);
@@ -480,7 +480,7 @@ function deleteMeal(mealId) {
     }
     
     meals = meals.filter(m => m.id !== mealId);
-    localStorage.setItem('meals', JSON.stringify(meals));
+    localStorage.setItem(getUserKey('meals'), JSON.stringify(meals)); // CORREÇÃO AQUI
     
     // Remover da visualização
     const mealElement = document.querySelector(`.meal-item[data-id="${mealId}"]`);
@@ -505,7 +505,7 @@ function deleteMeal(mealId) {
 
 // Verificar reset diário
 function checkDailyReset() {
-    const lastReset = localStorage.getItem('lastDailyReset');
+    const lastReset = localStorage.getItem(getUserKey('lastDailyReset')); // CORREÇÃO AQUI
     const today = new Date().toDateString();
     
     if (!lastReset || lastReset !== today) {
@@ -542,7 +542,7 @@ function resetDailySummary() {
         lastUpdated: new Date().toDateString()
     };
     
-    localStorage.setItem(getUserKey('lastDailyReset'), new Date().toDateString());
+    localStorage.setItem(getUserKey('lastDailyReset'), new Date().toDateString()); // CORREÇÃO AQUI
     saveDailySummary(newSummary);
     updateSummaryDisplay(newSummary);
     
@@ -571,24 +571,24 @@ function resetDailySummary() {
         }
     }
     
-    alert('Resumo diário zerado com sucesso! Todos os alimentos foram desmarcados.');
+    // REMOVER ESTE ALERTA PARA NÃO SER CHATO
+    // alert('Resumo diário zerado com sucesso! Todos os alimentos foram desmarcados.');
 }
-
 
 // Atualizar exibição do resumo
 function updateSummaryDisplay(summary) {
-    document.getElementById('totalCalories').textContent = summary.calories;
+    document.getElementById('totalCalories').textContent = Math.round(summary.calories);
     document.getElementById('totalProtein').textContent = summary.protein.toFixed(1);
     document.getElementById('totalCarbs').textContent = summary.carbs.toFixed(1);
     document.getElementById('totalFat').textContent = summary.fat.toFixed(1);
-    document.getElementById('caloriesConsumed').textContent = summary.calories;
+    document.getElementById('caloriesConsumed').textContent = Math.round(summary.calories);
     
     updateProgressBar(summary.calories);
 }
 
 // Adicionar alimento ao resumo diário
 function addToDailySummary(nutrition) {
-    const summary = JSON.parse(localStorage.getItem('dailySummary')) || {
+    const summary = JSON.parse(localStorage.getItem(getUserKey('dailySummary'))) || {
         calories: 0,
         protein: 0,
         carbs: 0,
@@ -606,7 +606,7 @@ function addToDailySummary(nutrition) {
 
 // Remover alimento do resumo diário
 function removeFromDailySummary(nutrition) {
-    const summary = JSON.parse(localStorage.getItem('dailySummary')) || {
+    const summary = JSON.parse(localStorage.getItem(getUserKey('dailySummary'))) || {
         calories: 0,
         protein: 0,
         carbs: 0,
@@ -655,7 +655,7 @@ function updateDailyGoal() {
 
 // Atualizar barra de progresso
 function updateProgressBar(calories) {
-    const goal = parseInt(localStorage.getItem('dailyCalorieGoal')) || 2000;
+    const goal = parseInt(localStorage.getItem(getUserKey('dailyCalorieGoal'))) || 2000;
     const progress = Math.min((calories / goal) * 100, 100);
     
     document.getElementById('calorieProgress').style.width = `${progress}%`;

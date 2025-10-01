@@ -235,7 +235,7 @@ function renderWorkout(workout) {
 
 // Selecionar ficha
 function selectWorkout(workoutId) {
-    const workouts = JSON.parse(localStorage.getItem('workouts')) || [];
+    const workouts = JSON.parse(localStorage.getItem(getUserKey('workouts'))) || []; // CORREÇÃO AQUI
     const workout = workouts.find(w => w.id === workoutId);
     
     if (!workout) return;
@@ -266,6 +266,7 @@ function selectWorkout(workoutId) {
 }
 
 // Renderizar exercícios
+// Renderizar exercícios (FUNÇÃO MODIFICADA)
 function renderExercises(exercises) {
     const exercisesList = document.getElementById('exercisesList');
     exercisesList.innerHTML = '';
@@ -283,33 +284,68 @@ function renderExercises(exercises) {
     
     exercises.forEach(exercise => {
         const exerciseElement = document.createElement('div');
-        exerciseElement.className = `exercise-item ${exercise.completed ? 'exercise-completed' : ''}`;
+        exerciseElement.className = 'exercise-item';
         exerciseElement.dataset.id = exercise.id;
         
         exerciseElement.innerHTML = `
             <div class="exercise-info">
                 <div class="exercise-name">${exercise.name}</div>
-                <div class="exercise-details">${exercise.sets} séries × ${exercise.reps} reps × ${exercise.weight} kg</div>
+                <div class="exercise-details">${exercise.sets} séries × ${exercise.reps} reps (${exercise.weight} kg)</div>
             </div>
-            <div class="exercise-actions">
-                <div class="completed-toggle" onclick="toggleExerciseCompletion(${exercise.id})">
-                    <div class="completed-checkbox ${exercise.completed ? 'checked' : ''}">
-                        ${exercise.completed ? '✓' : ''}
+            <div class="exercise-performance">
+                <div class="performance-inputs">
+                    <div class="performance-input">
+                        <label for="weight-${exercise.id}">Carga (kg)</label>
+                        <input type="number" 
+                               id="weight-${exercise.id}" 
+                               class="completed-weight" 
+                               placeholder="0" 
+                               value="${exercise.completedWeight || ''}" 
+                               step="0.5"
+                               min="0"
+                               onchange="updateExercisePerformance(${exercise.id}, 'weight', this.value)">
                     </div>
-                    <span>Concluído</span>
+                    <div class="performance-input">
+                        <label for="reps-${exercise.id}">Reps Realizadas</label>
+                        <input type="number" 
+                               id="reps-${exercise.id}" 
+                               class="completed-reps" 
+                               placeholder="0" 
+                               value="${exercise.completedReps || ''}" 
+                               min="0"
+                               max="100"
+                               onchange="updateExercisePerformance(${exercise.id}, 'reps', this.value)">
+                    </div>
                 </div>
-                <input type="number" class="completed-weight" placeholder="Carga" 
-                       value="${exercise.completedWeight || ''}" 
-                       onchange="updateCompletedWeight(${exercise.id}, this.value)"
-                       ${exercise.completed ? '' : 'disabled'}>
-                <div class="delete-exercise" onclick="deleteExercise(${exercise.id})">
-                    <i class="fas fa-trash"></i>
+                <div class="exercise-actions">
+                    <div class="delete-exercise" onclick="deleteExercise(${exercise.id})" title="Excluir exercício">
+                        <i class="fas fa-trash"></i>
+                    </div>
                 </div>
             </div>
         `;
         
         exercisesList.appendChild(exerciseElement);
     });
+}
+
+function updateExercisePerformance(exerciseId, type, value) {
+    const workouts = JSON.parse(localStorage.getItem(getUserKey('workouts'))) || [];
+    const workoutIndex = workouts.findIndex(w => w.id === selectedWorkoutId);
+    
+    if (workoutIndex !== -1) {
+        const exerciseIndex = workouts[workoutIndex].exercises.findIndex(ex => ex.id === exerciseId);
+        
+        if (exerciseIndex !== -1) {
+            if (type === 'weight') {
+                workouts[workoutIndex].exercises[exerciseIndex].completedWeight = value ? parseFloat(value) : null;
+            } else if (type === 'reps') {
+                workouts[workoutIndex].exercises[exerciseIndex].completedReps = value ? parseInt(value) : null;
+            }
+            
+            localStorage.setItem(getUserKey('workouts'), JSON.stringify(workouts));
+        }
+    }
 }
 
 // Mostrar formulário de exercício
@@ -353,17 +389,17 @@ function addExercise(e) {
         sets: parseInt(sets),
         reps: parseInt(reps),
         weight: parseFloat(weight),
-        completed: false,
-        completedWeight: null
+        completedWeight: null,
+        completedReps: null
     };
     
     // Adicionar exercício à ficha selecionada
-    const workouts = JSON.parse(localStorage.getItem('workouts')) || [];
+    const workouts = JSON.parse(localStorage.getItem(getUserKey('workouts'))) || [];
     const workoutIndex = workouts.findIndex(w => w.id === selectedWorkoutId);
     
     if (workoutIndex !== -1) {
         workouts[workoutIndex].exercises.push(exercise);
-        localStorage.setItem('workouts', JSON.stringify(workouts));
+        localStorage.setItem(getUserKey('workouts'), JSON.stringify(workouts));
         
         // Atualizar visualização
         renderExercises(workouts[workoutIndex].exercises);
@@ -374,58 +410,18 @@ function addExercise(e) {
     }
 }
 
-// Alternar conclusão do exercício
-function toggleExerciseCompletion(exerciseId) {
-    const workouts = JSON.parse(localStorage.getItem('workouts')) || [];
-    const workoutIndex = workouts.findIndex(w => w.id === selectedWorkoutId);
-    
-    if (workoutIndex !== -1) {
-        const exerciseIndex = workouts[workoutIndex].exercises.findIndex(ex => ex.id === exerciseId);
-        
-        if (exerciseIndex !== -1) {
-            workouts[workoutIndex].exercises[exerciseIndex].completed = 
-                !workouts[workoutIndex].exercises[exerciseIndex].completed;
-            
-            // Se estiver marcando como não concluído, limpar o peso usado
-            if (!workouts[workoutIndex].exercises[exerciseIndex].completed) {
-                workouts[workoutIndex].exercises[exerciseIndex].completedWeight = null;
-            }
-            
-            localStorage.setItem('workouts', JSON.stringify(workouts));
-            
-            // Atualizar visualização
-            renderExercises(workouts[workoutIndex].exercises);
-        }
-    }
-}
-
-// Atualizar peso usado no exercício
-function updateCompletedWeight(exerciseId, weight) {
-    const workouts = JSON.parse(localStorage.getItem('workouts')) || [];
-    const workoutIndex = workouts.findIndex(w => w.id === selectedWorkoutId);
-    
-    if (workoutIndex !== -1) {
-        const exerciseIndex = workouts[workoutIndex].exercises.findIndex(ex => ex.id === exerciseId);
-        
-        if (exerciseIndex !== -1) {
-            workouts[workoutIndex].exercises[exerciseIndex].completedWeight = parseFloat(weight) || null;
-            localStorage.setItem('workouts', JSON.stringify(workouts));
-        }
-    }
-}
-
 // Excluir exercício
 function deleteExercise(exerciseId) {
     if (!confirm('Tem certeza que deseja excluir este exercício?')) {
         return;
     }
     
-    const workouts = JSON.parse(localStorage.getItem('workouts')) || [];
+    const workouts = JSON.parse(localStorage.getItem(getUserKey('workouts'))) || []; // CORREÇÃO AQUI
     const workoutIndex = workouts.findIndex(w => w.id === selectedWorkoutId);
     
     if (workoutIndex !== -1) {
         workouts[workoutIndex].exercises = workouts[workoutIndex].exercises.filter(ex => ex.id !== exerciseId);
-        localStorage.setItem('workouts', JSON.stringify(workouts));
+        localStorage.setItem(getUserKey('workouts'), JSON.stringify(workouts)); // CORREÇÃO AQUI
         
         // Atualizar visualização
         renderExercises(workouts[workoutIndex].exercises);
@@ -439,9 +435,9 @@ function deleteWorkout(workoutId) {
         return;
     }
     
-    let workouts = JSON.parse(localStorage.getItem('workouts')) || [];
+    let workouts = JSON.parse(localStorage.getItem(getUserKey('workouts'))) || []; // CORREÇÃO AQUI
     workouts = workouts.filter(w => w.id !== workoutId);
-    localStorage.setItem('workouts', JSON.stringify(workouts));
+    localStorage.setItem(getUserKey('workouts'), JSON.stringify(workouts)); // CORREÇÃO AQUI
     
     // Remover da visualização
     const workoutElement = document.querySelector(`.workout-item[data-id="${workoutId}"]`);
