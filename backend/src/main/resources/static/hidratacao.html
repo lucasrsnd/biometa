@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioMeta - Hidratação</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/hidratacao.css?v=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="/img/logo.png">
+</head>
+
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="dashboard.html" class="logo">
+                    <i class="fas fa-dumbbell"></i> BioMeta
+                </a>
+
+                <ul class="nav-links">
+                    <li><a href="dashboard.html"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="planejamento.html"><i class="fas fa-calendar"></i> Planejamento</a></li>
+                    <li><a href="treinos.html"><i class="fas fa-dumbbell"></i> Treinos</a></li>
+                    <li><a href="dieta.html"><i class="fas fa-utensils"></i> Dieta</a></li>
+                    <li><a href="hidratacao.html" class="active"><i class="fas fa-tint"></i> Hidratação</a></li>
+                </ul>
+
+                <a href="perfil.html" class="user-profile">
+                    <div class="user-avatar" id="navbarAvatar"></div>
+                    <div class="user-info" id="navbarName"></div>
+                </a>
+
+                <div class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="main-content">
+        <div class="container">
+            <h1 class="page-title">Hidratação</h1>
+
+            <div class="hydration-grid">
+                <!-- Seção Principal -->
+                <section class="hydration-section">
+                    <!-- Meta de Hidratação -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-calculator"></i> Meta Diária de Água</h2>
+                        </div>
+                        <div class="hydration-goal">
+                            <div class="goal-info">
+                                <div class="goal-value" id="dailyGoal">0 ml</div>
+                                <div class="goal-formula">35 ml × <span id="userWeight">0</span> kg (seu peso)</div>
+                            </div>
+                            <div class="goal-actions">
+                                <button class="btn btn-outline" onclick="recalculateGoal()">
+                                    <i class="fas fa-sync-alt"></i> Recalcular
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Registro de Consumo -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-plus-circle"></i> Registrar Consumo</h2>
+                        </div>
+                        <div class="consumption-form">
+                            <div class="quick-actions">
+                                <button class="btn-quantity" data-ml="200">+200ml</button>
+                                <button class="btn-quantity" data-ml="300">+300ml</button>
+                                <button class="btn-quantity" data-ml="500">+500ml</button>
+                                <button class="btn-quantity" data-ml="1000">+1L</button>
+                            </div>
+                            <div class="custom-input">
+                                <input type="number" id="customMl" placeholder="Quantidade em ml" min="50" max="5000">
+                                <button class="btn" id="addCustomConsumption">
+                                    <i class="fas fa-plus"></i> Adicionar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gráfico de Consumo -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-chart-bar"></i> Consumo Hoje</h2>
+                            <div class="consumption-stats">
+                                <span class="stat-consumed" id="consumedToday">0 ml</span>
+                                <span class="stat-goal" id="remainingGoal">0 ml</span>
+                            </div>
+                        </div>
+                        <div class="consumption-chart">
+                            <div class="chart-container">
+                                <div class="water-bar">
+                                    <div class="water-fill" id="waterFill"></div>
+                                </div>
+                                <div class="chart-labels">
+                                    <span>0%</span>
+                                    <span>50%</span>
+                                    <span>100%</span>
+                                </div>
+                            </div>
+                            <div class="chart-info">
+                                <div class="progress-text" id="progressText">0% da meta atingida</div>
+                                <div class="time-info" id="timeInfo"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Seção Lateral -->
+                <section class="side-section">
+                    <!-- Histórico do Dia -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-history"></i> Histórico de Hoje</h2>
+                            <button class="btn btn-outline btn-small" onclick="clearTodayHistory()">
+                                <i class="fas fa-trash"></i> Limpar
+                            </button>
+                        </div>
+                        <div class="history-list" id="historyList">
+                            <div class="empty-state">
+                                <i class="fas fa-tint"></i>
+                                <p>Nenhum registro hoje.</p>
+                                <p>Comece a registrar seu consumo!</p>
+                            </div>
+                        </div>
+                        <div class="history-summary">
+                            <div class="summary-item">
+                                <span>Total Hoje:</span>
+                                <strong id="totalToday">0 ml</strong>
+                            </div>
+                            <div class="summary-item">
+                                <span>Registros:</span>
+                                <strong id="totalRecords">0</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Desafios de Hidratação -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-trophy"></i> Desafios</h2>
+                        </div>
+                        <div class="challenges-list">
+                            <div class="challenge-item" data-challenge="consistent">
+                                <div class="challenge-icon">
+                                    <i class="fas fa-calendar-check"></i>
+                                </div>
+                                <div class="challenge-content">
+                                    <div class="challenge-title">Consistência Semanal</div>
+                                    <div class="challenge-description">Beba sua meta diária por 7 dias seguidos</div>
+                                    <div class="challenge-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" id="consistentProgress"></div>
+                                        </div>
+                                        <span id="consistentDays">0/7 dias</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="challenge-item" data-challenge="early">
+                                <div class="challenge-icon">
+                                    <i class="fas fa-sun"></i>
+                                </div>
+                                <div class="challenge-content">
+                                    <div class="challenge-title">Início Matinal</div>
+                                    <div class="challenge-description">Beba 500ml antes das 10h da manhã</div>
+                                    <div class="challenge-status" id="earlyStatus">Não concluído</div>
+                                </div>
+                            </div>
+
+                            <div class="challenge-item" data-challenge="bottle">
+                                <div class="challenge-icon">
+                                    <i class="fas fa-wine-bottle"></i>
+                                </div>
+                                <div class="challenge-content">
+                                    <div class="challenge-title">Garrafa Inteira</div>
+                                    <div class="challenge-description">Complete uma garrafa de 2L em um dia</div>
+                                    <div class="challenge-status" id="bottleStatus">Não concluído</div>
+                                </div>
+                            </div>
+
+                            <div class="challenge-item" data-challenge="streak">
+                                <div class="challenge-icon">
+                                    <i class="fas fa-fire"></i>
+                                </div>
+                                <div class="challenge-content">
+                                    <div class="challenge-title">Sequência Perfeita</div>
+                                    <div class="challenge-description">30 dias atingindo a meta</div>
+                                    <div class="challenge-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" id="streakProgress"></div>
+                                        </div>
+                                        <span id="streakDays">0/30 dias</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dicas de Hidratação -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2><i class="fas fa-lightbulb"></i> Dicas</h2>
+                        </div>
+                        <div class="tips-list">
+                            <div class="tip-item">
+                                <i class="fas fa-clock"></i>
+                                <span>Beba água ao acordar para ativar o metabolismo</span>
+                            </div>
+                            <div class="tip-item">
+                                <i class="fas fa-glass-whiskey"></i>
+                                <span>Mantenha uma garrafa sempre visível</span>
+                            </div>
+                            <div class="tip-item">
+                                <i class="fas fa-apple-alt"></i>
+                                <span>Frutas como melancia têm alto teor de água</span>
+                            </div>
+                            <div class="tip-item">
+                                <i class="fas fa-running"></i>
+                                <span>Hidrate-se antes, durante e após exercícios</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/hidratacao.js?v=1.0"></script>
+</body>
+
+</html>
