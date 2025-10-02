@@ -49,30 +49,16 @@ function initializeHydrationSystem() {
 }
 
 function calculateDailyGoal() {
-    const userData = loadUserData();
-    const userWeight = userData.weight || 70; // Usar peso do cadastro ou 70kg padrão
+    // SEMPRE buscar o peso mais recente do localStorage
+    const userData = JSON.parse(localStorage.getItem('user')) || {};
+    const userWeight = userData.weight || 70;
     
-    dailyGoal = Math.round(userWeight * 35); // 35ml por kg
+    dailyGoal = Math.round(userWeight * 35);
     
     document.getElementById('dailyGoal').textContent = `${dailyGoal.toLocaleString()} ml`;
     document.getElementById('userWeight').textContent = userWeight;
-}
-
-function recalculateGoal() {
-    const userData = loadUserData();
-    const currentWeight = userData.weight || 70;
     
-    const newWeight = prompt('Qual é o seu peso atual em kg?', currentWeight);
-    
-    if (newWeight && !isNaN(newWeight) && newWeight > 0) {
-        // Atualizar peso no perfil do usuário
-        userData.weight = parseFloat(newWeight);
-        localStorage.setItem('user', JSON.stringify(userData));
-        
-        calculateDailyGoal();
-        updateDisplay();
-        alert('Meta recalculada com sucesso!');
-    }
+    console.log(`Meta de hidratação: ${dailyGoal}ml para ${userWeight}kg`);
 }
 
 // ========== REGISTRO DE CONSUMO ========== //

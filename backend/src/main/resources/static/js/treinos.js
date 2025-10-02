@@ -343,6 +343,14 @@ function updateExercisePerformance(exerciseId, type, value) {
                 workouts[workoutIndex].exercises[exerciseIndex].completedReps = value ? parseInt(value) : null;
             }
             
+            // SALVAR A DATA DE CONCLUSÃO quando ambos peso e reps são preenchidos
+            if (workouts[workoutIndex].exercises[exerciseIndex].completedWeight !== null && 
+                workouts[workoutIndex].exercises[exerciseIndex].completedReps !== null) {
+                workouts[workoutIndex].exercises[exerciseIndex].completedDate = new Date().toISOString();
+            } else {
+                workouts[workoutIndex].exercises[exerciseIndex].completedDate = null;
+            }
+            
             localStorage.setItem(getUserKey('workouts'), JSON.stringify(workouts));
         }
     }

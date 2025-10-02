@@ -176,7 +176,7 @@ function cancelEdit() {
     document.getElementById('formActions').style.display = 'none';
 }
 
-// Salvar perfil
+// Salvar perfil (VERSÃO CORRIGIDA - com sincronização com backend)
 async function saveProfile(e) {
     e.preventDefault();
     
@@ -194,34 +194,45 @@ async function saveProfile(e) {
     };
     
     try {
-        // Em uma implementação real, enviaria para a API
-        // Por enquanto, vamos apenas atualizar o localStorage PRESERVANDO O ID
-        const currentUser = JSON.parse(localStorage.getItem('user')) || {};
-        const updatedUser = { 
-            ...currentUser, 
-            ...userData,
-            // GARANTIR QUE O ID NÃO SEJA PERDIDO
-            id: currentUser.id
-        };
-        
-        // Recalcular idade
-        if (userData.birthDate) {
-            updatedUser.age = calculateAgeFromDate(userData.birthDate);
+        // ✅ AGORA: Enviar para o backend também!
+        const response = await fetch('/api/user/me', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(userData)
+        });
+
+        if (response.ok) {
+            const updatedUserData = await response.json();
+            
+            // Atualizar localStorage com dados atualizados do backend
+            const currentUser = JSON.parse(localStorage.getItem('user')) || {};
+            const updatedUser = { 
+                ...currentUser, 
+                ...updatedUserData,
+                id: currentUser.id // Preservar o ID
+            };
+            
+            localStorage.setItem('user', JSON.stringify(updatedUser));
+            
+            // Recalcular IMC
+            calculateIMC();
+            
+            // Atualizar navbar
+            updateNavbar(updatedUser);
+            
+            // Sair do modo edição
+            toggleEditMode();
+            
+            // Feedback para o usuário
+            alert('Perfil atualizado com sucesso! A meta de hidratação será atualizada automaticamente.');
+            
+        } else {
+            const errorText = await response.text();
+            throw new Error(errorText || 'Erro ao atualizar perfil');
         }
-        
-        localStorage.setItem('user', JSON.stringify(updatedUser));
-        
-        // Recalcular IMC
-        calculateIMC();
-        
-        // Atualizar navbar
-        updateNavbar(updatedUser);
-        
-        // Sair do modo edição
-        toggleEditMode();
-        
-        // Feedback para o usuário
-        alert('Perfil atualizado com sucesso! (Alterações salvas localmente)');
         
     } catch (error) {
         console.error('Erro ao salvar perfil:', error);
@@ -317,3 +328,15 @@ function calculateIMC() {
         scaleFill.style.backgroundColor = '#777';
     }
 }
+
+// Sincronizar dados quando a página do perfil for carregada
+// Isso garante que quando o usuário voltar para hidratação, os dados estarão atualizados
+window.addEventListener('beforeunload', function() {
+    // Forçar sincronização dos dados quando sair da página de perfil
+    const userData = JSON.parse(localStorage.getItem('user')) || {};
+    if (userData.id) {
+        // Os dados já estão atualizados pelo perfil.js, então apenas garantir
+        // que outras páginas usem os dados mais recentes
+        console.log('Dados do perfil salvos, prontos para sincronização');
+    }
+});

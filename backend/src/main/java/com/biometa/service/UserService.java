@@ -28,4 +28,8 @@ public class UserService {
     public boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
+
+    public User updateUser(User user) {
+        return userRepository.save(user);
+}
 }
