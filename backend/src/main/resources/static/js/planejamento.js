@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Limpar dados de usuários anteriores (se necessário)
+    clearPreviousUserData();
+    
     // Carregar dados do usuário
     loadUserData();
     
@@ -146,7 +149,6 @@ function selectDate(date) {
     showDayEvents(date);
 }
 
-// FUNÇÃO CORRIGIDA: showDayEvents
 // FUNÇÃO CORRIGIDA: showDayEvents
 function showDayEvents(date) {
     const dayEvents = document.getElementById('dayEvents');
@@ -519,6 +521,13 @@ function loadTasks() {
     const savedTasks = JSON.parse(localStorage.getItem(getUserKey('planning_tasks')));
     if (savedTasks) {
         tasks = savedTasks;
+    } else {
+        // Se não existir dados para este usuário, inicializar vazio
+        tasks = {
+            todo: [],
+            doing: [],
+            done: []
+        };
     }
 }
 
@@ -539,4 +548,32 @@ function saveNotes() {
     notes[today] = document.getElementById('dailyNotes').value;
     localStorage.setItem(getUserKey('planning_notes'), JSON.stringify(notes));
     alert('Notas salvas com sucesso!');
+}
+
+// FUNÇÃO PARA LIMPAR DADOS DO USUÁRIO ANTERIOR
+function clearPreviousUserData() {
+    const userId = getCurrentUserId();
+    if (!userId) return;
+    
+    // Lista de todas as chaves que devem ser específicas por usuário
+    const userSpecificKeys = [
+        'planning_events',
+        'planning_tasks', 
+        'planning_notes',
+        'workouts',
+        'meals',
+        'dailySummary',
+        'dailyCalorieGoal',
+        'hydration',
+        'hydration_challenges',
+        'last_hydration_reset',
+        'lastDailyReset'
+    ];
+    
+    // Remover chaves antigas que não tem ID de usuário
+    userSpecificKeys.forEach(key => {
+        if (localStorage.getItem(key) && !localStorage.getItem(`${key}_${userId}`)) {
+            localStorage.removeItem(key);
+        }
+    });
 }

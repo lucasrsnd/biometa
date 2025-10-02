@@ -139,9 +139,24 @@ function setupEventListeners() {
     // Formulário de perfil
     document.getElementById('profileForm').addEventListener('submit', saveProfile);
     
+    // Botão de logout
+    document.getElementById('logoutBtn').addEventListener('click', logout);
+    
     // Campos que afetam o IMC
     document.getElementById('height').addEventListener('input', calculateIMC);
     document.getElementById('weight').addEventListener('input', calculateIMC);
+}
+
+// Função para fazer logout
+function logout() {
+    if (confirm('Tem certeza que deseja sair?')) {
+        // Limpar todos os dados de autenticação do localStorage
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        
+        // Redirecionar para a página de login
+        window.location.href = 'login.html';
+    }
 }
 
 // Alternar modo de edição
@@ -330,13 +345,9 @@ function calculateIMC() {
 }
 
 // Sincronizar dados quando a página do perfil for carregada
-// Isso garante que quando o usuário voltar para hidratação, os dados estarão atualizados
 window.addEventListener('beforeunload', function() {
-    // Forçar sincronização dos dados quando sair da página de perfil
     const userData = JSON.parse(localStorage.getItem('user')) || {};
     if (userData.id) {
-        // Os dados já estão atualizados pelo perfil.js, então apenas garantir
-        // que outras páginas usem os dados mais recentes
         console.log('Dados do perfil salvos, prontos para sincronização');
     }
 });
