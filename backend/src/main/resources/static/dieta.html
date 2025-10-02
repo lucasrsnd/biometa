@@ -5,11 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BioMeta - Minha Dieta</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/dieta.css">
+    <link rel="stylesheet" href="css/dieta.css?v=2.0">
     <link rel="shortcut icon" type="image/x-icon" href="/img/logo.png">
 </head>
 <body>
-    <!-- Header & Navigation -->
+    <!-- Background com efeitos -->
+    <div class="background-effects">
+        <div class="particles" id="particles-js"></div>
+        <div class="gradient-bg"></div>
+    </div>
+
+    <!-- Header & Navigation EMBUTIDA -->
     <header>
         <div class="container">
             <nav class="navbar">
@@ -40,13 +46,17 @@
     <!-- Conteúdo Principal -->
     <main class="main-content">
         <div class="container">
-            <h1 class="page-title">Minha Dieta</h1>
+            <div class="page-header">
+                <h1 class="page-title">Minha Dieta</h1>
+                <p class="page-subtitle">Acompanhe sua nutrição e mantenha suas metas alimentares</p>
+            </div>
             
             <div class="diet-grid">
                 <!-- Seção de Criação de Refeições -->
                 <section class="diet-section">
                     <!-- Criação de Nova Refeição -->
-                    <div class="card">
+                    <div class="card create-card">
+                        <div class="card-glow"></div>
                         <div class="card-header">
                             <h2><i class="fas fa-plus-circle"></i> Criar Nova Refeição</h2>
                         </div>
@@ -58,7 +68,7 @@
                                     <input type="text" id="mealName" placeholder="Ex: Café da manhã" required>
                                 </div>
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-full" style="margin-top: 25px;">
+                                    <button type="submit" class="btn btn-primary btn-full" style="margin-top: 25px;">
                                         <i class="fas fa-plus"></i> Criar Refeição
                                     </button>
                                 </div>
@@ -67,10 +77,11 @@
                     </div>
                     
                     <!-- Refeição Selecionada -->
-                    <div class="card" id="selectedMealCard" style="display: none;">
+                    <div class="card meal-card" id="selectedMealCard" style="display: none;">
+                        <div class="card-glow"></div>
                         <div class="card-header">
                             <h2><i class="fas fa-utensils"></i> <span id="selectedMealName">Refeição</span></h2>
-                            <button class="btn btn-outline btn-small" id="addFoodBtn">
+                            <button class="btn btn-primary btn-small" id="addFoodBtn">
                                 <i class="fas fa-plus"></i> Add Alimento
                             </button>
                         </div>
@@ -109,7 +120,7 @@
                                 
                                 <div class="form-actions">
                                     <button type="button" class="btn btn-outline" id="cancelFoodBtn">Cancelar</button>
-                                    <button type="submit" class="btn">Adicionar Alimento</button>
+                                    <button type="submit" class="btn btn-primary">Adicionar Alimento</button>
                                 </div>
                             </form>
                             <hr style="margin: 20px 0;">
@@ -139,7 +150,8 @@
                 <!-- Seção Lateral com Resumo e Lista de Refeições -->
                 <section class="side-section">
                     <!-- Resumo Nutricional -->
-                    <div class="card">
+                    <div class="card summary-card">
+                        <div class="card-glow"></div>
                         <div class="card-header">
                             <h2><i class="fas fa-chart-pie"></i> Resumo do Dia</h2>
                             <button class="btn btn-outline btn-small" onclick="resetDailySummary()">
@@ -148,33 +160,35 @@
                         </div>
                         
                         <div class="nutrition-summary">
-                            <table class="nutrition-table">
-                                <thead>
-                                    <tr>
-                                        <th>Calorias</th>
-                                        <th>Proteínas</th>
-                                        <th>Carboidratos</th>
-                                        <th>Gorduras</th>
-                                        <th>Meta</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><span id="totalCalories">0</span> kcal</td>
-                                        <td><span id="totalProtein">0</span>g</td>
-                                        <td><span id="totalCarbs">0</span>g</td>
-                                        <td><span id="totalFat">0</span>g</td>
-                                        <td><span id="calorieGoal">2000</span> kcal</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="nutrition-grid">
+                                <div class="nutrition-item">
+                                    <div class="nutrition-value" id="totalCalories">0</div>
+                                    <div class="nutrition-label">Calorias</div>
+                                    <div class="nutrition-unit">kcal</div>
+                                </div>
+                                <div class="nutrition-item">
+                                    <div class="nutrition-value" id="totalProtein">0</div>
+                                    <div class="nutrition-label">Proteínas</div>
+                                    <div class="nutrition-unit">g</div>
+                                </div>
+                                <div class="nutrition-item">
+                                    <div class="nutrition-value" id="totalCarbs">0</div>
+                                    <div class="nutrition-label">Carboidratos</div>
+                                    <div class="nutrition-unit">g</div>
+                                </div>
+                                <div class="nutrition-item">
+                                    <div class="nutrition-value" id="totalFat">0</div>
+                                    <div class="nutrition-label">Gorduras</div>
+                                    <div class="nutrition-unit">g</div>
+                                </div>
+                            </div>
                         </div>
                         
                         <div class="nutrition-goal">
                             <div class="goal-progress">
                                 <div class="progress-label">
-                                    Progresso: <span id="caloriesConsumed">0</span> / <span id="calorieGoalValue">2000</span> kcal
-                                    (<span id="caloriePercentage">0%</span>)
+                                    <span id="caloriesConsumed">0</span> / <span id="calorieGoalValue">2000</span> kcal
+                                    <span class="percentage" id="caloriePercentage">0%</span>
                                 </div>
                                 <div class="progress-bar">
                                     <div class="progress-fill" id="calorieProgress"></div>
@@ -185,14 +199,15 @@
                                 <label for="dailyGoalInput">Meta diária de calorias:</label>
                                 <div class="goal-input-container">
                                     <input type="number" id="dailyGoalInput" min="500" max="10000" value="2000">
-                                    <button class="btn btn-small" onclick="updateDailyGoal()">Atualizar</button>
+                                    <button class="btn btn-primary btn-small" onclick="updateDailyGoal()">Atualizar</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Lista de Refeições -->
-                    <div class="card">
+                    <div class="card meals-card">
+                        <div class="card-glow"></div>
                         <div class="card-header">
                             <h2><i class="fas fa-list"></i> Minhas Refeições</h2>
                         </div>
@@ -211,6 +226,7 @@
         </div>
     </main>
 
-    <script src="js/dieta.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="js/dieta.js?v=2.0"></script>
 </body>
 </html>

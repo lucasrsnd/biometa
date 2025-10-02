@@ -1,4 +1,15 @@
+// Variáveis globais
 document.addEventListener('DOMContentLoaded', function() {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    // Inicializar navbar
+    initNavbar();
+    
     // Limpar dados de usuários anteriores (se necessário)
     clearPreviousUserData();
     
@@ -12,30 +23,160 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Configurar event listeners
     setupEventListeners();
-
-    // Inicializar animações
-    setTimeout(initializePlanningAnimations, 300);
+    
+    // Inicializar efeitos de partículas
+    initParticles();
+    
+    // Configurar observador de interseção para animações ao rolar
+    setupIntersectionObserver();
 });
 
-// Adicionar classe para animação de drag and drop
-document.addEventListener('DOMContentLoaded', function() {
-    const columns = document.querySelectorAll('.column-content');
+// Inicializar funcionalidades da navbar
+function initNavbar() {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
     
-    columns.forEach(column => {
-        column.addEventListener('dragover', function(e) {
-            e.preventDefault();
-            this.classList.add('drag-over');
+    if (menuToggle && navLinks) {
+        menuToggle.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+            menuToggle.innerHTML = navLinks.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
         });
-        
-        column.addEventListener('dragleave', function() {
-            this.classList.remove('drag-over');
-        });
-        
-        column.addEventListener('drop', function() {
-            this.classList.remove('drag-over');
+    }
+    
+    // Fechar menu ao clicar em um link (em dispositivos móveis)
+    const links = document.querySelectorAll('.nav-links a');
+    links.forEach(link => {
+        link.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+                if (navLinks) navLinks.classList.remove('active');
+                if (menuToggle) menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            }
         });
     });
-});
+}
+
+// Inicializar partículas no background
+function initParticles() {
+    if (typeof particlesJS !== 'undefined') {
+        particlesJS('particles-js', {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: "#6c63ff"
+                },
+                shape: {
+                    type: "circle",
+                    stroke: {
+                        width: 0,
+                        color: "#000000"
+                    }
+                },
+                opacity: {
+                    value: 0.5,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 3,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 2,
+                        size_min: 0.1,
+                        sync: false
+                    }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#6c63ff",
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 1,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false,
+                    attract: {
+                        enable: false,
+                        rotateX: 600,
+                        rotateY: 1200
+                    }
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: "grab"
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: "push"
+                    },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 140,
+                        line_linked: {
+                            opacity: 0.5
+                        }
+                    },
+                    push: {
+                        particles_nb: 4
+                    }
+                }
+            },
+            retina_detect: true
+        });
+    }
+}
+
+// Configurar observador de interseção para animações ao rolar
+function setupIntersectionObserver() {
+    const sections = document.querySelectorAll('.planning-section, .side-section');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                
+                // Animar cards individualmente com atrasos
+                const cards = entry.target.querySelectorAll('.card');
+                cards.forEach((card, index) => {
+                    setTimeout(() => {
+                        card.style.animation = `slideInUp 0.6s ease-out ${index * 0.1}s both`;
+                    }, 100);
+                });
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+    
+    sections.forEach(section => {
+        observer.observe(section);
+    });
+}
 
 // Carregar dados do usuário
 function loadUserData() {
@@ -45,13 +186,23 @@ function loadUserData() {
     };
     
     const initials = (userData.firstName?.charAt(0) || 'U') + (userData.lastName?.charAt(0) || 'B');
-    document.getElementById('navbarAvatar').textContent = initials;
-    document.getElementById('navbarName').textContent = `${userData.firstName || 'Usuário'} ${userData.lastName || 'BioMeta'}`;
+    
+    const navbarAvatar = document.getElementById('navbarAvatar');
+    const navbarName = document.getElementById('navbarName');
+    
+    if (navbarAvatar) {
+        navbarAvatar.textContent = initials;
+    }
+    
+    if (navbarName) {
+        navbarName.textContent = `${userData.firstName || 'Usuário'} ${userData.lastName || 'BioMeta'}`;
+    }
 }
 
-// ========== CALENDÁRIO E AGENDA ========== //
+// ========== CALENDÁRIO CARROSSEL ========== //
 
-let currentYear = 2025;
+let currentMonth = new Date().getMonth();
+let currentYear = new Date().getFullYear();
 let selectedDate = null;
 let events = {};
 
@@ -73,89 +224,117 @@ function getTodayFormatted() {
 
 function generateCalendar() {
     const calendar = document.getElementById('calendar');
+    if (!calendar) return;
+    
     calendar.innerHTML = '';
     
-    document.getElementById('currentYear').textContent = currentYear;
+    // Atualizar o display do mês atual
+    updateMonthDisplay();
     
-    for (let month = 0; month < 12; month++) {
-        const monthContainer = document.createElement('div');
-        monthContainer.className = 'month-container';
-        
-        const monthHeader = document.createElement('div');
-        monthHeader.className = 'month-header';
-        monthHeader.textContent = new Date(currentYear, month).toLocaleString('pt-BR', { month: 'long' });
-        
-        const monthGrid = document.createElement('div');
-        monthGrid.className = 'month-grid';
-        
-        // Cabeçalho dos dias da semana
-        const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-        daysOfWeek.forEach(day => {
-            const dayHeader = document.createElement('div');
-            dayHeader.className = 'day-header';
-            dayHeader.textContent = day;
-            monthGrid.appendChild(dayHeader);
-        });
-        
-        // Dias do mês
-        const firstDay = new Date(currentYear, month, 1);
-        const lastDay = new Date(currentYear, month + 1, 0);
-        const daysInMonth = lastDay.getDate();
-        
-        // Espaços vazios antes do primeiro dia
-        for (let i = 0; i < firstDay.getDay(); i++) {
-            const emptyDay = document.createElement('div');
-            emptyDay.className = 'day empty';
-            monthGrid.appendChild(emptyDay);
-        }
-        
-        // Dias do mês
-        const todayFormatted = getTodayFormatted();
-        
-        for (let day = 1; day <= daysInMonth; day++) {
-            const dayElement = document.createElement('div');
-            dayElement.className = 'day';
-            dayElement.textContent = day;
-            
-            // CORREÇÃO: Usar função própria para criar a data string
-            const dateFormatted = createDateString(currentYear, month, day);
-            dayElement.dataset.date = dateFormatted;
-            
-            // Verificar se é hoje
-            if (dateFormatted === todayFormatted) {
-                dayElement.classList.add('today');
-            }
-            
-            // Verificar se é passado
-            const dateObj = new Date(currentYear, month, day);
-            const todayObj = new Date();
-            todayObj.setHours(0, 0, 0, 0); // Resetar horas para comparar apenas datas
-            
-            if (dateObj < todayObj && dateFormatted !== todayFormatted) {
-                dayElement.classList.add('past');
-            }
-            
-            // Verificar se tem eventos
-            if (events[dateFormatted]) {
-                dayElement.classList.add('has-events');
-            }
-            
-            dayElement.addEventListener('click', () => selectDate(dateFormatted));
-            monthGrid.appendChild(dayElement);
-        }
-        
-        monthContainer.appendChild(monthHeader);
-        monthContainer.appendChild(monthGrid);
-        calendar.appendChild(monthContainer);
+    const monthContainer = document.createElement('div');
+    monthContainer.className = 'month-container';
+    
+    const monthHeader = document.createElement('div');
+    monthHeader.className = 'month-header';
+    monthHeader.textContent = new Date(currentYear, currentMonth).toLocaleString('pt-BR', { 
+        month: 'long',
+        year: 'numeric'
+    });
+    
+    const monthGrid = document.createElement('div');
+    monthGrid.className = 'month-grid';
+    
+    // Cabeçalho dos dias da semana
+    const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+    daysOfWeek.forEach(day => {
+        const dayHeader = document.createElement('div');
+        dayHeader.className = 'day-header';
+        dayHeader.textContent = day;
+        monthGrid.appendChild(dayHeader);
+    });
+    
+    // Dias do mês
+    const firstDay = new Date(currentYear, currentMonth, 1);
+    const lastDay = new Date(currentYear, currentMonth + 1, 0);
+    const daysInMonth = lastDay.getDate();
+    
+    // Espaços vazios antes do primeiro dia
+    for (let i = 0; i < firstDay.getDay(); i++) {
+        const emptyDay = document.createElement('div');
+        emptyDay.className = 'day empty';
+        monthGrid.appendChild(emptyDay);
     }
+    
+    // Dias do mês
+    const todayFormatted = getTodayFormatted();
+    
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dayElement = document.createElement('div');
+        dayElement.className = 'day';
+        dayElement.textContent = day;
+        
+        const dateFormatted = createDateString(currentYear, currentMonth, day);
+        dayElement.dataset.date = dateFormatted;
+        
+        // Verificar se é hoje
+        if (dateFormatted === todayFormatted) {
+            dayElement.classList.add('today');
+        }
+        
+        // Verificar se é passado
+        const dateObj = new Date(currentYear, currentMonth, day);
+        const todayObj = new Date();
+        todayObj.setHours(0, 0, 0, 0);
+        
+        if (dateObj < todayObj && dateFormatted !== todayFormatted) {
+            dayElement.classList.add('past');
+        }
+        
+        // Verificar se tem eventos
+        if (events[dateFormatted]) {
+            dayElement.classList.add('has-events');
+        }
+        
+        dayElement.addEventListener('click', () => selectDate(dateFormatted));
+        monthGrid.appendChild(dayElement);
+    }
+    
+    monthContainer.appendChild(monthHeader);
+    monthContainer.appendChild(monthGrid);
+    calendar.appendChild(monthContainer);
+}
+
+function updateMonthDisplay() {
+    const currentMonthElement = document.getElementById('currentMonth');
+    if (currentMonthElement) {
+        currentMonthElement.textContent = new Date(currentYear, currentMonth).toLocaleString('pt-BR', { 
+            month: 'long',
+            year: 'numeric'
+        });
+    }
+}
+
+function nextMonth() {
+    currentMonth++;
+    if (currentMonth > 11) {
+        currentMonth = 0;
+        currentYear++;
+    }
+    generateCalendar();
+}
+
+function prevMonth() {
+    currentMonth--;
+    if (currentMonth < 0) {
+        currentMonth = 11;
+        currentYear--;
+    }
+    generateCalendar();
 }
 
 // FUNÇÃO CORRIGIDA: selectDate
 function selectDate(date) {
-    // CORREÇÃO: Manter a data exata que foi clicada
     selectedDate = date;
-    
-    console.log('Data selecionada:', date); // Para debug
     
     // Remover seleção anterior
     document.querySelectorAll('.day.selected').forEach(day => {
@@ -168,7 +347,6 @@ function selectDate(date) {
         selectedDay.classList.add('selected');
     }
     
-    // CORREÇÃO: Mostrar eventos imediatamente com a data correta
     showDayEvents(date);
 }
 
@@ -178,8 +356,8 @@ function showDayEvents(date) {
     const selectedDateElement = document.getElementById('selectedDate');
     const eventsList = document.getElementById('eventsList');
 
-    // CORREÇÃO APLICADA AQUI:
-    // Em vez de usar new Date(), vamos manipular a string diretamente.
+    if (!dayEvents || !selectedDateElement || !eventsList) return;
+    
     const [year, month, day] = date.split("-");
     const displayDate = `${day}/${month}/${year}`;
     
@@ -277,14 +455,24 @@ function moveTask(taskId, newColumn) {
 
 function renderTasks() {
     // Limpar todas as colunas
-    document.getElementById('todoColumn').innerHTML = '';
-    document.getElementById('doingColumn').innerHTML = '';
-    document.getElementById('doneColumn').innerHTML = '';
+    const todoColumn = document.getElementById('todoColumn');
+    const doingColumn = document.getElementById('doingColumn');
+    const doneColumn = document.getElementById('doneColumn');
+    
+    if (!todoColumn || !doingColumn || !doneColumn) return;
+    
+    todoColumn.innerHTML = '';
+    doingColumn.innerHTML = '';
+    doneColumn.innerHTML = '';
     
     // Atualizar contadores
-    document.getElementById('todoCount').textContent = tasks.todo.length;
-    document.getElementById('doingCount').textContent = tasks.doing.length;
-    document.getElementById('doneCount').textContent = tasks.done.length;
+    const todoCount = document.getElementById('todoCount');
+    const doingCount = document.getElementById('doingCount');
+    const doneCount = document.getElementById('doneCount');
+    
+    if (todoCount) todoCount.textContent = tasks.todo.length;
+    if (doingCount) doingCount.textContent = tasks.doing.length;
+    if (doneCount) doneCount.textContent = tasks.done.length;
     
     // Renderizar tarefas
     renderColumnTasks('todo', tasks.todo);
@@ -294,6 +482,7 @@ function renderTasks() {
 
 function renderColumnTasks(columnId, columnTasks) {
     const column = document.getElementById(columnId + 'Column');
+    if (!column) return;
     
     if (columnTasks.length === 0) {
         column.innerHTML = `
@@ -341,6 +530,9 @@ function initializeNotes() {
 }
 
 function updateNotesDate() {
+    const notesDate = document.getElementById('notesDate');
+    if (!notesDate) return;
+    
     const today = new Date();
     const options = {
         weekday: 'long',
@@ -348,22 +540,23 @@ function updateNotesDate() {
         month: 'long',
         day: 'numeric'
     };
-    document.getElementById('notesDate').textContent = today.toLocaleDateString('pt-BR', options);
+    notesDate.textContent = today.toLocaleDateString('pt-BR', options);
 }
 
 // ========== EVENT LISTENERS ========== //
 
 function setupEventListeners() {
-    // Navegação do calendário
-    document.getElementById('prevYear').addEventListener('click', () => {
-        currentYear--;
-        generateCalendar();
-    });
+    // Navegação do calendário CARROSSEL
+    const prevMonthBtn = document.getElementById('prevMonth');
+    const nextMonthBtn = document.getElementById('nextMonth');
     
-    document.getElementById('nextYear').addEventListener('click', () => {
-        currentYear++;
-        generateCalendar();
-    });
+    if (prevMonthBtn) {
+        prevMonthBtn.addEventListener('click', prevMonth);
+    }
+    
+    if (nextMonthBtn) {
+        nextMonthBtn.addEventListener('click', nextMonth);
+    }
     
     // Botões de adicionar evento
     document.getElementById('addEventBtn').addEventListener('click', showEventModal);
@@ -392,11 +585,25 @@ function setupEventListeners() {
     });
 }
 
+// Função para voltar para o mês atual
+function goToToday() {
+    const today = new Date();
+    currentMonth = today.getMonth();
+    currentYear = today.getFullYear();
+    generateCalendar();
+    
+    // Selecionar o dia de hoje
+    const todayFormatted = getTodayFormatted();
+    selectDate(todayFormatted);
+}
+
 // ========== GERENCIAMENTO DE EVENTOS ========== //
 
 function showEventModal() {
     const modal = document.getElementById('eventModal');
     const eventDate = document.getElementById('eventDate');
+    
+    if (!modal || !eventDate) return;
     
     if (selectedDate) {
         eventDate.value = selectedDate;
@@ -408,22 +615,27 @@ function showEventModal() {
 }
 
 function hideEventModal() {
-    document.getElementById('eventModal').style.display = 'none';
-    document.getElementById('eventForm').reset();
+    const modal = document.getElementById('eventModal');
+    const eventForm = document.getElementById('eventForm');
+    
+    if (modal) modal.style.display = 'none';
+    if (eventForm) eventForm.reset();
 }
 
 function addEvent(e) {
     e.preventDefault();
     
-    const title = document.getElementById('eventTitle').value.trim();
-    const description = document.getElementById('eventDescription').value.trim();
-    const date = document.getElementById('eventDate').value;
-    const color = document.getElementById('eventColor').value;
+    const title = document.getElementById('eventTitle')?.value.trim();
+    const description = document.getElementById('eventDescription')?.value.trim();
+    const date = document.getElementById('eventDate')?.value;
+    const colorInput = document.querySelector('input[name="eventColor"]:checked');
     
-    if (!title) {
-        alert('Por favor, informe o título do evento.');
+    if (!title || !date || !colorInput) {
+        alert('Por favor, preencha todos os campos obrigatórios.');
         return;
     }
+    
+    const color = colorInput.value;
     
     const event = {
         id: Date.now(),
@@ -468,21 +680,28 @@ function deleteEvent(date, index) {
 // ========== GERENCIAMENTO DE TAREFAS ========== //
 
 function showTaskForm() {
-    document.getElementById('taskFormContainer').style.display = 'block';
-    document.getElementById('addTaskBtn').style.display = 'none';
+    const taskFormContainer = document.getElementById('taskFormContainer');
+    const addTaskBtn = document.getElementById('addTaskBtn');
+    
+    if (taskFormContainer) taskFormContainer.style.display = 'block';
+    if (addTaskBtn) addTaskBtn.style.display = 'none';
 }
 
 function hideTaskForm() {
-    document.getElementById('taskFormContainer').style.display = 'none';
-    document.getElementById('addTaskBtn').style.display = 'block';
-    document.getElementById('taskForm').reset();
+    const taskFormContainer = document.getElementById('taskFormContainer');
+    const addTaskBtn = document.getElementById('addTaskBtn');
+    const taskForm = document.getElementById('taskForm');
+    
+    if (taskFormContainer) taskFormContainer.style.display = 'none';
+    if (addTaskBtn) addTaskBtn.style.display = 'block';
+    if (taskForm) taskForm.reset();
 }
 
 function addTask(e) {
     e.preventDefault();
     
-    const title = document.getElementById('taskTitle').value.trim();
-    const column = document.getElementById('taskColumn').value;
+    const title = document.getElementById('taskTitle')?.value.trim();
+    const column = document.getElementById('taskColumn')?.value;
     
     if (!title) {
         alert('Por favor, informe o título da tarefa.');
@@ -516,8 +735,12 @@ function deleteTask(taskId) {
 
 function updateNotesCount() {
     const textarea = document.getElementById('dailyNotes');
+    const countElement = document.getElementById('notesCount');
+    
+    if (!textarea || !countElement) return;
+    
     const count = textarea.value.length;
-    document.getElementById('notesCount').textContent = count;
+    countElement.textContent = count;
 }
 
 // ========== LOCAL STORAGE ========== //
@@ -561,16 +784,34 @@ function saveTasks() {
 function loadNotes() {
     const today = new Date().toISOString().split('T')[0];
     const notes = JSON.parse(localStorage.getItem(getUserKey('planning_notes'))) || {};
-    document.getElementById('dailyNotes').value = notes[today] || '';
+    const dailyNotes = document.getElementById('dailyNotes');
+    
+    if (dailyNotes) {
+        dailyNotes.value = notes[today] || '';
+    }
     updateNotesCount();
 }
 
 function saveNotes() {
     const today = new Date().toISOString().split('T')[0];
     const notes = JSON.parse(localStorage.getItem(getUserKey('planning_notes'))) || {};
-    notes[today] = document.getElementById('dailyNotes').value;
+    const dailyNotes = document.getElementById('dailyNotes');
+    const saveBtn = document.getElementById('saveNotesBtn');
+    
+    if (!dailyNotes || !saveBtn) return;
+    
+    notes[today] = dailyNotes.value;
     localStorage.setItem(getUserKey('planning_notes'), JSON.stringify(notes));
-    alert('Notas salvas com sucesso!');
+    
+    // Feedback visual
+    const originalText = saveBtn.innerHTML;
+    saveBtn.innerHTML = '<i class="fas fa-check"></i> Salvo!';
+    saveBtn.style.background = 'linear-gradient(135deg, #27ae60, #229954)';
+    
+    setTimeout(() => {
+        saveBtn.innerHTML = originalText;
+        saveBtn.style.background = '';
+    }, 2000);
 }
 
 // FUNÇÃO PARA LIMPAR DADOS DO USUÁRIO ANTERIOR
@@ -599,36 +840,4 @@ function clearPreviousUserData() {
             localStorage.removeItem(key);
         }
     });
-}
-// ===== ANIMAÇÕES DO PLANEJAMENTO =====
-
-function initializePlanningAnimations() {
-    // Observador para animações ao scroll
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    });
-
-    // Animar cards e colunas
-    document.querySelectorAll('.card, .kanban-column, .month-container').forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(20px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(el);
-    });
-
-    // Animar itens de tarefas com delay
-    setTimeout(() => {
-        document.querySelectorAll('.task-item').forEach((item, index) => {
-            item.style.animationDelay = `${index * 0.1}s`;
-            item.classList.add('animate-in');
-        });
-    }, 500);
 }

@@ -1,13 +1,181 @@
+// Variáveis globais
+let dailyGoal = 0;
+let todayConsumption = [];
+let challenges = {};
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Carregar dados do usuário
-    loadUserData();
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    // Inicializar navbar
+    initNavbar();
     
-    // Inicializar sistema de hidratação
-    initializeHydrationSystem();
+    // Inicializar efeitos de partículas
+    initParticles();
+    
+    // Configurar observador de interseção para animações ao rolar
+    setupIntersectionObserver();
     
     // Configurar event listeners
     setupEventListeners();
+    
+    // Inicializar sistema de hidratação
+    initializeHydrationSystem();
 });
+
+// Inicializar funcionalidades da navbar
+function initNavbar() {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (menuToggle && navLinks) {
+        menuToggle.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+            menuToggle.innerHTML = navLinks.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+    }
+    
+    // Fechar menu ao clicar em um link (em dispositivos móveis)
+    const links = document.querySelectorAll('.nav-links a');
+    links.forEach(link => {
+        link.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+                if (navLinks) navLinks.classList.remove('active');
+                if (menuToggle) menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            }
+        });
+    });
+    
+    // Carregar dados do usuário
+    loadUserData();
+}
+
+// Inicializar partículas no background
+function initParticles() {
+    if (typeof particlesJS !== 'undefined') {
+        particlesJS('particles-js', {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: "#36a2eb"
+                },
+                shape: {
+                    type: "circle",
+                    stroke: {
+                        width: 0,
+                        color: "#000000"
+                    }
+                },
+                opacity: {
+                    value: 0.5,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 3,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 2,
+                        size_min: 0.1,
+                        sync: false
+                    }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#36a2eb",
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 1,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false,
+                    attract: {
+                        enable: false,
+                        rotateX: 600,
+                        rotateY: 1200
+                    }
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: "grab"
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: "push"
+                    },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 140,
+                        line_linked: {
+                            opacity: 0.5
+                        }
+                    },
+                    push: {
+                        particles_nb: 4
+                    }
+                }
+            },
+            retina_detect: true
+        });
+    }
+}
+
+// Configurar observador de interseção para animações ao rolar
+function setupIntersectionObserver() {
+    const sections = document.querySelectorAll('.hydration-section, .side-section');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                
+                // Animar cards individualmente com atrasos
+                const cards = entry.target.querySelectorAll('.card');
+                cards.forEach((card, index) => {
+                    setTimeout(() => {
+                        card.style.animation = `slideInUp 0.6s ease-out ${index * 0.1}s both`;
+                    }, 100);
+                });
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+    
+    sections.forEach(section => {
+        observer.observe(section);
+    });
+}
 
 // ========== FUNÇÕES DE USUÁRIO ========== //
 
@@ -36,10 +204,6 @@ function getUserKey(key) {
 
 // ========== SISTEMA DE HIDRATAÇÃO ========== //
 
-let dailyGoal = 0;
-let todayConsumption = [];
-let challenges = {};
-
 function initializeHydrationSystem() {
     calculateDailyGoal();
     loadTodayConsumption();
@@ -49,7 +213,6 @@ function initializeHydrationSystem() {
 }
 
 function calculateDailyGoal() {
-    // SEMPRE buscar o peso mais recente do localStorage
     const userData = JSON.parse(localStorage.getItem('user')) || {};
     const userWeight = userData.weight || 70;
     
@@ -57,8 +220,6 @@ function calculateDailyGoal() {
     
     document.getElementById('dailyGoal').textContent = `${dailyGoal.toLocaleString()} ml`;
     document.getElementById('userWeight').textContent = userWeight;
-    
-    console.log(`Meta de hidratação: ${dailyGoal}ml para ${userWeight}kg`);
 }
 
 // ========== REGISTRO DE CONSUMO ========== //
@@ -163,7 +324,7 @@ function updateDisplay() {
     
     // Atualizar estatísticas
     document.getElementById('consumedToday').textContent = `${totalConsumed.toLocaleString()} ml`;
-    document.getElementById('remainingGoal').textContent = `${Math.max(0, dailyGoal - totalConsumed).toLocaleString()} ml`;
+    document.getElementById('remainingGoal').textContent = `${Math.max(0, dailyGoal - totalConsumed).toLocaleString()} ml restantes`;
     document.getElementById('totalToday').textContent = `${totalConsumed.toLocaleString()} ml`;
     document.getElementById('totalRecords').textContent = todayConsumption.length;
     
@@ -210,11 +371,11 @@ function updateTimeInfo() {
     let message = '';
     
     if (hours < 12) {
-        message = 'Bom dia! 💪';
+        message = 'Bom dia! 💪 Mantenha-se hidratado!';
     } else if (hours < 18) {
-        message = 'Boa tarde! 🌞';
+        message = 'Boa tarde! 🌞 Continue bebendo água!';
     } else {
-        message = 'Boa noite! 🌙';
+        message = 'Boa noite! 🌙 Hidrate-se antes de dormir!';
     }
     
     document.getElementById('timeInfo').textContent = message;
@@ -226,6 +387,17 @@ function clearTodayHistory() {
         saveTodayConsumption();
         updateDisplay();
         updateChallenges();
+        
+        // Feedback visual
+        const clearBtn = document.querySelector('[onclick="clearTodayHistory()"]');
+        const originalText = clearBtn.innerHTML;
+        clearBtn.innerHTML = '<i class="fas fa-check"></i> Limpo!';
+        clearBtn.style.background = 'linear-gradient(135deg, #27ae60, #229954)';
+        
+        setTimeout(() => {
+            clearBtn.innerHTML = originalText;
+            clearBtn.style.background = '';
+        }, 2000);
     }
 }
 
@@ -326,26 +498,3 @@ function resetDailyData() {
         saveChallenges();
     }
 }
-
-// ========== ANIMAÇÕES CSS ========== //
-
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes fadeInOut {
-        0% { opacity: 0; transform: translate(-50%, -40%); }
-        20% { opacity: 1; transform: translate(-50%, -50%); }
-        80% { opacity: 1; transform: translate(-50%, -50%); }
-        100% { opacity: 0; transform: translate(-50%, -60%); }
-    }
-    
-    .water-fill {
-        animation: waterRipple 2s ease-in-out;
-    }
-    
-    @keyframes waterRipple {
-        0% { transform: scaleX(0); }
-        50% { transform: scaleX(1.02); }
-        100% { transform: scaleX(1); }
-    }
-`;
-document.head.appendChild(style);

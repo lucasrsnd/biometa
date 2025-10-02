@@ -7,12 +7,165 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
+    // Inicializar navbar
+    initNavbar();
+    
     // Inicializar dashboard
     initializeDashboard();
-
-    // Inicializar animações depois de carregar os dados
-    setTimeout(initializeDashboardAnimations, 500);
+    
+    // Inicializar efeitos de partículas
+    initParticles();
+    
+    // Configurar observador de interseção para animações ao rolar
+    setupIntersectionObserver();
 });
+
+// Inicializar funcionalidades da navbar
+function initNavbar() {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (menuToggle && navLinks) {
+        menuToggle.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+            menuToggle.innerHTML = navLinks.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+    }
+    
+    // Fechar menu ao clicar em um link (em dispositivos móveis)
+    const links = document.querySelectorAll('.nav-links a');
+    links.forEach(link => {
+        link.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+                if (navLinks) navLinks.classList.remove('active');
+                if (menuToggle) menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            }
+        });
+    });
+}
+
+// Inicializar partículas no background
+function initParticles() {
+    if (typeof particlesJS !== 'undefined') {
+        particlesJS('particles-js', {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: "#6c63ff"
+                },
+                shape: {
+                    type: "circle",
+                    stroke: {
+                        width: 0,
+                        color: "#000000"
+                    }
+                },
+                opacity: {
+                    value: 0.5,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 3,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 2,
+                        size_min: 0.1,
+                        sync: false
+                    }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#6c63ff",
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 1,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false,
+                    attract: {
+                        enable: false,
+                        rotateX: 600,
+                        rotateY: 1200
+                    }
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: "grab"
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: "push"
+                    },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 140,
+                        line_linked: {
+                            opacity: 0.5
+                        }
+                    },
+                    push: {
+                        particles_nb: 4
+                    }
+                }
+            },
+            retina_detect: true
+        });
+    }
+}
+
+// Configurar observador de interseção para animações ao rolar
+function setupIntersectionObserver() {
+    const sections = document.querySelectorAll('.dashboard-section');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                
+                // Animar cards individualmente com atrasos
+                const cards = entry.target.querySelectorAll('.summary-card, .motivation-card, .quick-action');
+                cards.forEach((card, index) => {
+                    setTimeout(() => {
+                        card.style.animation = `slideInUp 0.6s ease-out ${index * 0.1}s both`;
+                    }, 100);
+                });
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+    
+    sections.forEach(section => {
+        observer.observe(section);
+    });
+}
 
 async function initializeDashboard() {
     await loadUserData();
@@ -21,6 +174,9 @@ async function initializeDashboard() {
     loadMotivationalContent();
     loadQuickStats();
     updateQuickActions();
+    
+    // Adicionar efeito de digitação no título de boas-vindas
+    typeWriterEffect();
 }
 
 // ========== DADOS DO USUÁRIO ========== //
@@ -39,17 +195,24 @@ async function loadUserData() {
         if (response.ok) {
             const userData = await response.json();
 
-            document.getElementById(
-                "userName"
-            ).textContent = `${userData.firstName} ${userData.lastName}`;
+            // Atualizar nome na página
+            const userNameElement = document.getElementById("userName");
+            if (userNameElement) {
+                userNameElement.textContent = `${userData.firstName} ${userData.lastName}`;
+            }
 
-            const initials =
-                userData.firstName.charAt(0) + userData.lastName.charAt(0);
-            document.getElementById("navbarAvatar").textContent = initials;
+            // Atualizar navbar
+            const navbarAvatar = document.getElementById("navbarAvatar");
+            const navbarName = document.getElementById("navbarName");
+            
+            if (navbarAvatar) {
+                const initials = userData.firstName.charAt(0) + userData.lastName.charAt(0);
+                navbarAvatar.textContent = initials;
+            }
 
-            document.getElementById(
-                "navbarName"
-            ).textContent = `${userData.firstName} ${userData.lastName}`;
+            if (navbarName) {
+                navbarName.textContent = `${userData.firstName} ${userData.lastName}`;
+            }
 
             // Salvar dados atualizados no localStorage
             const currentUser = JSON.parse(localStorage.getItem('user')) || {};
@@ -75,11 +238,53 @@ async function loadUserData() {
             lastName: 'BioMeta'
         };
         
-        document.getElementById("userName").textContent = `${userData.firstName} ${userData.lastName}`;
-        const initials = (userData.firstName?.charAt(0) || 'U') + (userData.lastName?.charAt(0) || 'B');
-        document.getElementById("navbarAvatar").textContent = initials;
-        document.getElementById("navbarName").textContent = `${userData.firstName} ${userData.lastName}`;
+        // Atualizar nome na página
+        const userNameElement = document.getElementById("userName");
+        if (userNameElement) {
+            userNameElement.textContent = `${userData.firstName} ${userData.lastName}`;
+        }
+        
+        // Atualizar navbar
+        const navbarAvatar = document.getElementById("navbarAvatar");
+        const navbarName = document.getElementById("navbarName");
+        
+        if (navbarAvatar) {
+            const initials = (userData.firstName?.charAt(0) || 'U') + (userData.lastName?.charAt(0) || 'B');
+            navbarAvatar.textContent = initials;
+        }
+        
+        if (navbarName) {
+            navbarName.textContent = `${userData.firstName} ${userData.lastName}`;
+        }
     }
+}
+
+// ========== EFEITO DE DIGITAÇÃO ========== //
+
+function typeWriterEffect() {
+    const welcomeText = document.getElementById('userName').textContent;
+    const greetingElement = document.getElementById('userName');
+    const emojiElement = document.getElementById('greetingEmoji');
+    
+    // Salvar o emoji
+    const emoji = emojiElement.textContent;
+    emojiElement.textContent = '';
+    
+    greetingElement.textContent = '';
+    let i = 0;
+    
+    function typeWriter() {
+        if (i < welcomeText.length) {
+            greetingElement.textContent += welcomeText.charAt(i);
+            i++;
+            setTimeout(typeWriter, 100);
+        } else {
+            // Restaurar o emoji após a digitação
+            emojiElement.textContent = emoji;
+        }
+    }
+    
+    setTimeout(typeWriter, 500);
 }
 
 // ========== DATA E CUMPRIMENTO ========== //
@@ -433,47 +638,3 @@ setInterval(() => {
     updateQuickActions();
     updatePersonalStats();
 }, 60000);
-
-// ========== ANIMAÇÕES DO DASHBOARD ========== //
-
-function initializeDashboardAnimations() {
-    // Observador de interseção para animações ao scroll
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, observerOptions);
-
-    // Aplicar observador aos cards
-    document.querySelectorAll('.summary-card, .motivation-card, .quick-action').forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(card);
-    });
-
-    // Animar progress bars quando os dados forem carregados
-    setTimeout(animateProgressBars, 1000);
-}
-
-function animateProgressBars() {
-    const progressBars = document.querySelectorAll('.progress-fill');
-    progressBars.forEach(bar => {
-        const computedWidth = getComputedStyle(bar).width;
-        if (computedWidth !== '0px') {
-            bar.style.width = '0';
-            setTimeout(() => {
-                bar.style.width = computedWidth;
-                bar.style.transition = 'width 0.8s ease';
-            }, 300);
-        }
-    });
-}

@@ -6,12 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BioMeta - Planejamento</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/planejamento.css">
+    <link rel="stylesheet" href="css/planejamento.css?v=2.1">
     <link rel="shortcut icon" type="image/x-icon" href="/img/logo.png">
 </head>
 
 <body>
-    <!-- Header & Navigation -->
+    <!-- Background com efeitos -->
+    <div class="background-effects">
+        <div class="particles" id="particles-js"></div>
+        <div class="gradient-bg"></div>
+    </div>
+
+    <!-- Header & Navigation INLINE -->
     <header>
         <div class="container">
             <nav class="navbar">
@@ -42,59 +48,71 @@
     <!-- Conteúdo Principal -->
     <main class="main-content">
         <div class="container">
-            <h1 class="page-title">Meu Planejamento</h1>
+            <div class="page-header">
+                <h1 class="page-title">Meu Planejamento</h1>
+                <p class="page-subtitle">Organize sua agenda e metas de forma eficiente</p>
+            </div>
 
             <div class="planning-grid">
                 <!-- Seção Agenda -->
-                <section class="planning-section">
-                    <div class="card">
-                        <div class="card-header">
-                            <h2><i class="fas fa-calendar-alt"></i> Agenda 2025</h2>
-                            <button class="btn btn-outline btn-small" id="addEventBtn">
-                                <i class="fas fa-plus"></i> Add Evento
-                            </button>
-                        </div>
+<section class="planning-section">
+    <div class="card calendar-card">
+        <div class="card-glow"></div>
+        <div class="card-header">
+            <h2><i class="fas fa-calendar-alt"></i> Agenda</h2>
+            <button class="btn btn-primary btn-small" id="addEventBtn">
+                <i class="fas fa-plus"></i> Add Evento
+            </button>
+        </div>
 
-                        <!-- Controles do Calendário -->
-                        <div class="calendar-controls">
-                            <button class="btn-calendar" id="prevYear">
-                                <i class="fas fa-chevron-left"></i>
-                            </button>
-                            <div class="current-year" id="currentYear">2025</div>
-                            <button class="btn-calendar" id="nextYear">
-                                <i class="fas fa-chevron-right"></i>
-                            </button>
-                        </div>
+        <!-- Controles do Calendário CARROSSEL -->
+        <div class="calendar-controls">
+            <div class="calendar-navigation">
+                <button class="btn-calendar" id="prevMonth">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="current-month" id="currentMonth">Janeiro 2024</div>
+                <button class="btn-calendar" id="nextMonth">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            <div class="calendar-actions">
+                <button class="btn btn-outline btn-small" onclick="goToToday()">
+                    <i class="fas fa-calendar-day"></i> Hoje
+                </button>
+            </div>
+        </div>
 
-                        <!-- Calendário -->
-                        <div class="calendar-container">
-                            <div class="calendar" id="calendar">
-                                <!-- O calendário será gerado via JavaScript -->
-                            </div>
-                        </div>
+        <!-- Calendário Carrossel -->
+        <div class="calendar-container">
+            <div class="calendar" id="calendar">
+                <!-- O calendário será gerado via JavaScript -->
+            </div>
+        </div>
 
-                        <!-- Eventos do Dia Selecionado -->
-                        <div class="day-events" id="dayEvents" style="display: none;">
-                            <div class="day-events-header">
-                                <h3>Eventos para <span id="selectedDate"></span></h3>
-                                <button class="btn btn-small" id="addEventToDay">
-                                    <i class="fas fa-plus"></i> Add Evento
-                                </button>
-                            </div>
-                            <div class="events-list" id="eventsList">
-                                <!-- Eventos serão adicionados aqui -->
-                            </div>
-                        </div>
-                    </div>
-                </section>
+        <!-- Eventos do Dia Selecionado -->
+        <div class="day-events" id="dayEvents" style="display: none;">
+            <div class="day-events-header">
+                <h3>Eventos para <span id="selectedDate"></span></h3>
+                <button class="btn btn-primary btn-small" id="addEventToDay">
+                    <i class="fas fa-plus"></i> Add Evento
+                </button>
+            </div>
+            <div class="events-list" id="eventsList">
+                <!-- Eventos serão adicionados aqui -->
+            </div>
+        </div>
+    </div>
+</section>
 
                 <!-- Seção Lateral -->
                 <section class="side-section">
                     <!-- To-Do List -->
-                    <div class="card">
+                    <div class="card todo-card">
+                        <div class="card-glow"></div>
                         <div class="card-header">
                             <h2><i class="fas fa-tasks"></i> To-Do List</h2>
-                            <button class="btn btn-outline btn-small" id="addTaskBtn">
+                            <button class="btn btn-primary btn-small" id="addTaskBtn">
                                 <i class="fas fa-plus"></i> Add Tarefa
                             </button>
                         </div>
@@ -114,7 +132,7 @@
                                 </div>
                                 <div class="form-actions">
                                     <button type="button" class="btn btn-outline" id="cancelTaskBtn">Cancelar</button>
-                                    <button type="submit" class="btn">Adicionar</button>
+                                    <button type="submit" class="btn btn-primary">Adicionar</button>
                                 </div>
                             </form>
                             <hr style="margin: 15px 0;">
@@ -155,10 +173,11 @@
                     </div>
 
                     <!-- Notas do Dia -->
-                    <div class="card">
+                    <div class="card notes-card">
+                        <div class="card-glow"></div>
                         <div class="card-header">
                             <h2><i class="fas fa-sticky-note"></i> Notas do Dia</h2>
-                            <button class="btn btn-outline btn-small" id="saveNotesBtn">
+                            <button class="btn btn-primary btn-small" id="saveNotesBtn">
                                 <i class="fas fa-save"></i> Salvar
                             </button>
                         </div>
@@ -180,9 +199,10 @@
 
     <!-- Modal para Adicionar Evento -->
     <div id="eventModal" class="modal">
+        <div class="modal-overlay"></div>
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Adicionar Evento</h3>
+                <h3><i class="fas fa-calendar-plus"></i> Adicionar Evento</h3>
                 <span class="close">&times;</span>
             </div>
             <form id="eventForm">
@@ -192,31 +212,41 @@
                 </div>
                 <div class="form-group">
                     <label for="eventDescription">Descrição</label>
-                    <textarea id="eventDescription" rows="3"></textarea>
+                    <textarea id="eventDescription" rows="3" placeholder="Descreva seu evento..."></textarea>
                 </div>
                 <div class="form-group">
                     <label for="eventDate">Data</label>
                     <input type="date" id="eventDate" required>
                 </div>
                 <div class="form-group">
-                    <label for="eventColor">Cor</label>
-                    <select id="eventColor">
-                        <option value="#3498db" style="color: #3498db;">● Azul</option>
-                        <option value="#2ecc71" style="color: #2ecc71;">● Verde</option>
-                        <option value="#e74c3c" style="color: #e74c3c;">● Vermelho</option>
-                        <option value="#f39c12" style="color: #f39c12;">● Laranja</option>
-                        <option value="#9b59b6" style="color: #9b59b6;">● Roxo</option>
-                    </select>
+                    <label for="eventColor">Cor do Evento</label>
+                    <div class="color-picker">
+                        <input type="radio" id="color-blue" name="eventColor" value="#3498db" checked>
+                        <label for="color-blue" style="background-color: #3498db;"></label>
+                        
+                        <input type="radio" id="color-green" name="eventColor" value="#2ecc71">
+                        <label for="color-green" style="background-color: #2ecc71;"></label>
+                        
+                        <input type="radio" id="color-red" name="eventColor" value="#e74c3c">
+                        <label for="color-red" style="background-color: #e74c3c;"></label>
+                        
+                        <input type="radio" id="color-orange" name="eventColor" value="#f39c12">
+                        <label for="color-orange" style="background-color: #f39c12;"></label>
+                        
+                        <input type="radio" id="color-purple" name="eventColor" value="#9b59b6">
+                        <label for="color-purple" style="background-color: #9b59b6;"></label>
+                    </div>
                 </div>
                 <div class="form-actions">
                     <button type="button" class="btn btn-outline" id="cancelEventBtn">Cancelar</button>
-                    <button type="submit" class="btn">Salvar Evento</button>
+                    <button type="submit" class="btn btn-primary">Salvar Evento</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <script src="js/planejamento.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="js/planejamento.js?v=2.1"></script>
 </body>
 
 </html>

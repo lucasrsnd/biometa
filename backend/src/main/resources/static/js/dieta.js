@@ -1,6 +1,20 @@
+// Variáveis globais
 document.addEventListener('DOMContentLoaded', function() {
-    // Carregar dados do usuário para a navbar
-    loadUserData();
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    // Inicializar navbar
+    initNavbar();
+    
+    // Inicializar efeitos de partículas
+    initParticles();
+    
+    // Configurar observador de interseção para animações ao rolar
+    setupIntersectionObserver();
     
     // Configurar event listeners
     setupEventListeners();
@@ -17,6 +31,153 @@ document.addEventListener('DOMContentLoaded', function() {
     // Carregar meta diária
     loadDailyGoal();
 });
+
+// Inicializar funcionalidades da navbar
+function initNavbar() {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (menuToggle && navLinks) {
+        menuToggle.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+            menuToggle.innerHTML = navLinks.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+    }
+    
+    // Fechar menu ao clicar em um link (em dispositivos móveis)
+    const links = document.querySelectorAll('.nav-links a');
+    links.forEach(link => {
+        link.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+                if (navLinks) navLinks.classList.remove('active');
+                if (menuToggle) menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            }
+        });
+    });
+}
+
+// Inicializar partículas no background
+function initParticles() {
+    if (typeof particlesJS !== 'undefined') {
+        particlesJS('particles-js', {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: "#6c63ff"
+                },
+                shape: {
+                    type: "circle",
+                    stroke: {
+                        width: 0,
+                        color: "#000000"
+                    }
+                },
+                opacity: {
+                    value: 0.5,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 3,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 2,
+                        size_min: 0.1,
+                        sync: false
+                    }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#6c63ff",
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 1,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false,
+                    attract: {
+                        enable: false,
+                        rotateX: 600,
+                        rotateY: 1200
+                    }
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: "grab"
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: "push"
+                    },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 140,
+                        line_linked: {
+                            opacity: 0.5
+                        }
+                    },
+                    push: {
+                        particles_nb: 4
+                    }
+                }
+            },
+            retina_detect: true
+        });
+    }
+}
+
+// Configurar observador de interseção para animações ao rolar
+function setupIntersectionObserver() {
+    const sections = document.querySelectorAll('.diet-section, .side-section');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                
+                // Animar cards individualmente com atrasos
+                const cards = entry.target.querySelectorAll('.card');
+                cards.forEach((card, index) => {
+                    setTimeout(() => {
+                        card.style.animation = `slideInUp 0.6s ease-out ${index * 0.1}s both`;
+                    }, 100);
+                });
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+    
+    sections.forEach(section => {
+        observer.observe(section);
+    });
+}
 
 // Carregar dados do usuário para a navbar
 function loadUserData() {
@@ -171,7 +332,7 @@ function renderMeal(meal) {
 
 // Selecionar refeição
 function selectMeal(mealId) {
-    const meals = JSON.parse(localStorage.getItem(getUserKey('meals'))) || []; // CORREÇÃO AQUI
+    const meals = JSON.parse(localStorage.getItem(getUserKey('meals'))) || [];
     const meal = meals.find(m => m.id === mealId);
     
     if (!meal) return;
@@ -262,7 +423,7 @@ function addFood(e) {
         fat: fat
     };
     
-    const meals = JSON.parse(localStorage.getItem(getUserKey('meals'))) || []; // CORREÇÃO AQUI
+    const meals = JSON.parse(localStorage.getItem(getUserKey('meals'))) || [];
     const mealIndex = meals.findIndex(m => m.id === selectedMealId);
     
     if (mealIndex === -1) return;
@@ -283,7 +444,7 @@ function addFood(e) {
                 addToDailySummary(nutrition);
             }
             
-            localStorage.setItem(getUserKey('meals'), JSON.stringify(meals)); // CORREÇÃO AQUI
+            localStorage.setItem(getUserKey('meals'), JSON.stringify(meals));
             renderFoods(meals[mealIndex].foods);
             renderMeal(meals[mealIndex]);
         }
@@ -298,7 +459,7 @@ function addFood(e) {
         };
         
         meals[mealIndex].foods.push(food);
-        localStorage.setItem(getUserKey('meals'), JSON.stringify(meals)); // CORREÇÃO AQUI
+        localStorage.setItem(getUserKey('meals'), JSON.stringify(meals));
         renderFoods(meals[mealIndex].foods);
         renderMeal(meals[mealIndex]);
     }
@@ -379,7 +540,7 @@ function renderFoods(foods) {
 
 // Editar alimento
 function editFood(foodId) {
-    const meals = JSON.parse(localStorage.getItem(getUserKey('meals'))) || []; // CORREÇÃO AQUI
+    const meals = JSON.parse(localStorage.getItem(getUserKey('meals'))) || [];
     const mealIndex = meals.findIndex(m => m.id === selectedMealId);
     
     if (mealIndex === -1) return;
@@ -400,7 +561,7 @@ function editFood(foodId) {
 
 // Alternar conclusão do alimento
 function toggleFoodCompletion(foodId, completed) {
-    const meals = JSON.parse(localStorage.getItem(getUserKey('meals'))) || []; // CORREÇÃO AQUI
+    const meals = JSON.parse(localStorage.getItem(getUserKey('meals'))) || [];
     const mealIndex = meals.findIndex(m => m.id === selectedMealId);
     
     if (mealIndex === -1) return;
@@ -426,7 +587,7 @@ function toggleFoodCompletion(foodId, completed) {
         }
     }
     
-    localStorage.setItem(getUserKey('meals'), JSON.stringify(meals)); // CORREÇÃO AQUI
+    localStorage.setItem(getUserKey('meals'), JSON.stringify(meals));
     renderFoods(meals[mealIndex].foods);
 }
 
@@ -436,7 +597,7 @@ function deleteFood(foodId) {
         return;
     }
     
-    const meals = JSON.parse(localStorage.getItem(getUserKey('meals'))) || []; // CORREÇÃO AQUI
+    const meals = JSON.parse(localStorage.getItem(getUserKey('meals'))) || [];
     const mealIndex = meals.findIndex(m => m.id === selectedMealId);
     
     if (mealIndex !== -1) {
@@ -452,7 +613,7 @@ function deleteFood(foodId) {
             
             // Remover o alimento
             meals[mealIndex].foods.splice(foodIndex, 1);
-            localStorage.setItem(getUserKey('meals'), JSON.stringify(meals)); // CORREÇÃO AQUI
+            localStorage.setItem(getUserKey('meals'), JSON.stringify(meals));
             
             // Atualizar visualização
             renderFoods(meals[mealIndex].foods);
@@ -467,7 +628,7 @@ function deleteMeal(mealId) {
         return;
     }
     
-    let meals = JSON.parse(localStorage.getItem(getUserKey('meals'))) || []; // CORREÇÃO AQUI
+    let meals = JSON.parse(localStorage.getItem(getUserKey('meals'))) || [];
     
     // Remover alimentos concluídos do resumo antes de excluir
     const mealToDelete = meals.find(m => m.id === mealId);
@@ -480,7 +641,7 @@ function deleteMeal(mealId) {
     }
     
     meals = meals.filter(m => m.id !== mealId);
-    localStorage.setItem(getUserKey('meals'), JSON.stringify(meals)); // CORREÇÃO AQUI
+    localStorage.setItem(getUserKey('meals'), JSON.stringify(meals));
     
     // Remover da visualização
     const mealElement = document.querySelector(`.meal-item[data-id="${mealId}"]`);
@@ -505,7 +666,7 @@ function deleteMeal(mealId) {
 
 // Verificar reset diário
 function checkDailyReset() {
-    const lastReset = localStorage.getItem(getUserKey('lastDailyReset')); // CORREÇÃO AQUI
+    const lastReset = localStorage.getItem(getUserKey('lastDailyReset'));
     const today = new Date().toDateString();
     
     if (!lastReset || lastReset !== today) {
@@ -542,7 +703,7 @@ function resetDailySummary() {
         lastUpdated: new Date().toDateString()
     };
     
-    localStorage.setItem(getUserKey('lastDailyReset'), new Date().toDateString()); // CORREÇÃO AQUI
+    localStorage.setItem(getUserKey('lastDailyReset'), new Date().toDateString());
     saveDailySummary(newSummary);
     updateSummaryDisplay(newSummary);
     
@@ -571,8 +732,16 @@ function resetDailySummary() {
         }
     }
     
-    // REMOVER ESTE ALERTA PARA NÃO SER CHATO
-    // alert('Resumo diário zerado com sucesso! Todos os alimentos foram desmarcados.');
+    // Feedback visual
+    const resetBtn = document.querySelector('[onclick="resetDailySummary()"]');
+    const originalText = resetBtn.innerHTML;
+    resetBtn.innerHTML = '<i class="fas fa-check"></i> Zerado!';
+    resetBtn.style.background = 'linear-gradient(135deg, #27ae60, #229954)';
+    
+    setTimeout(() => {
+        resetBtn.innerHTML = originalText;
+        resetBtn.style.background = '';
+    }, 2000);
 }
 
 // Atualizar exibição do resumo
@@ -628,7 +797,6 @@ function removeFromDailySummary(nutrition) {
 function loadDailyGoal() {
     const goal = localStorage.getItem(getUserKey('dailyCalorieGoal')) || 2000;
     document.getElementById('dailyGoalInput').value = goal;
-    document.getElementById('calorieGoal').textContent = goal;
     document.getElementById('calorieGoalValue').textContent = goal;
     
     const summary = JSON.parse(localStorage.getItem(getUserKey('dailySummary'))) || { calories: 0 };
@@ -641,13 +809,21 @@ function updateDailyGoal() {
     
     if (newGoal && newGoal >= 500 && newGoal <= 10000) {
         localStorage.setItem(getUserKey('dailyCalorieGoal'), newGoal);
-        document.getElementById('calorieGoal').textContent = newGoal;
         document.getElementById('calorieGoalValue').textContent = newGoal;
         
         const summary = JSON.parse(localStorage.getItem(getUserKey('dailySummary'))) || { calories: 0 };
         updateProgressBar(summary.calories);
         
-        alert('Meta diária atualizada para ' + newGoal + ' calorias!');
+        // Feedback visual
+        const updateBtn = document.querySelector('[onclick="updateDailyGoal()"]');
+        const originalText = updateBtn.innerHTML;
+        updateBtn.innerHTML = '<i class="fas fa-check"></i> Atualizado!';
+        updateBtn.style.background = 'linear-gradient(135deg, #27ae60, #229954)';
+        
+        setTimeout(() => {
+            updateBtn.innerHTML = originalText;
+            updateBtn.style.background = '';
+        }, 2000);
     } else {
         alert('Por favor, insira uma meta válida entre 500 e 10000 calorias.');
     }
@@ -664,10 +840,10 @@ function updateProgressBar(calories) {
     // Mudar cor baseada no progresso
     const progressFill = document.getElementById('calorieProgress');
     if (progress >= 100) {
-        progressFill.style.backgroundColor = '#e74c3c'; // Vermelho se ultrapassar
+        progressFill.style.background = 'linear-gradient(90deg, #e74c3c, #c0392b)'; // Vermelho se ultrapassar
     } else if (progress >= 75) {
-        progressFill.style.backgroundColor = '#f39c12'; // Laranja se perto
+        progressFill.style.background = 'linear-gradient(90deg, #f39c12, #e67e22)'; // Laranja se perto
     } else {
-        progressFill.style.backgroundColor = '#2ecc71'; // Verde se normal
+        progressFill.style.background = 'linear-gradient(90deg, var(--primary), var(--accent))'; // Gradiente normal
     }
 }

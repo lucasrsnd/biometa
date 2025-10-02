@@ -1,6 +1,20 @@
+// Variáveis globais
 document.addEventListener('DOMContentLoaded', function() {
-    // Carregar dados do usuário para a navbar
-    loadUserData();
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    // Inicializar navbar
+    initNavbar();
+    
+    // Inicializar efeitos de partículas
+    initParticles();
+    
+    // Configurar observador de interseção para animações ao rolar
+    setupIntersectionObserver();
     
     // Configurar event listeners
     setupEventListeners();
@@ -11,6 +25,153 @@ document.addEventListener('DOMContentLoaded', function() {
     // Inicializar cronômetro
     resetTimer();
 });
+
+// Inicializar funcionalidades da navbar
+function initNavbar() {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (menuToggle && navLinks) {
+        menuToggle.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+            menuToggle.innerHTML = navLinks.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+    }
+    
+    // Fechar menu ao clicar em um link (em dispositivos móveis)
+    const links = document.querySelectorAll('.nav-links a');
+    links.forEach(link => {
+        link.addEventListener('click', function() {
+            if (window.innerWidth <= 768) {
+                if (navLinks) navLinks.classList.remove('active');
+                if (menuToggle) menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            }
+        });
+    });
+}
+
+// Inicializar partículas no background
+function initParticles() {
+    if (typeof particlesJS !== 'undefined') {
+        particlesJS('particles-js', {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: "#6c63ff"
+                },
+                shape: {
+                    type: "circle",
+                    stroke: {
+                        width: 0,
+                        color: "#000000"
+                    }
+                },
+                opacity: {
+                    value: 0.5,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 3,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 2,
+                        size_min: 0.1,
+                        sync: false
+                    }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#6c63ff",
+                    opacity: 0.2,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 1,
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false,
+                    attract: {
+                        enable: false,
+                        rotateX: 600,
+                        rotateY: 1200
+                    }
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: "grab"
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: "push"
+                    },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 140,
+                        line_linked: {
+                            opacity: 0.5
+                        }
+                    },
+                    push: {
+                        particles_nb: 4
+                    }
+                }
+            },
+            retina_detect: true
+        });
+    }
+}
+
+// Configurar observador de interseção para animações ao rolar
+function setupIntersectionObserver() {
+    const sections = document.querySelectorAll('.workout-section, .side-section');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                
+                // Animar cards individualmente com atrasos
+                const cards = entry.target.querySelectorAll('.card');
+                cards.forEach((card, index) => {
+                    setTimeout(() => {
+                        card.style.animation = `slideInUp 0.6s ease-out ${index * 0.1}s both`;
+                    }, 100);
+                });
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+    
+    sections.forEach(section => {
+        observer.observe(section);
+    });
+}
 
 // Carregar dados do usuário para a navbar
 function loadUserData() {
@@ -111,7 +272,17 @@ function setCustomTime() {
     if (customTime && customTime > 0) {
         targetTime = customTime * 60; // Converter minutos para segundos
         updateProgressBar();
-        alert(`Tempo alvo definido para ${customTime} minutos.`);
+        
+        // Feedback visual
+        const setBtn = document.getElementById('setTimeBtn');
+        const originalText = setBtn.innerHTML;
+        setBtn.innerHTML = '<i class="fas fa-check"></i> Definido!';
+        setBtn.style.background = 'linear-gradient(135deg, #27ae60, #229954)';
+        
+        setTimeout(() => {
+            setBtn.innerHTML = originalText;
+            setBtn.style.background = '';
+        }, 2000);
     } else {
         alert('Por favor, informe um tempo válido em minutos.');
     }
@@ -235,7 +406,7 @@ function renderWorkout(workout) {
 
 // Selecionar ficha
 function selectWorkout(workoutId) {
-    const workouts = JSON.parse(localStorage.getItem(getUserKey('workouts'))) || []; // CORREÇÃO AQUI
+    const workouts = JSON.parse(localStorage.getItem(getUserKey('workouts'))) || [];
     const workout = workouts.find(w => w.id === workoutId);
     
     if (!workout) return;
@@ -266,7 +437,6 @@ function selectWorkout(workoutId) {
 }
 
 // Renderizar exercícios
-// Renderizar exercícios (FUNÇÃO MODIFICADA)
 function renderExercises(exercises) {
     const exercisesList = document.getElementById('exercisesList');
     exercisesList.innerHTML = '';
@@ -424,12 +594,12 @@ function deleteExercise(exerciseId) {
         return;
     }
     
-    const workouts = JSON.parse(localStorage.getItem(getUserKey('workouts'))) || []; // CORREÇÃO AQUI
+    const workouts = JSON.parse(localStorage.getItem(getUserKey('workouts'))) || [];
     const workoutIndex = workouts.findIndex(w => w.id === selectedWorkoutId);
     
     if (workoutIndex !== -1) {
         workouts[workoutIndex].exercises = workouts[workoutIndex].exercises.filter(ex => ex.id !== exerciseId);
-        localStorage.setItem(getUserKey('workouts'), JSON.stringify(workouts)); // CORREÇÃO AQUI
+        localStorage.setItem(getUserKey('workouts'), JSON.stringify(workouts));
         
         // Atualizar visualização
         renderExercises(workouts[workoutIndex].exercises);
@@ -443,9 +613,9 @@ function deleteWorkout(workoutId) {
         return;
     }
     
-    let workouts = JSON.parse(localStorage.getItem(getUserKey('workouts'))) || []; // CORREÇÃO AQUI
+    let workouts = JSON.parse(localStorage.getItem(getUserKey('workouts'))) || [];
     workouts = workouts.filter(w => w.id !== workoutId);
-    localStorage.setItem(getUserKey('workouts'), JSON.stringify(workouts)); // CORREÇÃO AQUI
+    localStorage.setItem(getUserKey('workouts'), JSON.stringify(workouts));
     
     // Remover da visualização
     const workoutElement = document.querySelector(`.workout-item[data-id="${workoutId}"]`);
