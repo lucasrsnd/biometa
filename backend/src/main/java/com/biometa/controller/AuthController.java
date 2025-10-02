@@ -36,7 +36,6 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
-        // Validar força da senha
         String password = registerRequest.getPassword();
         List<String> passwordErrors = validatePassword(password);
 
@@ -72,7 +71,6 @@ public class AuthController {
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
             String jwt = jwtUtil.generateToken(userDetails);
 
-            // Buscar o usuário completo para obter o ID
             Optional<User> user = userService.findByEmail(userDetails.getUsername());
             
             if (user.isPresent()) {
@@ -81,7 +79,7 @@ public class AuthController {
                     userDetails.getFirstName(), 
                     userDetails.getLastName(), 
                     userDetails.getUsername(),
-                    user.get().getId() // Adicionar o ID do usuário
+                    user.get().getId()
                 );
                 return ResponseEntity.ok(authResponse);
             } else {

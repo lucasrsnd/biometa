@@ -9,6 +9,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Inicializar dashboard
     initializeDashboard();
+
+    // Inicializar animações depois de carregar os dados
+    setTimeout(initializeDashboardAnimations, 500);
 });
 
 async function initializeDashboard() {
@@ -430,3 +433,47 @@ setInterval(() => {
     updateQuickActions();
     updatePersonalStats();
 }, 60000);
+
+// ========== ANIMAÇÕES DO DASHBOARD ========== //
+
+function initializeDashboardAnimations() {
+    // Observador de interseção para animações ao scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    // Aplicar observador aos cards
+    document.querySelectorAll('.summary-card, .motivation-card, .quick-action').forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(card);
+    });
+
+    // Animar progress bars quando os dados forem carregados
+    setTimeout(animateProgressBars, 1000);
+}
+
+function animateProgressBars() {
+    const progressBars = document.querySelectorAll('.progress-fill');
+    progressBars.forEach(bar => {
+        const computedWidth = getComputedStyle(bar).width;
+        if (computedWidth !== '0px') {
+            bar.style.width = '0';
+            setTimeout(() => {
+                bar.style.width = computedWidth;
+                bar.style.transition = 'width 0.8s ease';
+            }, 300);
+        }
+    });
+}

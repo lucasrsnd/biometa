@@ -11,7 +11,6 @@ public class UpdateUserRequest {
     private Double weight;
     private String country;
 
-    // Getters e Setters
     public String getFirstName() { return firstName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
     

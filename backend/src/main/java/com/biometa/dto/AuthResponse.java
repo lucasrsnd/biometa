@@ -16,7 +16,6 @@ public class AuthResponse {
         this.id = id;
     }
 
-    // Getters e Setters
     public String getToken() { return token; }
     public void setToken(String token) { this.token = token; }
     

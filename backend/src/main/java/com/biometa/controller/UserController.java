@@ -1,7 +1,7 @@
 package com.biometa.controller;
 
 import com.biometa.dto.UserResponse;
-import com.biometa.dto.UpdateUserRequest; // <-- IMPORTANTE
+import com.biometa.dto.UpdateUserRequest;
 import com.biometa.model.User;
 import com.biometa.repository.UserRepository;
 import com.biometa.security.CustomUserDetails;
@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping; // <-- IMPORTANTE
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +25,6 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    // GET /me -> retorna os dados do usuário autenticado
     @GetMapping("/me")
     public ResponseEntity<?> getCurrentUser(Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
@@ -36,8 +35,7 @@ public class UserController {
         }
         
         User user = userOptional.get();
-        
-        // Calcular idade a partir da data de nascimento
+
         Integer age = null;
         if (user.getBirthDate() != null) {
             age = Period.between(user.getBirthDate(), LocalDate.now()).getYears();
@@ -58,7 +56,6 @@ public class UserController {
         return ResponseEntity.ok(userResponse);
     }
 
-    // PUT /me -> atualiza dados do usuário autenticado
     @PutMapping("/me")
     public ResponseEntity<?> updateCurrentUser(@RequestBody UpdateUserRequest updateRequest, Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
@@ -69,8 +66,7 @@ public class UserController {
         }
         
         User user = userOptional.get();
-        
-        // Atualizar apenas os campos permitidos
+
         if (updateRequest.getFirstName() != null) {
             user.setFirstName(updateRequest.getFirstName());
         }
@@ -94,8 +90,7 @@ public class UserController {
         }
         
         User updatedUser = userRepository.save(user);
-        
-        // Calcular idade atualizada
+
         Integer age = null;
         if (updatedUser.getBirthDate() != null) {
             age = Period.between(updatedUser.getBirthDate(), LocalDate.now()).getYears();

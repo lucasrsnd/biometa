@@ -12,6 +12,29 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Configurar event listeners
     setupEventListeners();
+
+    // Inicializar animações
+    setTimeout(initializePlanningAnimations, 300);
+});
+
+// Adicionar classe para animação de drag and drop
+document.addEventListener('DOMContentLoaded', function() {
+    const columns = document.querySelectorAll('.column-content');
+    
+    columns.forEach(column => {
+        column.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('drag-over');
+        });
+        
+        column.addEventListener('dragleave', function() {
+            this.classList.remove('drag-over');
+        });
+        
+        column.addEventListener('drop', function() {
+            this.classList.remove('drag-over');
+        });
+    });
 });
 
 // Carregar dados do usuário
@@ -576,4 +599,36 @@ function clearPreviousUserData() {
             localStorage.removeItem(key);
         }
     });
+}
+// ===== ANIMAÇÕES DO PLANEJAMENTO =====
+
+function initializePlanningAnimations() {
+    // Observador para animações ao scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+
+    // Animar cards e colunas
+    document.querySelectorAll('.card, .kanban-column, .month-container').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(el);
+    });
+
+    // Animar itens de tarefas com delay
+    setTimeout(() => {
+        document.querySelectorAll('.task-item').forEach((item, index) => {
+            item.style.animationDelay = `${index * 0.1}s`;
+            item.classList.add('animate-in');
+        });
+    }, 500);
 }
