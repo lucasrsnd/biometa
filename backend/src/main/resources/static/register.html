@@ -5,125 +5,589 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BioMeta - Cadastro</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/register.css">
+    <link rel="stylesheet" href="css/register.css?v=3.0">
     <link rel="shortcut icon" type="image/x-icon" href="img/logo.png">
 </head>
 <body>
+    <!-- Background com efeitos -->
+    <div class="background-effects">
+        <div class="particles" id="particles-js"></div>
+        <div class="gradient-bg"></div>
+    </div>
+
     <div class="auth-container">
-        <div class="logo">
-            <i class="fas fa-dumbbell"></i> BioMeta
+        <!-- Logo e Header -->
+        <div class="auth-header">
+            <div class="logo">
+                <i class="fas fa-dumbbell"></i> BioMeta
+            </div>
+            <h1>Crie sua conta</h1>
+            <p>Junte-se à comunidade BioMeta e comece sua jornada fitness</p>
         </div>
-        
-        <form id="registerForm">
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="firstName">Primeiro Nome</label>
-                    <input type="text" id="firstName" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="lastName">Último Nome</label>
-                    <input type="text" id="lastName" required>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label for="email">E-mail</label>
-                <input type="email" id="email" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="password">Senha</label>
-                <input type="password" id="password" required minlength="8">
-                
-                <div class="password-requirements">
-                    <div class="requirement invalid" id="req-length">
-                        <i class="fas fa-times"></i>
-                        Pelo menos 8 caracteres
-                    </div>
-                    <div class="requirement invalid" id="req-uppercase">
-                        <i class="fas fa-times"></i>
-                        Pelo menos uma letra maiúscula (A–Z)
-                    </div>
-                    <div class="requirement invalid" id="req-lowercase">
-                        <i class="fas fa-times"></i>
-                        Pelo menos uma letra minúscula (a–z)
-                    </div>
-                    <div class="requirement invalid" id="req-number">
-                        <i class="fas fa-times"></i>
-                        Pelo menos um número (0–9)
-                    </div>
-                    <div class="requirement invalid" id="req-special">
-                        <i class="fas fa-times"></i>
-                        Pelo menos um caractere especial (!@#$%&*)
+
+        <div class="auth-content">
+            <!-- Imagem Ilustrativa -->
+            <div class="auth-image">
+                <div class="image-container">
+                    <i class="fas fa-user-plus"></i>
+                    <div class="floating-elements">
+                        <div class="floating-element element-1">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                        <div class="floating-element element-2">
+                            <i class="fas fa-heartbeat"></i>
+                        </div>
+                        <div class="floating-element element-3">
+                            <i class="fas fa-running"></i>
+                        </div>
+                        <div class="floating-element element-4">
+                            <i class="fas fa-apple-alt"></i>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="password-strength">
-                    <div class="strength-bar" id="strengthBar"></div>
+                <div class="image-features">
+                    <div class="feature">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Acompanhe seu progresso</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-utensils"></i>
+                        <span>Planeje sua dieta</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-dumbbell"></i>
+                        <span>Monitore treinos</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-tint"></i>
+                        <span>Controle hidratação</span>
+                    </div>
                 </div>
             </div>
-            
-            <div class="form-group">
-                <label for="confirmPassword">Confirmar Senha</label>
-                <input type="password" id="confirmPassword" required>
-                <div class="error" id="confirmPasswordError" style="display: none;">
-                    <i class="fas fa-exclamation-circle"></i> As senhas não coincidem
+
+            <!-- Formulário de Cadastro -->
+            <div class="auth-form">
+                <form id="registerForm">
+                    <!-- Seção 1: Informações Básicas -->
+                    <div class="form-section active" id="section-1">
+                        <div class="section-header">
+                            <div class="section-number">1</div>
+                            <h3>Informações Pessoais</h3>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName">
+                                    <i class="fas fa-user"></i> Primeiro Nome
+                                </label>
+                                <input type="text" id="firstName" required placeholder="Seu primeiro nome">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="lastName">
+                                    <i class="fas fa-user"></i> Último Nome
+                                </label>
+                                <input type="text" id="lastName" required placeholder="Seu último nome">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">
+                                <i class="fas fa-envelope"></i> E-mail
+                            </label>
+                            <input type="email" id="email" required placeholder="seu@email.com">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="gender">
+                                    <i class="fas fa-venus-mars"></i> Sexo
+                                </label>
+                                <select id="gender">
+                                    <option value="">Selecione...</option>
+                                    <option value="Masculino">Masculino</option>
+                                    <option value="Feminino">Feminino</option>
+                                    <option value="Prefiro não dizer">Prefiro não dizer</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="birthDate">
+                                    <i class="fas fa-calendar"></i> Data de Nascimento
+                                </label>
+                                <input type="date" id="birthDate">
+                            </div>
+                        </div>
+
+                        <div class="section-actions">
+                            <button type="button" class="btn btn-next" data-next="2">
+                                Próximo <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Seção 2: Segurança -->
+                    <div class="form-section" id="section-2">
+                        <div class="section-header">
+                            <div class="section-number">2</div>
+                            <h3>Segurança da Conta</h3>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password">
+                                <i class="fas fa-lock"></i> Senha
+                            </label>
+                            <input type="password" id="password" required minlength="8" placeholder="Crie uma senha segura">
+                            
+                            <div class="password-requirements">
+                                <div class="requirement invalid" id="req-length">
+                                    <i class="fas fa-times"></i>
+                                    Pelo menos 8 caracteres
+                                </div>
+                                <div class="requirement invalid" id="req-uppercase">
+                                    <i class="fas fa-times"></i>
+                                    Pelo menos uma letra maiúscula (A–Z)
+                                </div>
+                                <div class="requirement invalid" id="req-lowercase">
+                                    <i class="fas fa-times"></i>
+                                    Pelo menos uma letra minúscula (a–z)
+                                </div>
+                                <div class="requirement invalid" id="req-number">
+                                    <i class="fas fa-times"></i>
+                                    Pelo menos um número (0–9)
+                                </div>
+                                <div class="requirement invalid" id="req-special">
+                                    <i class="fas fa-times"></i>
+                                    Pelo menos um caractere especial (!@#$%&*)
+                                </div>
+                            </div>
+                            
+                            <div class="password-strength">
+                                <div class="strength-labels">
+                                    <span>Fraca</span>
+                                    <span>Média</span>
+                                    <span>Forte</span>
+                                </div>
+                                <div class="strength-bar">
+                                    <div class="strength-fill" id="strengthFill"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirmPassword">
+                                <i class="fas fa-lock"></i> Confirmar Senha
+                            </label>
+                            <input type="password" id="confirmPassword" required placeholder="Digite a senha novamente">
+                            <div class="error" id="confirmPasswordError" style="display: none;">
+                                <i class="fas fa-exclamation-circle"></i> As senhas não coincidem
+                            </div>
+                        </div>
+
+                        <div class="section-actions">
+                            <button type="button" class="btn btn-outline btn-prev" data-prev="1">
+                                <i class="fas fa-arrow-left"></i> Voltar
+                            </button>
+                            <button type="button" class="btn btn-next" data-next="3">
+                                Próximo <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Seção 3: Perfil Fitness -->
+                    <div class="form-section" id="section-3">
+                        <div class="section-header">
+                            <div class="section-number">3</div>
+                            <h3>Perfil Fitness</h3>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="country">
+                                    <i class="fas fa-globe-americas"></i> País
+                                </label>
+                                <select id="country">
+                                    <option value="">Selecione...</option>
+                                    <option value="Brasil">Brasil</option>
+                                    <option value="Portugal">Portugal</option>
+                                    <option value="Estados Unidos">Estados Unidos</option>
+                                    <option value="Espanha">Espanha</option>
+                                    <option value="Outro">Outro</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="height">
+                                    <i class="fas fa-ruler-vertical"></i> Altura (m)
+                                </label>
+                                <input type="number" id="height" step="0.01" min="0.5" max="2.5" 
+                                       placeholder="Ex: 1.75" lang="pt-BR">
+                                <small class="input-help">Use ponto como separador decimal (ex: 1.75)</small>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="weight">
+                                <i class="fas fa-weight"></i> Peso (kg)
+                            </label>
+                            <input type="number" id="weight" step="0.1" min="0" max="300" 
+                                   placeholder="Ex: 70.2">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="objective">
+                                <i class="fas fa-bullseye"></i> Objetivo Principal
+                            </label>
+                            <select id="objective">
+                                <option value="">Selecione seu objetivo...</option>
+                                <option value="emagrecer">🥗 Emagrecer</option>
+                                <option value="manter">⚖️ Manter peso</option>
+                                <option value="ganhar">💪 Ganhar massa muscular</option>
+                                <option value="definir">🔥 Definir músculos</option>
+                                <option value="saude">❤️ Melhorar saúde</option>
+                            </select>
+                        </div>
+
+                        <div class="section-actions">
+                            <button type="button" class="btn btn-outline btn-prev" data-prev="2">
+                                <i class="fas fa-arrow-left"></i> Voltar
+                            </button>
+                            <button type="submit" class="btn btn-primary" id="submitBtn">
+                                <i class="fas fa-user-plus"></i> Criar Conta
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Indicador de Progresso -->
+                    <div class="form-progress">
+                        <div class="progress-steps">
+                            <div class="progress-step active" data-step="1">
+                                <div class="step-number">1</div>
+                                <span class="step-label">Pessoal</span>
+                            </div>
+                            <div class="progress-step" data-step="2">
+                                <div class="step-number">2</div>
+                                <span class="step-label">Segurança</span>
+                            </div>
+                            <div class="progress-step" data-step="3">
+                                <div class="step-number">3</div>
+                                <span class="step-label">Fitness</span>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Mensagens de Feedback -->
+                <div id="errorMessage" class="error message-hidden"></div>
+                <div id="successMessage" class="success message-hidden"></div>
+
+                <!-- Link para Login -->
+                <div class="auth-links">
+                    <p>Já tem uma conta? <a href="login.html">Faça login aqui</a></p>
                 </div>
             </div>
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="gender">Sexo</label>
-                    <select id="gender">
-                        <option value="">Selecione...</option>
-                        <option value="Masculino">Masculino</option>
-                        <option value="Feminino">Feminino</option>
-                        <option value="Prefiro não dizer">Prefiro não dizer</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="birthDate">Data de Nascimento</label>
-                    <input type="date" id="birthDate">
-                </div>
-            </div>
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="country">País</label>
-                    <select id="country">
-                        <option value="">Selecione...</option>
-                        <option value="Brasil">Brasil</option>
-                        <option value="Portugal">Portugal</option>
-                        <option value="Estados Unidos">Estados Unidos</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="height">Altura (m)</label>
-                    <input type="number" id="height" step="0.01" min="0.5" max="2.5" placeholder="Ex: 1.75" lang="pt-BR">
-                    <small style="color: #666; font-size: 0.8rem;">Use ponto como separador decimal (ex: 1.75)</small>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label for="weight">Peso (kg)</label>
-                <input type="number" id="weight" step="0.1" min="0" max="300" placeholder="Ex: 70.2">
-            </div>
-            
-            <button type="submit" class="btn" id="submitBtn" disabled>
-                <i class="fas fa-user-plus"></i> Criar Conta
-            </button>
-            <div id="errorMessage" class="error"></div>
-            <div id="successMessage" class="success"></div>
-        </form>
-        
-        <div class="links">
-            <p>Já tem uma conta? <a href="login.html">Faça login</a></p>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="js/auth.js"></script>
+    
+    <!-- APENAS ANIMAÇÕES - SEM INTERFERIR NA AUTENTICAÇÃO -->
+    <script>
+        // Variáveis globais para animações
+        let currentSection = 1;
+        const totalSections = 3;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicializar partículas (apenas visual)
+            initParticles();
+            
+            // Configurar event listeners para animações
+            setupAnimationListeners();
+            
+            // Iniciar animações dos elementos
+            initAnimations();
+            
+            // Mostrar primeira seção
+            showSection(1);
+        });
+
+        // Inicializar partículas no background (apenas visual)
+        function initParticles() {
+            if (typeof particlesJS !== 'undefined') {
+                particlesJS('particles-js', {
+                    particles: {
+                        number: { value: 50, density: { enable: true, value_area: 800 } },
+                        color: { value: "#6c63ff" },
+                        shape: { type: "circle" },
+                        opacity: { value: 0.2, random: true },
+                        size: { value: 3, random: true },
+                        line_linked: {
+                            enable: true,
+                            distance: 120,
+                            color: "#6c63ff",
+                            opacity: 0.1,
+                            width: 1
+                        },
+                        move: {
+                            enable: true,
+                            speed: 0.8,
+                            direction: "none",
+                            random: true
+                        }
+                    },
+                    interactivity: {
+                        detect_on: "canvas",
+                        events: {
+                            onhover: { enable: true, mode: "grab" },
+                            onclick: { enable: true, mode: "push" },
+                            resize: true
+                        }
+                    },
+                    retina_detect: true
+                });
+            }
+        }
+
+        // Configurar event listeners apenas para animações
+        function setupAnimationListeners() {
+            // Navegação entre seções (apenas visual)
+            document.querySelectorAll('.btn-next').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const nextSection = parseInt(this.dataset.next);
+                    if (validateCurrentSectionVisual()) {
+                        showSection(nextSection);
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.btn-prev').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const prevSection = parseInt(this.dataset.prev);
+                    showSection(prevSection);
+                });
+            });
+
+            // Validação visual da senha em tempo real
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirmPassword');
+            
+            if (passwordInput) {
+                passwordInput.addEventListener('input', validatePasswordStrengthVisual);
+            }
+            
+            if (confirmPasswordInput) {
+                confirmPasswordInput.addEventListener('input', validatePasswordMatchVisual);
+            }
+
+            // Validação visual de campos obrigatórios
+            document.querySelectorAll('input[required], select[required]').forEach(input => {
+                input.addEventListener('blur', function() {
+                    validateFieldVisual(this);
+                });
+            });
+        }
+
+        // Iniciar animações
+        function initAnimations() {
+            animateFloatingElements();
+        }
+
+        // Mostrar seção específica (apenas visual)
+        function showSection(sectionNumber) {
+            // Esconder todas as seções
+            document.querySelectorAll('.form-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Mostrar seção atual
+            const targetSection = document.getElementById(`section-${sectionNumber}`);
+            if (targetSection) {
+                targetSection.classList.add('active');
+                
+                // Atualizar progresso visual
+                updateProgressVisual(sectionNumber);
+                
+                // Atualizar variável global
+                currentSection = sectionNumber;
+            }
+        }
+
+        // Atualizar barra de progresso (apenas visual)
+        function updateProgressVisual(sectionNumber) {
+            const progressFill = document.getElementById('progressFill');
+            const progress = (sectionNumber / totalSections) * 100;
+            
+            if (progressFill) {
+                progressFill.style.width = `${progress}%`;
+            }
+            
+            // Atualizar steps visuais
+            document.querySelectorAll('.progress-step').forEach((step, index) => {
+                const stepNumber = index + 1;
+                
+                step.classList.remove('active', 'completed');
+                
+                if (stepNumber === sectionNumber) {
+                    step.classList.add('active');
+                } else if (stepNumber < sectionNumber) {
+                    step.classList.add('completed');
+                }
+            });
+        }
+
+        // Validar seção atual (apenas visual)
+        function validateCurrentSectionVisual() {
+            const currentSectionEl = document.getElementById(`section-${currentSection}`);
+            if (!currentSectionEl) return true;
+            
+            const inputs = currentSectionEl.querySelectorAll('input[required], select[required]');
+            let isValid = true;
+            
+            inputs.forEach(input => {
+                if (!validateFieldVisual(input)) {
+                    isValid = false;
+                }
+            });
+            
+            if (!isValid) {
+                showMessageVisual('Por favor, preencha todos os campos obrigatórios.', 'error');
+            }
+            
+            return isValid;
+        }
+
+        // Validar campo individual (apenas visual)
+        function validateFieldVisual(field) {
+            const value = field.value.trim();
+            
+            // Remover estilos anteriores
+            field.classList.remove('valid', 'invalid');
+            
+            if (field.hasAttribute('required') && !value) {
+                field.classList.add('invalid');
+                return false;
+            }
+            
+            // Validações visuais específicas por tipo
+            if (field.type === 'email' && value) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(value)) {
+                    field.classList.add('invalid');
+                    return false;
+                }
+            }
+            
+            field.classList.add('valid');
+            return true;
+        }
+
+        // Validar força da senha (apenas visual)
+        function validatePasswordStrengthVisual() {
+            const password = document.getElementById('password').value;
+            const requirements = {
+                length: password.length >= 8,
+                uppercase: /[A-Z]/.test(password),
+                lowercase: /[a-z]/.test(password),
+                number: /[0-9]/.test(password),
+                special: /[!@#$%&*]/.test(password)
+            };
+            
+            let strength = 0;
+            let fulfilled = 0;
+            
+            // Atualizar requisitos visuais
+            Object.keys(requirements).forEach(req => {
+                const element = document.getElementById(`req-${req}`);
+                if (element) {
+                    if (requirements[req]) {
+                        element.classList.add('valid');
+                        element.classList.remove('invalid');
+                        element.innerHTML = '<i class="fas fa-check"></i> ' + element.textContent.replace(/^.*?\) /, '');
+                        fulfilled++;
+                    } else {
+                        element.classList.add('invalid');
+                        element.classList.remove('valid');
+                        element.innerHTML = '<i class="fas fa-times"></i> ' + element.textContent.replace(/^.*?\) /, '');
+                    }
+                }
+            });
+            
+            // Calcular força visual
+            strength = Math.floor((fulfilled / Object.keys(requirements).length) * 100);
+            updatePasswordStrengthVisual(strength);
+        }
+
+        // Atualizar indicador de força da senha (apenas visual)
+        function updatePasswordStrengthVisual(strength) {
+            const strengthFill = document.getElementById('strengthFill');
+            
+            if (strengthFill) {
+                strengthFill.style.width = `${strength}%`;
+                
+                if (strength < 40) {
+                    strengthFill.style.background = '#e74c3c';
+                } else if (strength < 80) {
+                    strengthFill.style.background = '#f39c12';
+                } else {
+                    strengthFill.style.background = '#2ecc71';
+                }
+            }
+        }
+
+        // Validar confirmação de senha (apenas visual)
+        function validatePasswordMatchVisual() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const errorElement = document.getElementById('confirmPasswordError');
+            
+            if (confirmPassword && password !== confirmPassword) {
+                if (errorElement) errorElement.style.display = 'flex';
+                document.getElementById('confirmPassword').classList.add('invalid');
+            } else {
+                if (errorElement) errorElement.style.display = 'none';
+                document.getElementById('confirmPassword').classList.remove('invalid');
+                if (confirmPassword) {
+                    document.getElementById('confirmPassword').classList.add('valid');
+                }
+            }
+        }
+
+        // Mostrar mensagens (apenas visual)
+        function showMessageVisual(message, type = 'error', duration = 5000) {
+            const errorElement = document.getElementById('errorMessage');
+            const successElement = document.getElementById('successMessage');
+
+            // Esconder ambas as mensagens primeiro
+            if (errorElement) errorElement.classList.add('message-hidden');
+            if (successElement) successElement.classList.add('message-hidden');
+
+            const targetElement = type === 'error' ? errorElement : successElement;
+            
+            if (targetElement) {
+                targetElement.textContent = message;
+                targetElement.classList.remove('message-hidden');
+
+                if (duration > 0) {
+                    setTimeout(() => {
+                        targetElement.classList.add('message-hidden');
+                    }, duration);
+                }
+            }
+        }
+
+        // Animar elementos flutuantes
+        function animateFloatingElements() {
+            const elements = document.querySelectorAll('.floating-element');
+            
+            elements.forEach((element, index) => {
+                const delay = index * 0.5;
+                element.style.animationDelay = `${delay}s`;
+            });
+        }
+    </script>
 </body>
 </html>
