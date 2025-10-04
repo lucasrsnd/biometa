@@ -1,10 +1,9 @@
 package com.biometa.controller;
 
-import com.biometa.dto.UserResponse;
-import com.biometa.dto.UpdateUserRequest;
-import com.biometa.model.User;
-import com.biometa.repository.UserRepository;
-import com.biometa.security.CustomUserDetails;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -14,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
-import java.time.Period;
-import java.util.Optional;
+import com.biometa.dto.UpdateUserRequest;
+import com.biometa.dto.UserResponse;
+import com.biometa.model.User;
+import com.biometa.repository.UserRepository;
+import com.biometa.security.CustomUserDetails;
 
 @RestController
 @RequestMapping("/api/user")
@@ -50,7 +51,8 @@ public class UserController {
                 user.getGender(),
                 user.getHeight(),
                 user.getWeight(),
-                user.getCountry()
+                user.getCountry(),
+                user.getObjective()  // NOVO CAMPO ADICIONADO
         );
         
         return ResponseEntity.ok(userResponse);
@@ -88,6 +90,10 @@ public class UserController {
         if (updateRequest.getCountry() != null) {
             user.setCountry(updateRequest.getCountry());
         }
+        // NOVA LINHA ADICIONADA - ATUALIZAR OBJETIVO
+        if (updateRequest.getObjective() != null) {
+            user.setObjective(updateRequest.getObjective());
+        }
         
         User updatedUser = userRepository.save(user);
 
@@ -105,7 +111,8 @@ public class UserController {
                 updatedUser.getGender(),
                 updatedUser.getHeight(),
                 updatedUser.getWeight(),
-                updatedUser.getCountry()
+                updatedUser.getCountry(),
+                updatedUser.getObjective()  // NOVO CAMPO ADICIONADO
         );
         
         return ResponseEntity.ok(userResponse);

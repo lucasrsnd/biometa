@@ -287,6 +287,7 @@ async function handleRegister(e) {
   const country = document.getElementById("country").value;
   const height = document.getElementById("height").value;
   const weight = document.getElementById("weight").value;
+  const objective = document.getElementById("objective").value; // NOVO CAMPO
 
   // Validação adicional para altura
   if (height) {
@@ -307,10 +308,11 @@ async function handleRegister(e) {
     country,
     height: height ? parseFloat(height) : null,
     weight: weight ? parseFloat(weight) : null,
+    objective: objective || null // NOVO CAMPO ADICIONADO
   };
 
   try {
-    console.log("Enviando dados para cadastro...");
+    console.log("Enviando dados para cadastro...", userData);
     const response = await fetch("/api/auth/register", {
       method: "POST",
       headers: {

@@ -1,11 +1,12 @@
 package com.biometa.dto;
 
+import java.time.LocalDate;
+
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import java.time.LocalDate;
 
 public class RegisterRequest {
     @NotBlank
@@ -35,6 +36,10 @@ public class RegisterRequest {
     
     private Double weight;
 
+    // NOVO CAMPO ADICIONADO
+    private String objective;
+
+    // Getters e Setters
     public String getFirstName() { return firstName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
     
@@ -61,4 +66,8 @@ public class RegisterRequest {
     
     public Double getWeight() { return weight; }
     public void setWeight(Double weight) { this.weight = weight; }
+    
+    // NOVO GETTER E SETTER
+    public String getObjective() { return objective; }
+    public void setObjective(String objective) { this.objective = objective; }
 }

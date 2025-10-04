@@ -1,10 +1,16 @@
 package com.biometa.model;
 
-import jakarta.persistence.*;
+import java.time.LocalDate;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "users", uniqueConstraints = {
@@ -44,6 +50,10 @@ public class User {
 
     private Double weight;
 
+    // NOVO CAMPO ADICIONADO
+    @Size(max = 50)
+    private String objective;
+
     public User() {
     }
 
@@ -54,6 +64,7 @@ public class User {
         this.password = password;
     }
 
+    // Getters e Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     
@@ -83,4 +94,8 @@ public class User {
     
     public Double getWeight() { return weight; }
     public void setWeight(Double weight) { this.weight = weight; }
+    
+    // NOVO GETTER E SETTER
+    public String getObjective() { return objective; }
+    public void setObjective(String objective) { this.objective = objective; }
 }

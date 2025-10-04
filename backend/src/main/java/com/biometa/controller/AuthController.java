@@ -1,14 +1,5 @@
 package com.biometa.controller;
 
-import com.biometa.dto.AuthRequest;
-import com.biometa.dto.AuthResponse;
-import com.biometa.dto.RegisterRequest;
-import com.biometa.model.User;
-import com.biometa.security.CustomUserDetails;
-import com.biometa.security.JwtUtil;
-import com.biometa.service.UserService;
-import jakarta.validation.Valid;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +11,20 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.biometa.dto.AuthRequest;
+import com.biometa.dto.AuthResponse;
+import com.biometa.dto.RegisterRequest;
+import com.biometa.model.User;
+import com.biometa.security.CustomUserDetails;
+import com.biometa.security.JwtUtil;
+import com.biometa.service.UserService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -55,6 +59,9 @@ public class AuthController {
         user.setCountry(registerRequest.getCountry());
         user.setHeight(registerRequest.getHeight());
         user.setWeight(registerRequest.getWeight());
+        
+        // NOVA LINHA ADICIONADA - SALVAR OBJETIVO
+        user.setObjective(registerRequest.getObjective());
 
         User savedUser = userService.createUser(user);
 

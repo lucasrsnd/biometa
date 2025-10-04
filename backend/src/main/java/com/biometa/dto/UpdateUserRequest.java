@@ -10,7 +10,11 @@ public class UpdateUserRequest {
     private Double height;
     private Double weight;
     private String country;
+    
+    // NOVO CAMPO ADICIONADO
+    private String objective;
 
+    // Getters e Setters
     public String getFirstName() { return firstName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
     
@@ -31,4 +35,8 @@ public class UpdateUserRequest {
     
     public String getCountry() { return country; }
     public void setCountry(String country) { this.country = country; }
+    
+    // NOVO GETTER E SETTER
+    public String getObjective() { return objective; }
+    public void setObjective(String objective) { this.objective = objective; }
 }

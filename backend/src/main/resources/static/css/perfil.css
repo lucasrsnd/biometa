@@ -428,6 +428,11 @@ header {
     cursor: not-allowed;
 }
 
+.form-group select option {
+    background: var(--dark); /* fundo escuro */
+    color: var(--light);
+}
+
 .input-help {
     display: block;
     margin-top: 5px;

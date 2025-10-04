@@ -3,8 +3,14 @@ let isEditing = false;
 
 document.addEventListener('DOMContentLoaded', function() {
     const token = localStorage.getItem('token');
+    const user = localStorage.getItem('user');
+
+    console.log('=== INICIANDO PERFIL ===');
+    console.log('Token no localStorage:', token ? 'Presente' : 'Ausente');
+    console.log('User no localStorage:', user);
 
     if (!token) {
+        console.log('Token não encontrado, redirecionando para login...');
         window.location.href = 'login.html';
         return;
     }
@@ -177,15 +183,28 @@ async function loadUserData() {
     const token = localStorage.getItem('token');
     
     try {
+        console.log('Carregando dados do usuário...');
+        console.log('Token:', token);
+        
         const response = await fetch('/api/user/me', {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
             }
         });
 
+        console.log('Resposta da API - Status:', response.status);
+        console.log('Resposta da API - Headers:', response.headers);
+
         if (response.ok) {
             const userData = await response.json();
+            console.log('Dados do usuário recebidos (COMPLETO):', userData);
+            console.log('Campos específicos:');
+            console.log('- firstName:', userData.firstName);
+            console.log('- lastName:', userData.lastName);
+            console.log('- email:', userData.email);
+            console.log('- objective:', userData.objective);
             
             // Preencher formulário com dados do usuário
             populateForm(userData);
@@ -207,11 +226,14 @@ async function loadUserData() {
             
         } else if (response.status === 401) {
             // Token inválido ou expirado
+            console.log('Token inválido, redirecionando para login...');
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             window.location.href = 'login.html';
         } else {
-            console.error('Erro ao carregar dados do usuário:', response.status);
+            console.error('Erro ao carregar dados do usuário. Status:', response.status);
+            const errorText = await response.text();
+            console.error('Erro detalhado:', errorText);
             // Tentar carregar dados do localStorage como fallback
             loadFromLocalStorage();
         }
@@ -224,6 +246,7 @@ async function loadUserData() {
 
 // Carregar dados do localStorage (fallback)
 function loadFromLocalStorage() {
+    console.log('Carregando dados do localStorage...');
     const userData = JSON.parse(localStorage.getItem('user')) || {
         firstName: 'Usuário',
         lastName: 'BioMeta',
@@ -235,22 +258,25 @@ function loadFromLocalStorage() {
     calculateIMC();
 }
 
-// Preencher formulário com dados do usuário
 function populateForm(userData) {
+    console.log('Preenchendo formulário com dados:', userData);
+    
+    // Preencher campos básicos
     document.getElementById('firstName').value = userData.firstName || '';
     document.getElementById('lastName').value = userData.lastName || '';
     document.getElementById('email').value = userData.email || '';
     
-    // Formatando a data para o input type="date" (YYYY-MM-DD)
+    // Data de nascimento
     if (userData.birthDate) {
         const birthDate = new Date(userData.birthDate);
         const formattedDate = birthDate.toISOString().split('T')[0];
         document.getElementById('birthDate').value = formattedDate;
+        console.log('Data de nascimento formatada:', formattedDate);
     } else {
         document.getElementById('birthDate').value = '';
     }
     
-    // Idade (se veio do backend) ou calcular se temos data de nascimento
+    // Idade
     if (userData.age) {
         document.getElementById('age').value = `${userData.age} anos`;
     } else if (userData.birthDate) {
@@ -260,11 +286,48 @@ function populateForm(userData) {
         document.getElementById('age').value = '';
     }
     
-    document.getElementById('gender').value = userData.gender || '';
+    // Gênero
+    const genderSelect = document.getElementById('gender');
+    if (userData.gender) {
+        genderSelect.value = userData.gender;
+        console.log('Gênero definido:', userData.gender);
+    } else {
+        genderSelect.value = '';
+    }
+    
+    // Altura e Peso
     document.getElementById('height').value = userData.height || '';
     document.getElementById('weight').value = userData.weight || '';
-    document.getElementById('objective').value = userData.objective || 'manter';
-    document.getElementById('country').value = userData.country || 'Brasil';
+    
+    // OBJETIVO - Campo importante que adicionamos
+    const objectiveSelect = document.getElementById('objective');
+    if (userData.objective) {
+        objectiveSelect.value = userData.objective;
+        console.log('Objetivo definido:', userData.objective, 'Valor no select:', objectiveSelect.value);
+        
+        // Verificar se o valor foi realmente definido
+        if (objectiveSelect.value !== userData.objective) {
+            console.warn('AVISO: O objetivo não foi encontrado nas opções do select!');
+            console.log('Opções disponíveis no select:');
+            Array.from(objectiveSelect.options).forEach(option => {
+                console.log(`- ${option.value}: ${option.text} ${option.selected ? '(SELECIONADA)' : ''}`);
+            });
+        }
+    } else {
+        objectiveSelect.value = '';
+        console.log('Objetivo não encontrado nos dados');
+    }
+    
+    // País
+    const countrySelect = document.getElementById('country');
+    if (userData.country) {
+        countrySelect.value = userData.country;
+        console.log('País definido:', userData.country);
+    } else {
+        countrySelect.value = '';
+    }
+    
+    console.log('Formulário preenchido com sucesso!');
 }
 
 // Calcular idade a partir da data de nascimento
@@ -385,6 +448,7 @@ async function saveProfile(e) {
     };
     
     try {
+        console.log('Enviando dados para atualização:', userData);
         const response = await fetch('/api/user/me', {
             method: 'PUT',
             headers: {
@@ -396,6 +460,7 @@ async function saveProfile(e) {
 
         if (response.ok) {
             const updatedUserData = await response.json();
+            console.log('Perfil atualizado com sucesso:', updatedUserData);
             
             // Atualizar localStorage com dados atualizados do backend
             const currentUser = JSON.parse(localStorage.getItem('user')) || {};

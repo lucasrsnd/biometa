@@ -12,6 +12,9 @@ public class UserResponse {
     private Double height;
     private Double weight;
     private String country;
+    
+    // NOVO CAMPO ADICIONADO
+    private String objective;
 
     public UserResponse(String firstName, String lastName, String email) {
         this.firstName = firstName;
@@ -21,7 +24,7 @@ public class UserResponse {
 
     public UserResponse(String firstName, String lastName, String email, 
                        LocalDate birthDate, Integer age, String gender, 
-                       Double height, Double weight, String country) {
+                       Double height, Double weight, String country, String objective) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -31,8 +34,10 @@ public class UserResponse {
         this.height = height;
         this.weight = weight;
         this.country = country;
+        this.objective = objective;
     }
 
+    // Getters e Setters
     public String getFirstName() { return firstName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
     
@@ -59,4 +64,8 @@ public class UserResponse {
     
     public String getCountry() { return country; }
     public void setCountry(String country) { this.country = country; }
+    
+    // NOVO GETTER E SETTER
+    public String getObjective() { return objective; }
+    public void setObjective(String objective) { this.objective = objective; }
 }
