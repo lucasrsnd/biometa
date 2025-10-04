@@ -109,11 +109,11 @@
                             <span>Ou entre com</span>
                         </div>
                         <div class="social-buttons">
-                            <button type="button" class="btn-social google">
+                            <button type="button" class="btn-social google" id="googleLogin">
                                 <i class="fab fa-google"></i>
                                 Google
                             </button>
-                            <button type="button" class="btn-social facebook">
+                            <button type="button" class="btn-social facebook" id="facebookLogin">
                                 <i class="fab fa-facebook-f"></i>
                                 Facebook
                             </button>
@@ -136,20 +136,20 @@
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="js/auth.js"></script>
     
-    <!-- APENAS ANIMAÇÕES - SEM INTERFERIR NA AUTENTICAÇÃO -->
+    <!-- SCRIPT CORRIGIDO COM TODAS AS FUNCIONALIDADES -->
     <script>
-        // Variáveis globais para animações
-        let isPasswordVisible = false;
-
         document.addEventListener('DOMContentLoaded', function() {
             // Inicializar partículas (apenas visual)
             initParticles();
             
-            // Configurar event listeners para animações
-            setupAnimationListeners();
+            // Configurar todas as funcionalidades
+            setupLoginFunctionalities();
             
             // Iniciar animações dos elementos
             initAnimations();
+            
+            // Carregar credenciais salvas se "Lembrar de mim" estava ativo
+            loadSavedCredentials();
         });
 
         // Inicializar partículas no background (apenas visual)
@@ -189,61 +189,64 @@
             }
         }
 
-        // Configurar event listeners apenas para animações
-        function setupAnimationListeners() {
-            // Toggle de visibilidade da senha (apenas visual)
+        // Configurar todas as funcionalidades do login
+        function setupLoginFunctionalities() {
+            // Toggle de visibilidade da senha
             const toggleBtn = document.getElementById('togglePassword');
             if (toggleBtn) {
                 toggleBtn.addEventListener('click', togglePasswordVisibility);
             }
 
-            // Validação visual em tempo real (apenas para feedback visual)
+            // Validação em tempo real
             const emailInput = document.getElementById('email');
             const passwordInput = document.getElementById('password');
             
             if (emailInput) {
-                emailInput.addEventListener('input', validateEmailVisual);
+                emailInput.addEventListener('input', validateEmailRealTime);
             }
             if (passwordInput) {
-                passwordInput.addEventListener('input', validatePasswordVisual);
+                passwordInput.addEventListener('input', validatePasswordRealTime);
             }
 
-            // Botões de login social (apenas visual)
-            document.querySelectorAll('.btn-social').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    // Apenas feedback visual, sem funcionalidade real
-                    const originalBackground = this.style.background;
-                    this.style.background = 'var(--primary)';
-                    
-                    setTimeout(() => {
-                        this.style.background = originalBackground;
-                    }, 300);
-                });
-            });
+            // Botões de login social
+            const googleBtn = document.getElementById('googleLogin');
+            const facebookBtn = document.getElementById('facebookLogin');
+            
+            if (googleBtn) {
+                googleBtn.addEventListener('click', handleGoogleLogin);
+            }
+            if (facebookBtn) {
+                facebookBtn.addEventListener('click', handleFacebookLogin);
+            }
+
+            // Lembrar de mim
+            const rememberMe = document.getElementById('rememberMe');
+            if (rememberMe) {
+                rememberMe.addEventListener('change', handleRememberMe);
+            }
         }
 
         // Iniciar animações
         function initAnimations() {
             animateFloatingElements();
             animateStats();
-            initTypingEffect();
         }
 
-        // Alternar visibilidade da senha (apenas visual)
+        // Alternar visibilidade da senha
         function togglePasswordVisibility() {
             const passwordInput = document.getElementById('password');
             const toggleIcon = document.getElementById('togglePassword').querySelector('i');
 
             if (passwordInput && toggleIcon) {
-                isPasswordVisible = !isPasswordVisible;
+                const isPasswordVisible = passwordInput.type === 'password';
                 passwordInput.type = isPasswordVisible ? 'text' : 'password';
                 toggleIcon.className = isPasswordVisible ? 'fas fa-eye-slash' : 'fas fa-eye';
                 passwordInput.focus();
             }
         }
 
-        // Validação visual do email (apenas feedback)
-        function validateEmailVisual() {
+        // Validação do email em tempo real
+        function validateEmailRealTime() {
             const emailInput = document.getElementById('email');
             const email = emailInput.value.trim();
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -257,8 +260,8 @@
             }
         }
 
-        // Validação visual da senha (apenas feedback)
-        function validatePasswordVisual() {
+        // Validação da senha em tempo real
+        function validatePasswordRealTime() {
             const passwordInput = document.getElementById('password');
             const password = passwordInput.value;
 
@@ -271,10 +274,93 @@
             }
         }
 
+        // Handler para Google Login
+        function handleGoogleLogin() {
+            showMessage('Login com Google está em desenvolvimento! Em breve disponível.', 'info');
+            
+            // Feedback visual
+            const btn = document.getElementById('googleLogin');
+            btn.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                btn.style.transform = 'scale(1)';
+            }, 150);
+        }
+
+        // Handler para Facebook Login
+        function handleFacebookLogin() {
+            showMessage('Login com Facebook está em desenvolvimento! Em breve disponível.', 'info');
+            
+            // Feedback visual
+            const btn = document.getElementById('facebookLogin');
+            btn.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                btn.style.transform = 'scale(1)';
+            }, 150);
+        }
+
+        // Handler para Lembrar de mim
+        function handleRememberMe() {
+            const rememberMe = document.getElementById('rememberMe');
+            const emailInput = document.getElementById('email');
+            
+            if (rememberMe.checked && emailInput.value) {
+                // Salvar no localStorage
+                localStorage.setItem('rememberMe', 'true');
+                localStorage.setItem('savedEmail', emailInput.value);
+                showMessage('Credenciais salvas! Seu e-mail será lembrado.', 'success', 3000);
+            } else {
+                // Remover do localStorage
+                localStorage.removeItem('rememberMe');
+                localStorage.removeItem('savedEmail');
+            }
+        }
+
+        // Carregar credenciais salvas
+        function loadSavedCredentials() {
+            const rememberMe = localStorage.getItem('rememberMe');
+            const savedEmail = localStorage.getItem('savedEmail');
+            
+            if (rememberMe === 'true' && savedEmail) {
+                document.getElementById('rememberMe').checked = true;
+                document.getElementById('email').value = savedEmail;
+                showMessage('Credenciais carregadas! Digite sua senha.', 'info', 3000);
+            }
+        }
+
+        // Função para mostrar mensagens
+        function showMessage(message, type = 'info', duration = 5000) {
+            // Criar elemento de mensagem se não existir
+            let messageElement = document.getElementById('infoMessage');
+            if (!messageElement) {
+                messageElement = document.createElement('div');
+                messageElement.id = 'infoMessage';
+                messageElement.className = 'info message-hidden';
+                document.querySelector('.auth-form').appendChild(messageElement);
+            }
+
+            // Configurar cores baseadas no tipo
+            const colors = {
+                info: '#3498db',
+                success: '#2ecc71',
+                error: '#e74c3c',
+                warning: '#f39c12'
+            };
+
+            messageElement.style.background = colors[type] || colors.info;
+            messageElement.textContent = message;
+            messageElement.classList.remove('message-hidden');
+
+            // Auto-esconder após o tempo especificado
+            if (duration > 0) {
+                setTimeout(() => {
+                    messageElement.classList.add('message-hidden');
+                }, duration);
+            }
+        }
+
         // Animar elementos flutuantes
         function animateFloatingElements() {
             const elements = document.querySelectorAll('.floating-element');
-            
             elements.forEach((element, index) => {
                 const delay = index * 0.5;
                 element.style.animationDelay = `${delay}s`;
@@ -292,7 +378,6 @@
                 const increment = parseInt(finalValue) / (duration / 16);
                 
                 if (finalValue.includes('+')) {
-                    // Para valores como "+5K"
                     stat.textContent = '+0';
                     const timer = setInterval(() => {
                         currentValue += increment;
@@ -304,7 +389,6 @@
                         }
                     }, 16);
                 } else if (finalValue.includes('%')) {
-                    // Para valores como "98%"
                     stat.textContent = '0%';
                     const timer = setInterval(() => {
                         currentValue += increment;
@@ -318,54 +402,7 @@
                 }
             });
         }
-
-        // Efeito de digitação no placeholder (opcional)
-        function initTypingEffect() {
-            const emailInput = document.getElementById('email');
-            const placeholders = [
-                'seu@email.com',
-                'exemplo@provedor.com',
-                'nome.sobrenome@email.com'
-            ];
-            let currentIndex = 0;
-            let currentText = '';
-            let isDeleting = false;
-            let typingSpeed = 100;
-            
-            function type() {
-                const fullText = placeholders[currentIndex];
-                
-                if (isDeleting) {
-                    currentText = fullText.substring(0, currentText.length - 1);
-                } else {
-                    currentText = fullText.substring(0, currentText.length + 1);
-                }
-                
-                emailInput.placeholder = currentText;
-                
-                let typeSpeed = typingSpeed;
-                
-                if (isDeleting) {
-                    typeSpeed /= 2;
-                }
-                
-                if (!isDeleting && currentText === fullText) {
-                    typeSpeed = 2000;
-                    isDeleting = true;
-                } else if (isDeleting && currentText === '') {
-                    isDeleting = false;
-                    currentIndex = (currentIndex + 1) % placeholders.length;
-                    typeSpeed = 500;
-                }
-                
-                setTimeout(type, typeSpeed);
-            }
-            
-            // Iniciar efeito apenas se o input estiver vazio
-            if (emailInput && !emailInput.value) {
-                setTimeout(type, 1000);
-            }
-        }
     </script>
+
 </body>
 </html>
