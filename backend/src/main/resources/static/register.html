@@ -168,7 +168,7 @@
                                     <span>Média</span>
                                     <span>Forte</span>
                                 </div>
-                                <div class="strength-bar">
+                                <div class="strength-bar" id="strengthBar">
                                     <div class="strength-fill" id="strengthFill"></div>
                                 </div>
                             </div>
@@ -297,26 +297,8 @@
     
     <!-- APENAS ANIMAÇÕES - SEM INTERFERIR NA AUTENTICAÇÃO -->
     <script>
-        // Variáveis globais para animações
-        let currentSection = 1;
-        const totalSections = 3;
-
         document.addEventListener('DOMContentLoaded', function() {
             // Inicializar partículas (apenas visual)
-            initParticles();
-            
-            // Configurar event listeners para animações
-            setupAnimationListeners();
-            
-            // Iniciar animações dos elementos
-            initAnimations();
-            
-            // Mostrar primeira seção
-            showSection(1);
-        });
-
-        // Inicializar partículas no background (apenas visual)
-        function initParticles() {
             if (typeof particlesJS !== 'undefined') {
                 particlesJS('particles-js', {
                     particles: {
@@ -350,17 +332,52 @@
                     retina_detect: true
                 });
             }
-        }
 
-        // Configurar event listeners apenas para animações
-        function setupAnimationListeners() {
-            // Navegação entre seções (apenas visual)
+            // Configurar navegação entre seções (apenas visual)
+            let currentSection = 1;
+            const totalSections = 3;
+
+            function showSection(sectionNumber) {
+                // Esconder todas as seções
+                document.querySelectorAll('.form-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Mostrar seção atual
+                const targetSection = document.getElementById(`section-${sectionNumber}`);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                    updateProgressVisual(sectionNumber);
+                    currentSection = sectionNumber;
+                }
+            }
+
+            function updateProgressVisual(sectionNumber) {
+                const progressFill = document.getElementById('progressFill');
+                const progress = (sectionNumber / totalSections) * 100;
+                
+                if (progressFill) {
+                    progressFill.style.width = `${progress}%`;
+                }
+                
+                // Atualizar steps visuais
+                document.querySelectorAll('.progress-step').forEach((step, index) => {
+                    const stepNumber = index + 1;
+                    step.classList.remove('active', 'completed');
+                    
+                    if (stepNumber === sectionNumber) {
+                        step.classList.add('active');
+                    } else if (stepNumber < sectionNumber) {
+                        step.classList.add('completed');
+                    }
+                });
+            }
+
+            // Event listeners para navegação
             document.querySelectorAll('.btn-next').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const nextSection = parseInt(this.dataset.next);
-                    if (validateCurrentSectionVisual()) {
-                        showSection(nextSection);
-                    }
+                    showSection(nextSection);
                 });
             });
             
@@ -371,223 +388,17 @@
                 });
             });
 
-            // Validação visual da senha em tempo real
-            const passwordInput = document.getElementById('password');
-            const confirmPasswordInput = document.getElementById('confirmPassword');
-            
-            if (passwordInput) {
-                passwordInput.addEventListener('input', validatePasswordStrengthVisual);
-            }
-            
-            if (confirmPasswordInput) {
-                confirmPasswordInput.addEventListener('input', validatePasswordMatchVisual);
-            }
-
-            // Validação visual de campos obrigatórios
-            document.querySelectorAll('input[required], select[required]').forEach(input => {
-                input.addEventListener('blur', function() {
-                    validateFieldVisual(this);
+            // Animar elementos flutuantes
+            function animateFloatingElements() {
+                const elements = document.querySelectorAll('.floating-element');
+                elements.forEach((element, index) => {
+                    const delay = index * 0.5;
+                    element.style.animationDelay = `${delay}s`;
                 });
-            });
-        }
+            }
 
-        // Iniciar animações
-        function initAnimations() {
             animateFloatingElements();
-        }
-
-        // Mostrar seção específica (apenas visual)
-        function showSection(sectionNumber) {
-            // Esconder todas as seções
-            document.querySelectorAll('.form-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            
-            // Mostrar seção atual
-            const targetSection = document.getElementById(`section-${sectionNumber}`);
-            if (targetSection) {
-                targetSection.classList.add('active');
-                
-                // Atualizar progresso visual
-                updateProgressVisual(sectionNumber);
-                
-                // Atualizar variável global
-                currentSection = sectionNumber;
-            }
-        }
-
-        // Atualizar barra de progresso (apenas visual)
-        function updateProgressVisual(sectionNumber) {
-            const progressFill = document.getElementById('progressFill');
-            const progress = (sectionNumber / totalSections) * 100;
-            
-            if (progressFill) {
-                progressFill.style.width = `${progress}%`;
-            }
-            
-            // Atualizar steps visuais
-            document.querySelectorAll('.progress-step').forEach((step, index) => {
-                const stepNumber = index + 1;
-                
-                step.classList.remove('active', 'completed');
-                
-                if (stepNumber === sectionNumber) {
-                    step.classList.add('active');
-                } else if (stepNumber < sectionNumber) {
-                    step.classList.add('completed');
-                }
-            });
-        }
-
-        // Validar seção atual (apenas visual)
-        function validateCurrentSectionVisual() {
-            const currentSectionEl = document.getElementById(`section-${currentSection}`);
-            if (!currentSectionEl) return true;
-            
-            const inputs = currentSectionEl.querySelectorAll('input[required], select[required]');
-            let isValid = true;
-            
-            inputs.forEach(input => {
-                if (!validateFieldVisual(input)) {
-                    isValid = false;
-                }
-            });
-            
-            if (!isValid) {
-                showMessageVisual('Por favor, preencha todos os campos obrigatórios.', 'error');
-            }
-            
-            return isValid;
-        }
-
-        // Validar campo individual (apenas visual)
-        function validateFieldVisual(field) {
-            const value = field.value.trim();
-            
-            // Remover estilos anteriores
-            field.classList.remove('valid', 'invalid');
-            
-            if (field.hasAttribute('required') && !value) {
-                field.classList.add('invalid');
-                return false;
-            }
-            
-            // Validações visuais específicas por tipo
-            if (field.type === 'email' && value) {
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailRegex.test(value)) {
-                    field.classList.add('invalid');
-                    return false;
-                }
-            }
-            
-            field.classList.add('valid');
-            return true;
-        }
-
-        // Validar força da senha (apenas visual)
-        function validatePasswordStrengthVisual() {
-            const password = document.getElementById('password').value;
-            const requirements = {
-                length: password.length >= 8,
-                uppercase: /[A-Z]/.test(password),
-                lowercase: /[a-z]/.test(password),
-                number: /[0-9]/.test(password),
-                special: /[!@#$%&*]/.test(password)
-            };
-            
-            let strength = 0;
-            let fulfilled = 0;
-            
-            // Atualizar requisitos visuais
-            Object.keys(requirements).forEach(req => {
-                const element = document.getElementById(`req-${req}`);
-                if (element) {
-                    if (requirements[req]) {
-                        element.classList.add('valid');
-                        element.classList.remove('invalid');
-                        element.innerHTML = '<i class="fas fa-check"></i> ' + element.textContent.replace(/^.*?\) /, '');
-                        fulfilled++;
-                    } else {
-                        element.classList.add('invalid');
-                        element.classList.remove('valid');
-                        element.innerHTML = '<i class="fas fa-times"></i> ' + element.textContent.replace(/^.*?\) /, '');
-                    }
-                }
-            });
-            
-            // Calcular força visual
-            strength = Math.floor((fulfilled / Object.keys(requirements).length) * 100);
-            updatePasswordStrengthVisual(strength);
-        }
-
-        // Atualizar indicador de força da senha (apenas visual)
-        function updatePasswordStrengthVisual(strength) {
-            const strengthFill = document.getElementById('strengthFill');
-            
-            if (strengthFill) {
-                strengthFill.style.width = `${strength}%`;
-                
-                if (strength < 40) {
-                    strengthFill.style.background = '#e74c3c';
-                } else if (strength < 80) {
-                    strengthFill.style.background = '#f39c12';
-                } else {
-                    strengthFill.style.background = '#2ecc71';
-                }
-            }
-        }
-
-        // Validar confirmação de senha (apenas visual)
-        function validatePasswordMatchVisual() {
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            const errorElement = document.getElementById('confirmPasswordError');
-            
-            if (confirmPassword && password !== confirmPassword) {
-                if (errorElement) errorElement.style.display = 'flex';
-                document.getElementById('confirmPassword').classList.add('invalid');
-            } else {
-                if (errorElement) errorElement.style.display = 'none';
-                document.getElementById('confirmPassword').classList.remove('invalid');
-                if (confirmPassword) {
-                    document.getElementById('confirmPassword').classList.add('valid');
-                }
-            }
-        }
-
-        // Mostrar mensagens (apenas visual)
-        function showMessageVisual(message, type = 'error', duration = 5000) {
-            const errorElement = document.getElementById('errorMessage');
-            const successElement = document.getElementById('successMessage');
-
-            // Esconder ambas as mensagens primeiro
-            if (errorElement) errorElement.classList.add('message-hidden');
-            if (successElement) successElement.classList.add('message-hidden');
-
-            const targetElement = type === 'error' ? errorElement : successElement;
-            
-            if (targetElement) {
-                targetElement.textContent = message;
-                targetElement.classList.remove('message-hidden');
-
-                if (duration > 0) {
-                    setTimeout(() => {
-                        targetElement.classList.add('message-hidden');
-                    }, duration);
-                }
-            }
-        }
-
-        // Animar elementos flutuantes
-        function animateFloatingElements() {
-            const elements = document.querySelectorAll('.floating-element');
-            
-            elements.forEach((element, index) => {
-                const delay = index * 0.5;
-                element.style.animationDelay = `${delay}s`;
-            });
-        }
+        });
     </script>
 </body>
 </html>

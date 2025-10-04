@@ -6,7 +6,7 @@ public class AuthResponse {
     private String firstName;
     private String lastName;
     private String email;
-    private Long id; // Novo campo para o ID do usuário
+    private Long id;
 
     public AuthResponse(String token, String firstName, String lastName, String email, Long id) {
         this.token = token;
