@@ -914,6 +914,11 @@ footer {
     align-items: center;
   }
 
+  .hero-stats {
+    justify-content: center;
+    text-align: center;
+  }
+
   .features-grid {
     grid-template-columns: 1fr;
   }

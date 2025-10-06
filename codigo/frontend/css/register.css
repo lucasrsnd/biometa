@@ -365,6 +365,59 @@ body {
   font-style: italic;
 }
 
+.date-input-group {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr;
+    gap: 12px;
+    align-items: end;
+}
+
+.date-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.date-field label {
+    font-size: 0.8rem;
+    color: var(--gray);
+    margin-bottom: 0;
+    text-align: center;
+    order: 2;
+}
+
+.date-field input,
+.date-field select {
+    order: 1;
+    text-align: center;
+    padding: 12px 8px;
+}
+
+.date-field input:focus,
+.date-field select:focus {
+    border-color: var(--primary);
+}
+
+.date-field input::-webkit-outer-spin-button,
+.date-field input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.date-field input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.date-field input.valid,
+.date-field select.valid {
+    border-color: var(--success);
+}
+
+.date-field input.invalid,
+.date-field select.invalid {
+    border-color: var(--danger);
+}
+
 .password-requirements {
   margin-top: 15px;
   display: flex;
