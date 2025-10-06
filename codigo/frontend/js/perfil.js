@@ -180,7 +180,7 @@ async function loadUserData() {
     console.log("Carregando dados do usuário...");
     console.log("Token:", token);
 
-    const response = await fetch("https://biometa-backend.onrender.com/api/user/me", {
+    const response = await fetch("https://biometa.onrender.com/api/user/me", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -436,7 +436,7 @@ async function saveProfile(e) {
 
   try {
     console.log("Enviando dados para atualização:", userData);
-    const response = await fetch("https://biometa-backend.onrender.com/api/user/me", {
+    const response = await fetch("https://biometa.onrender.com/api/user/me", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

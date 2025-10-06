@@ -223,7 +223,7 @@ async function loadUserData() {
   const token = localStorage.getItem("token");
 
   try {
-    const response = await fetch("https://biometa-backend.onrender.com/api/user/me", {
+    const response = await fetch("https://biometa.onrender.com/api/user/me", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,

@@ -303,7 +303,7 @@ async function handleRegister(e) {
 
   try {
     console.log("Enviando dados para cadastro...", userData);
-    const response = await fetch("https://biometa-backend.onrender.com/api/auth/register", {
+    const response = await fetch("https://biometa.onrender.com/api/auth/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -346,7 +346,7 @@ async function handleLogin(e) {
   }
 
   try {
-    const response = await fetch("https://biometa-backend.onrender.com/api/auth/login", {
+    const response = await fetch("https://biometa.onrender.com/api/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
