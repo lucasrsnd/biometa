@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", function () {
     registerForm.addEventListener("submit", handleRegister);
     setupPasswordValidation();
     setupFormNavigation();
-    setupDateInput(); // Adicionado para configurar os campos de data
   }
 
   const loginForm = document.getElementById("loginForm");
@@ -12,83 +11,6 @@ document.addEventListener("DOMContentLoaded", function () {
     loginForm.addEventListener("submit", handleLogin);
   }
 });
-
-// Função para configurar os campos de data
-function setupDateInput() {
-  const dayInput = document.getElementById('birthDay');
-  const monthInput = document.getElementById('birthMonth');
-  const yearInput = document.getElementById('birthYear');
-
-  if (dayInput && monthInput && yearInput) {
-    // Validação em tempo real
-    [dayInput, monthInput, yearInput].forEach(input => {
-      input.addEventListener('input', validateDate);
-      input.addEventListener('blur', validateDate);
-    });
-
-    // Auto-avanço entre campos
-    dayInput.addEventListener('input', function() {
-      if (this.value.length === 2) {
-        monthInput.focus();
-      }
-    });
-
-    monthInput.addEventListener('change', function() {
-      if (this.value) {
-        yearInput.focus();
-      }
-    });
-  }
-}
-
-// Função para validar data
-function validateDate() {
-  const day = document.getElementById('birthDay')?.value;
-  const month = document.getElementById('birthMonth')?.value;
-  const year = document.getElementById('birthYear')?.value;
-
-  const dayField = document.getElementById('birthDay');
-  const monthField = document.getElementById('birthMonth');
-  const yearField = document.getElementById('birthYear');
-
-  if (!dayField || !monthField || !yearField) return;
-
-  // Reset das classes
-  [dayField, monthField, yearField].forEach(field => {
-    field.classList.remove('valid', 'invalid');
-  });
-
-  // Validação básica
-  if (day && month && year) {
-    const isValid = isValidDate(day, month, year);
-    [dayField, monthField, yearField].forEach(field => {
-      field.classList.add(isValid ? 'valid' : 'invalid');
-    });
-  }
-}
-
-// Função para verificar se a data é válida
-function isValidDate(day, month, year) {
-  const date = new Date(year, month - 1, day);
-  return date.getFullYear() == year && 
-         date.getMonth() == month - 1 && 
-         date.getDate() == day;
-}
-
-// Função para obter a data formatada
-function getFormattedDate() {
-  const day = document.getElementById('birthDay')?.value;
-  const month = document.getElementById('birthMonth')?.value;
-  const year = document.getElementById('birthYear')?.value;
-  
-  if (day && month && year && isValidDate(day, month, year)) {
-    // Formata para YYYY-MM-DD (mesmo formato do input date)
-    const dayFormatted = day.padStart(2, '0');
-    const monthFormatted = month.padStart(2, '0');
-    return `${year}-${monthFormatted}-${dayFormatted}`;
-  }
-  return null;
-}
 
 function setupPasswordValidation() {
   const passwordInput = document.getElementById("password");
@@ -352,19 +274,11 @@ async function handleRegister(e) {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
   const gender = document.getElementById("gender").value;
+  const birthDate = document.getElementById("birthDate").value;
   const country = document.getElementById("country").value;
   const height = document.getElementById("height").value;
   const weight = document.getElementById("weight").value;
   const objective = document.getElementById("objective").value;
-
-  // NOVO: Obter a data dos campos separados
-  const birthDate = getFormattedDate();
-
-  // Validação da data
-  if (!birthDate) {
-    showMessage("Por favor, preencha uma data de nascimento válida.", "error");
-    return;
-  }
 
   if (height) {
     const heightValue = parseFloat(height);
@@ -380,7 +294,7 @@ async function handleRegister(e) {
     email,
     password,
     gender,
-    birthDate, // Agora vem da função getFormattedDate()
+    birthDate,
     country,
     height: height ? parseFloat(height) : null,
     weight: weight ? parseFloat(weight) : null,

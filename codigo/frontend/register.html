@@ -317,102 +317,164 @@
     <script src="js/auth.js"></script>
 
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        if (typeof particlesJS !== 'undefined') {
-            particlesJS('particles-js', {
-                particles: {
-                    number: { value: 50, density: { enable: true, value_area: 800 } },
-                    color: { value: "#6c63ff" },
-                    shape: { type: "circle" },
-                    opacity: { value: 0.2, random: true },
-                    size: { value: 3, random: true },
-                    line_linked: {
-                        enable: true,
-                        distance: 120,
-                        color: "#6c63ff",
-                        opacity: 0.1,
-                        width: 1
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof particlesJS !== 'undefined') {
+                particlesJS('particles-js', {
+                    particles: {
+                        number: { value: 50, density: { enable: true, value_area: 800 } },
+                        color: { value: "#6c63ff" },
+                        shape: { type: "circle" },
+                        opacity: { value: 0.2, random: true },
+                        size: { value: 3, random: true },
+                        line_linked: {
+                            enable: true,
+                            distance: 120,
+                            color: "#6c63ff",
+                            opacity: 0.1,
+                            width: 1
+                        },
+                        move: {
+                            enable: true,
+                            speed: 0.8,
+                            direction: "none",
+                            random: true
+                        }
                     },
-                    move: {
-                        enable: true,
-                        speed: 0.8,
-                        direction: "none",
-                        random: true
-                    }
-                },
-                interactivity: {
-                    detect_on: "canvas",
-                    events: {
-                        onhover: { enable: true, mode: "grab" },
-                        onclick: { enable: true, mode: "push" },
-                        resize: true
-                    }
-                },
-                retina_detect: true
-            });
-        }
-
-        let currentSection = 1;
-        const totalSections = 3;
-
-        function showSection(sectionNumber) {
-            document.querySelectorAll('.form-section').forEach(section => {
-                section.classList.remove('active');
-            });
-
-            const targetSection = document.getElementById(`section-${sectionNumber}`);
-            if (targetSection) {
-                targetSection.classList.add('active');
-                updateProgressVisual(sectionNumber);
-                currentSection = sectionNumber;
-            }
-        }
-
-        function updateProgressVisual(sectionNumber) {
-            const progressFill = document.getElementById('progressFill');
-            const progress = (sectionNumber / totalSections) * 100;
-
-            if (progressFill) {
-                progressFill.style.width = `${progress}%`;
+                    interactivity: {
+                        detect_on: "canvas",
+                        events: {
+                            onhover: { enable: true, mode: "grab" },
+                            onclick: { enable: true, mode: "push" },
+                            resize: true
+                        }
+                    },
+                    retina_detect: true
+                });
             }
 
-            document.querySelectorAll('.progress-step').forEach((step, index) => {
-                const stepNumber = index + 1;
-                step.classList.remove('active', 'completed');
+            let currentSection = 1;
+            const totalSections = 3;
 
-                if (stepNumber === sectionNumber) {
-                    step.classList.add('active');
-                } else if (stepNumber < sectionNumber) {
-                    step.classList.add('completed');
+            function showSection(sectionNumber) {
+                document.querySelectorAll('.form-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+
+                const targetSection = document.getElementById(`section-${sectionNumber}`);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                    updateProgressVisual(sectionNumber);
+                    currentSection = sectionNumber;
                 }
-            });
-        }
+            }
 
-        document.querySelectorAll('.btn-next').forEach(btn => {
-            btn.addEventListener('click', function () {
-                const nextSection = parseInt(this.dataset.next);
-                showSection(nextSection);
+            function updateProgressVisual(sectionNumber) {
+                const progressFill = document.getElementById('progressFill');
+                const progress = (sectionNumber / totalSections) * 100;
+
+                if (progressFill) {
+                    progressFill.style.width = `${progress}%`;
+                }
+
+                document.querySelectorAll('.progress-step').forEach((step, index) => {
+                    const stepNumber = index + 1;
+                    step.classList.remove('active', 'completed');
+
+                    if (stepNumber === sectionNumber) {
+                        step.classList.add('active');
+                    } else if (stepNumber < sectionNumber) {
+                        step.classList.add('completed');
+                    }
+                });
+            }
+
+            function setupDateInput() {
+                const dayInput = document.getElementById('birthDay');
+                const monthInput = document.getElementById('birthMonth');
+                const yearInput = document.getElementById('birthYear');
+
+                [dayInput, monthInput, yearInput].forEach(input => {
+                    input.addEventListener('input', validateDate);
+                    input.addEventListener('blur', validateDate);
+                });
+
+                dayInput.addEventListener('input', function () {
+                    if (this.value.length === 2) {
+                        monthInput.focus();
+                    }
+                });
+
+                monthInput.addEventListener('change', function () {
+                    if (this.value) {
+                        yearInput.focus();
+                    }
+                });
+            }
+
+            function validateDate() {
+                const day = document.getElementById('birthDay').value;
+                const month = document.getElementById('birthMonth').value;
+                const year = document.getElementById('birthYear').value;
+
+                const dayField = document.getElementById('birthDay');
+                const monthField = document.getElementById('birthMonth');
+                const yearField = document.getElementById('birthYear');
+
+                [dayField, monthField, yearField].forEach(field => {
+                    field.classList.remove('valid', 'invalid');
+                });
+
+                if (day && month && year) {
+                    const isValid = isValidDate(day, month, year);
+                    [dayField, monthField, yearField].forEach(field => {
+                        field.classList.add(isValid ? 'valid' : 'invalid');
+                    });
+                }
+            }
+
+            function isValidDate(day, month, year) {
+                const date = new Date(year, month - 1, day);
+                return date.getFullYear() == year &&
+                    date.getMonth() == month - 1 &&
+                    date.getDate() == day;
+            }
+
+            function getFormattedDate() {
+                const day = document.getElementById('birthDay').value.padStart(2, '0');
+                const month = document.getElementById('birthMonth').value.padStart(2, '0');
+                const year = document.getElementById('birthYear').value;
+
+                if (day && month && year) {
+                    return `${year}-${month}-${day}`;
+                }
+                return null;
+            }
+
+            document.querySelectorAll('.btn-next').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const nextSection = parseInt(this.dataset.next);
+                    showSection(nextSection);
+                });
             });
+
+            document.querySelectorAll('.btn-prev').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const prevSection = parseInt(this.dataset.prev);
+                    showSection(prevSection);
+                });
+            });
+
+            function animateFloatingElements() {
+                const elements = document.querySelectorAll('.floating-element');
+                elements.forEach((element, index) => {
+                    const delay = index * 0.5;
+                    element.style.animationDelay = `${delay}s`;
+                });
+            }
+
+            animateFloatingElements();
         });
-
-        document.querySelectorAll('.btn-prev').forEach(btn => {
-            btn.addEventListener('click', function () {
-                const prevSection = parseInt(this.dataset.prev);
-                showSection(prevSection);
-            });
-        });
-
-        function animateFloatingElements() {
-            const elements = document.querySelectorAll('.floating-element');
-            elements.forEach((element, index) => {
-                const delay = index * 0.5;
-                element.style.animationDelay = `${delay}s`;
-            });
-        }
-
-        animateFloatingElements();
-    });
-</script>
+    </script>
 </body>
 
 </html>
