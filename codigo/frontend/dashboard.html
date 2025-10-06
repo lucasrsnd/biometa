@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioMeta - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/dashboard.css?v=4.1">
+    <link rel="shortcut icon" type="image/x-icon" href="/img/logo.png">
+</head>
+
+<body>
+    <div class="background-effects">
+        <div class="particles" id="particles-js"></div>
+        <div class="gradient-bg"></div>
+    </div>
+
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="dashboard.html" class="logo">
+                    <i class="fas fa-dumbbell"></i> BioMeta
+                </a>
+
+                <ul class="nav-links">
+                    <li><a href="dashboard.html" class="active"><i class="fas fa-home"></i> Início</a></li>
+                    <li><a href="planejamento.html"><i class="fas fa-calendar"></i> Planejamento</a></li>
+                    <li><a href="treinos.html"><i class="fas fa-dumbbell"></i> Treinos</a></li>
+                    <li><a href="dieta.html"><i class="fas fa-utensils"></i> Dieta</a></li>
+                    <li><a href="hidratacao.html"><i class="fas fa-tint"></i> Hidratação</a></li>
+                </ul>
+
+                <a href="perfil.html" class="user-profile">
+                    <div class="user-avatar" id="navbarAvatar"></div>
+                    <div class="user-info" id="navbarName"></div>
+                </a>
+
+                <div class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <section class="welcome-section">
+                <div class="welcome-content">
+                    <h1 class="welcome-title">Bem-vindo, <span id="userName">Usuário</span>! <span
+                            id="greetingEmoji">💪</span></h1>
+                    <p id="currentDate" class="current-date">Segunda-feira, 15 de Janeiro de 2024</p>
+                    <div class="daily-message" id="dailyMessage">
+                        <i class="fas fa-quote-left"></i>
+                        <span id="motivationalQuote">Sua jornada fitness começa com um único passo!</span>
+                        <i class="fas fa-quote-right"></i>
+                    </div>
+                </div>
+            </section>
+
+            <section class="dashboard-section">
+                <h2 class="section-title"><i class="fas fa-chart-line"></i> Resumo Diário</h2>
+                <div class="dashboard-grid">
+                    <div class="summary-card" id="workoutCard">
+                        <div class="card-icon workout">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Meta de Treino</h3>
+                            <div class="progress-info">
+                                <span class="progress-text" id="workoutProgress">0/0 exercícios</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="workoutProgressFill"></div>
+                                </div>
+                            </div>
+                            <div class="card-status" id="workoutStatus">Não iniciado</div>
+                        </div>
+                        <div class="card-glow"></div>
+                    </div>
+
+                    <div class="summary-card" id="dietCard">
+                        <div class="card-icon diet">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Meta de Dieta</h3>
+                            <div class="progress-info">
+                                <span class="progress-text" id="dietProgress">0/0 calorias</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="dietProgressFill"></div>
+                                </div>
+                            </div>
+                            <div class="card-status" id="dietStatus">Aguardando refeições</div>
+                        </div>
+                        <div class="card-glow"></div>
+                    </div>
+
+                    <div class="summary-card" id="hydrationCard">
+                        <div class="card-icon hydration">
+                            <i class="fas fa-tint"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Meta de Hidratação</h3>
+                            <div class="progress-info">
+                                <span class="progress-text" id="hydrationProgress">0/0 ml</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="hydrationProgressFill"></div>
+                                </div>
+                            </div>
+                            <div class="card-status" id="hydrationStatus">Comece a beber água!</div>
+                        </div>
+                        <div class="card-glow"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="dashboard-section">
+                <h2 class="section-title"><i class="fas fa-lightbulb"></i> Motivação e Dicas</h2>
+                <div class="motivation-grid">
+                    <div class="motivation-card tip-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-star"></i> Dica do Dia</h3>
+                        </div>
+                        <div class="tip-content">
+                            <div class="tip-icon">
+                                <i class="fas fa-heartbeat" id="tipIcon"></i>
+                            </div>
+                            <p id="dailyTip">Hidrate-se bem antes dos exercícios para melhor desempenho!</p>
+                        </div>
+                        <div class="card-glow"></div>
+                    </div>
+
+                    <div class="motivation-card stats-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-chart-pie"></i> Suas Estatísticas</h3>
+                        </div>
+                        <div class="stats-grid">
+                            <div class="stat-item">
+                                <div class="stat-value" id="totalWorkouts">0</div>
+                                <div class="stat-label">Treinos Realizados</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="totalMeals">0</div>
+                                <div class="stat-label">Refeições Registradas</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="waterConsumed">0L</div>
+                                <div class="stat-label">Água Consumida</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value" id="currentStreak">0</div>
+                                <div class="stat-label">Dias Consecutivos</div>
+                            </div>
+                        </div>
+                        <div class="card-glow"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="dashboard-section">
+                <h2 class="section-title"><i class="fas fa-bolt"></i> Acesso Rápido</h2>
+                <div class="quick-actions-grid">
+                    <a href="treinos.html" class="quick-action">
+                        <div class="action-icon">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                        <h3>Treinos</h3>
+                        <p>Crie e gerencie suas fichas de exercícios, acompanhe seu progresso nos treinos.</p>
+                        <div class="action-badge" id="workoutBadge">0 exercícios hoje</div>
+                        <div class="action-glow"></div>
+                    </a>
+
+                    <a href="dieta.html" class="quick-action">
+                        <div class="action-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <h3>Dieta</h3>
+                        <p>Registre suas refeições, acompanhe calorias e macronutrientes consumidos.</p>
+                        <div class="action-badge" id="dietBadge">0 calorias hoje</div>
+                        <div class="action-glow"></div>
+                    </a>
+
+                    <a href="hidratacao.html" class="quick-action">
+                        <div class="action-icon">
+                            <i class="fas fa-tint"></i>
+                        </div>
+                        <h3>Hidratação</h3>
+                        <p>Controle seu consumo diário de água e acompanhe suas metas de hidratação.</p>
+                        <div class="action-badge" id="hydrationBadge">0 ml hoje</div>
+                        <div class="action-glow"></div>
+                    </a>
+
+                    <a href="planejamento.html" class="quick-action">
+                        <div class="action-icon">
+                            <i class="fas fa-calendar"></i>
+                        </div>
+                        <h3>Planejamento</h3>
+                        <p>Organize sua agenda, defina metas e acompanhe suas tarefas diárias.</p>
+                        <div class="action-badge" id="planningBadge">0 eventos hoje</div>
+                        <div class="action-glow"></div>
+                    </a>
+                </div>
+            </section>
+
+            <div id="errorMessage" class="error"></div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="js/dashboard.js?v=4.1"></script>
+</body>
+
+</html>

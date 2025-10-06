@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioMeta - Meu Perfil</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/perfil.css?v=2.0">
+    <link rel="shortcut icon" type="image/x-icon" href="/img/logo.png">
+</head>
+
+<body>
+    <div class="background-effects">
+        <div class="particles" id="particles-js"></div>
+        <div class="gradient-bg"></div>
+    </div>
+
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="dashboard.html" class="logo">
+                    <i class="fas fa-dumbbell"></i> BioMeta
+                </a>
+
+                <ul class="nav-links">
+                    <li><a href="dashboard.html"><i class="fas fa-home"></i> Início</a></li>
+                    <li><a href="planejamento.html"><i class="fas fa-calendar"></i> Planejamento</a></li>
+                    <li><a href="treinos.html"><i class="fas fa-dumbbell"></i> Treinos</a></li>
+                    <li><a href="dieta.html"><i class="fas fa-utensils"></i> Dieta</a></li>
+                    <li><a href="hidratacao.html"><i class="fas fa-tint"></i> Hidratação</a></li>
+                </ul>
+
+                <a href="perfil.html" class="user-profile">
+                    <div class="user-avatar" id="navbarAvatar"></div>
+                    <div class="user-info" id="navbarName"></div>
+                </a>
+
+                <div class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">Meu Perfil</h1>
+                <p class="page-subtitle">Gerencie suas informações pessoais e acompanhe sua saúde</p>
+            </div>
+
+            <div class="profile-grid">
+                <section class="profile-section">
+                    <div class="card">
+                        <div class="card-glow"></div>
+                        <div class="card-header">
+                            <h2><i class="fas fa-user"></i> Informações Pessoais</h2>
+                            <button id="editToggleBtn" class="btn btn-outline">
+                                <i class="fas fa-edit"></i> Editar
+                            </button>
+                        </div>
+
+                        <div class="profile-content">
+                            <form id="profileForm" class="profile-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="firstName">Primeiro Nome</label>
+                                        <input type="text" id="firstName" name="firstName" value="Usuário" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="lastName">Último Nome</label>
+                                        <input type="text" id="lastName" name="lastName" value="" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">E-mail</label>
+                                        <input type="email" id="email" name="email" value="usuario@gmail.com" disabled>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="birthDate">Data de Nascimento</label>
+                                        <input type="date" id="birthDate" name="birthDate" value="1992-05-15" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="age">Idade</label>
+                                        <input type="text" id="age" name="age" value="32 anos" disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="gender">Sexo</label>
+                                        <select id="gender" name="gender" disabled>
+                                            <option value="">Selecione...</option>
+                                            <option value="Masculino">Masculino</option>
+                                            <option value="Feminino">Feminino</option>
+                                            <option value="Prefiro não dizer">Prefiro não dizer</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="height">Altura (m)</label>
+                                        <input type="number" id="height" name="height" value="1.75" disabled step="0.01"
+                                            min="0.5" max="2.5" placeholder="Ex: 1.75">
+                                        <small class="input-help">Exemplo: 1.75 para 1 metro e 75 centímetros</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="weight">Peso (kg)</label>
+                                        <input type="number" id="weight" name="weight" value="78.5" disabled step="0.1"
+                                            min="0" max="300">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="objective">Objetivo</label>
+                                        <select id="objective" name="objective" disabled>
+                                            <option value="">Selecione seu objetivo...</option>
+                                            <option value="emagrecer">🥗 Emagrecer</option>
+                                            <option value="manter">⚖️ Manter peso</option>
+                                            <option value="ganhar">💪 Ganhar massa muscular</option>
+                                            <option value="definir">🔥 Definir músculos</option>
+                                            <option value="saude">❤️ Melhorar saúde</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group full-width">
+                                        <label for="country">País</label>
+                                        <select id="country" name="country" disabled>
+                                            <option value="">Selecione...</option>
+                                            <option value="Brasil">Brasil</option>
+                                            <option value="Portugal">Portugal</option>
+                                            <option value="Estados Unidos">Estados Unidos</option>
+                                            <option value="Espanha">Espanha</option>
+                                            <option value="Outro">Outro</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-actions" id="formActions" style="display: none;">
+                                    <button type="button" class="btn btn-outline" id="cancelEditBtn">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                                </div>
+                            </form>
+
+                            <button id="logoutBtn" class="btn btn-danger btn-full" style="margin-top: 20px;">
+                                <i class="fas fa-sign-out-alt"></i> Sair da Conta
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="side-section">
+                    <div class="card">
+                        <div class="card-glow"></div>
+                        <div class="card-header">
+                            <h2><i class="fas fa-weight"></i> Índice de Massa Corporal</h2>
+                        </div>
+
+                        <div class="imc-content">
+                            <div class="imc-display">
+                                <div class="imc-value" id="imcValue">25.6</div>
+                                <div class="imc-classification" id="imcClassification">Sobrepeso</div>
+                            </div>
+
+                            <div class="imc-scale">
+                                <div class="scale-bar">
+                                    <div class="scale-fill" id="scaleFill"></div>
+                                </div>
+                                <div class="scale-labels">
+                                    <span>Abaixo</span>
+                                    <span>Normal</span>
+                                    <span>Sobrepeso</span>
+                                    <span>Obesidade</span>
+                                </div>
+                            </div>
+
+                            <p class="imc-info">Seu IMC está na categoria <strong id="imcCategory">sobrepeso</strong>.
+                                <span id="imcRecommendation"></span>.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="js/perfil.js?v=2.0"></script>
+</body>
+
+</html>

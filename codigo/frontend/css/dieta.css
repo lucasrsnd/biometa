@@ -1,0 +1,1141 @@
+:root {
+  --primary: #6c63ff;
+  --primary-dark: #5a52d5;
+  --secondary: #ff6584;
+  --accent: #36d1dc;
+  --success: #4caf50;
+  --warning: #ff9800;
+  --danger: #f44336;
+  --dark: #1a1a2e;
+  --darker: #16213e;
+  --light: #f8f9fa;
+  --gray: #6c757d;
+  --border-radius: 16px;
+  --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+  color: var(--light);
+  line-height: 1.6;
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.background-effects {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.gradient-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+      circle at 10% 20%,
+      rgba(108, 99, 255, 0.1) 0%,
+      transparent 20%
+    ),
+    radial-gradient(
+      circle at 90% 80%,
+      rgba(255, 101, 132, 0.1) 0%,
+      transparent 20%
+    ),
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(54, 209, 220, 0.05) 0%,
+      transparent 20%
+    );
+  animation: gradientShift 15s ease-in-out infinite alternate;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+#particles-js {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+.fa-add:before,
+.fa-plus:before {
+  color: var(--light);
+}
+
+header {
+  background: rgba(26, 26, 46, 0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: var(--transition);
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--light);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.logo i {
+  color: var(--primary);
+  margin-right: 10px;
+  font-size: 2rem;
+}
+
+.logo:hover {
+  transform: translateY(-2px);
+  color: var(--primary);
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 30px;
+}
+
+.nav-links a {
+  display: flex;
+  align-items: center;
+  color: var(--light);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-links a i {
+  margin-right: 8px;
+  font-size: 1.1rem;
+}
+
+.nav-links a:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.nav-links a:hover:before {
+  left: 100%;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  background: rgba(108, 99, 255, 0.2);
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--light);
+  transition: var(--transition);
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+
+.user-profile:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  margin-right: 10px;
+  box-shadow: 0 4px 10px rgba(108, 99, 255, 0.3);
+}
+
+.user-info {
+  font-weight: 500;
+}
+
+.menu-toggle {
+  display: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--light);
+}
+
+.main-content {
+  padding: 40px 0;
+  animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.page-title {
+  font-size: 2.8rem;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: textGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes textGlow {
+  from {
+    text-shadow: 0 0 10px rgba(108, 99, 255, 0.5);
+  }
+  to {
+    text-shadow: 0 0 20px rgba(108, 99, 255, 0.8),
+      0 0 30px rgba(108, 99, 255, 0.6);
+  }
+}
+
+.page-subtitle {
+  font-size: 1.2rem;
+  color: var(--gray);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.diet-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+  align-items: start;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-radius: var(--border-radius);
+  padding: 25px;
+  box-shadow: var(--box-shadow);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 25px;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border-color: rgba(108, 99, 255, 0.3);
+}
+
+.card-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(108, 99, 255, 0.1), transparent 30%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.card:hover .card-glow {
+  opacity: 1;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card-header h2 {
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--light);
+}
+
+.card-header i {
+  color: var(--primary);
+}
+
+.btn {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(108, 99, 255, 0.4);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+}
+
+.btn-outline {
+  background: transparent;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+}
+
+.btn-outline:hover {
+  background: var(--primary);
+  color: white;
+}
+
+.btn-small {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+}
+
+.btn-full {
+  width: 100%;
+  justify-content: center;
+}
+
+.meal-form,
+.food-form {
+  margin-top: 15px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 15px;
+  align-items: end;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--light);
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: var(--light);
+  font-family: inherit;
+  transition: var(--transition);
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.2);
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.meals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.meal-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition);
+  border-left: 3px solid transparent;
+}
+
+.meal-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateX(5px);
+}
+
+.meal-item.active {
+  background: rgba(108, 99, 255, 0.1);
+  border-left-color: var(--primary);
+  transform: translateX(5px);
+}
+
+.meal-item-with-calories {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.meal-item-name {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.meal-item-foods {
+  font-size: 0.9rem;
+  color: var(--gray);
+}
+
+.meal-calories {
+  background: rgba(108, 99, 255, 0.2);
+  color: var(--primary);
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid rgba(108, 99, 255, 0.3);
+}
+
+.meal-item-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: 15px;
+}
+
+.delete-meal {
+  color: var(--danger);
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 4px;
+  transition: var(--transition);
+}
+
+.delete-meal:hover {
+  background: rgba(244, 67, 54, 0.1);
+  transform: scale(1.1);
+}
+
+.foods-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.food-item {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 20px;
+  border-left: 4px solid var(--primary);
+  transition: var(--transition);
+}
+
+.food-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+.food-item.completed {
+  border-left-color: var(--success);
+  opacity: 0.8;
+}
+
+.food-description {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  color: var(--light);
+}
+
+.food-nutrition-table {
+  width: 100%;
+  margin-bottom: 15px;
+  border-collapse: collapse;
+}
+
+.food-nutrition-table th {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 8px 12px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--gray);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.food-nutrition-table td {
+  padding: 10px 12px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.food-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.food-action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.complete-btn,
+.edit-food-btn,
+.delete-food-btn {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.complete-btn {
+  background: rgba(76, 175, 80, 0.1);
+  color: var(--success);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.complete-btn:hover {
+  background: rgba(76, 175, 80, 0.2);
+  transform: translateY(-1px);
+}
+
+.complete-btn.completed {
+  background: rgba(76, 175, 80, 0.3);
+  color: white;
+}
+
+.edit-food-btn {
+  background: rgba(108, 99, 255, 0.1);
+  color: var(--primary);
+  border: 1px solid rgba(108, 99, 255, 0.3);
+}
+
+.edit-food-btn:hover {
+  background: rgba(108, 99, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.delete-food-btn {
+  background: rgba(244, 67, 54, 0.1);
+  color: var(--danger);
+  border: 1px solid rgba(244, 67, 54, 0.3);
+}
+
+.delete-food-btn:hover {
+  background: rgba(244, 67, 54, 0.2);
+  transform: translateY(-1px);
+}
+
+.nutrition-summary {
+  margin-bottom: 20px;
+}
+
+.nutrition-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.nutrition-item {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  transition: var(--transition);
+}
+
+.nutrition-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+.nutrition-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.nutrition-label {
+  font-size: 0.9rem;
+  color: var(--gray);
+  margin-bottom: 3px;
+}
+
+.nutrition-unit {
+  font-size: 0.8rem;
+  color: var(--gray);
+  opacity: 0.7;
+}
+
+.nutrition-goal {
+  margin-top: 20px;
+}
+
+.goal-progress {
+  margin-bottom: 20px;
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  color: var(--light);
+}
+
+.percentage {
+  background: rgba(108, 99, 255, 0.2);
+  color: var(--primary);
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.progress-bar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.goal-settings {
+  margin-top: 15px;
+}
+
+.goal-settings label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--gray);
+  font-weight: 500;
+}
+
+.goal-input-container {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.goal-input-container input {
+  flex: 1;
+  padding: 10px 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: var(--light);
+  font-family: inherit;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--gray);
+}
+
+.empty-state i {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  color: var(--primary);
+  opacity: 0.7;
+}
+
+.empty-state p {
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.diet-section,
+.side-section {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.diet-section.visible,
+.side-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 1200px) {
+  .diet-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 15px;
+  }
+
+  .page-title {
+    font-size: 2.2rem;
+  }
+
+  .page-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .main-content {
+    padding: 20px 0;
+  }
+
+  .card {
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .card-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+  }
+
+  .card-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .form-group {
+    margin-bottom: 12px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .form-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .nutrition-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .nutrition-item {
+    padding: 12px;
+  }
+
+  .nutrition-value {
+    font-size: 1.5rem;
+  }
+
+  .foods-list {
+    gap: 12px;
+  }
+
+  .food-item {
+    padding: 15px;
+  }
+
+  .food-description {
+    font-size: 1rem;
+    margin-bottom: 12px;
+  }
+
+  .food-nutrition-table {
+    font-size: 0.8rem;
+    margin-bottom: 12px;
+  }
+
+  .food-nutrition-table th,
+  .food-nutrition-table td {
+    padding: 6px 8px;
+  }
+
+  .food-action-buttons {
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+  }
+
+  .complete-btn,
+  .edit-food-btn,
+  .delete-food-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 10px;
+    font-size: 0.85rem;
+  }
+
+  .meals-list {
+    gap: 8px;
+  }
+
+  .meal-item {
+    padding: 12px;
+  }
+
+  .meal-item-with-calories {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .meal-calories {
+    align-self: flex-start;
+  }
+
+  .meal-item-actions {
+    margin-left: 0;
+    margin-top: 8px;
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .goal-input-container {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .goal-input-container input {
+    width: 100%;
+  }
+
+  .goal-input-container .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .navbar {
+    flex-wrap: wrap;
+    padding: 10px 0;
+  }
+
+  .nav-links {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .nav-links a {
+    padding: 10px 15px;
+    justify-content: center;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .user-profile .user-info {
+    display: none;
+  }
+
+  .logo {
+    font-size: 1.5rem;
+  }
+
+  .logo i {
+    font-size: 1.7rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-title {
+    font-size: 1.8rem;
+  }
+
+  .page-subtitle {
+    font-size: 1rem;
+  }
+
+  .card {
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 12px;
+  }
+
+  .nutrition-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .nutrition-item {
+    padding: 10px;
+  }
+
+  .nutrition-value {
+    font-size: 1.3rem;
+  }
+
+  .food-nutrition-table {
+    font-size: 0.75rem;
+  }
+
+  .food-nutrition-table th,
+  .food-nutrition-table td {
+    padding: 4px 6px;
+  }
+
+  .btn {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+  }
+
+  .btn-small {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  .btn-large {
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
+
+  .form-group input {
+    padding: 10px 12px;
+    font-size: 16px;
+  }
+
+  .progress-label {
+    font-size: 0.85rem;
+  }
+
+  .percentage {
+    font-size: 0.75rem;
+    padding: 2px 6px;
+  }
+}
+
+@media (max-width: 768px) {
+  .food-nutrition-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .food-nutrition-table thead,
+  .food-nutrition-table tbody {
+    display: table;
+    width: 100%;
+  }
+
+  .create-card .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .empty-state {
+    padding: 30px 15px;
+  }
+
+  .empty-state i {
+    font-size: 2.5rem;
+  }
+
+  .empty-state p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) and (orientation: landscape) {
+  .nutrition-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .food-action-buttons {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .complete-btn,
+  .edit-food-btn,
+  .delete-food-btn {
+    flex: 1;
+    min-width: 80px;
+  }
+}
+
+@media (max-width: 768px) {
+  .btn,
+  .meal-item,
+  .food-item,
+  .nutrition-item {
+    min-height: 44px;
+  }
+
+  .card-header h2,
+  .nutrition-value,
+  .page-title {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  }
+
+  .btn:active,
+  .meal-item:active,
+  .food-item:active {
+    transform: scale(0.98);
+  }
+}
+
+@media (max-width: 768px) {
+  .diet-section,
+  .side-section {
+    transform: translateY(20px);
+  }
+
+  .card {
+    transform: translateY(10px);
+  }
+
+  .card-glow,
+  .progress-fill:after {
+    animation: none;
+  }
+}
