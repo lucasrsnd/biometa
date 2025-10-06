@@ -1,26 +1,21 @@
 # Imagem base com Java 17
 FROM eclipse-temurin:17-jdk-alpine
 
-# Define o diretório de trabalho dentro do container
 WORKDIR /app
 
-# Copia apenas o pom.xml primeiro (para usar cache do Docker)
+# Instala Maven no container
+RUN apk add --no-cache maven bash git
+
+# Copia apenas o pom.xml primeiro (melhor para cache)
 COPY pom.xml .
 
-# Copia o Maven Wrapper e dá permissão de execução
-COPY mvnw .
-RUN chmod +x mvnw
-
-# Copia a pasta src completa
+# Copia a pasta src
 COPY src ./src
 
-# Copia outros arquivos necessários (opcional)
-COPY . .
+# Build do projeto usando Maven já instalado
+RUN mvn clean package -DskipTests
 
-# Compila o projeto e gera o jar
-RUN ./mvnw clean package -DskipTests
-
-# Expõe a porta que o Spring Boot usa
+# Expõe a porta do Spring Boot
 EXPOSE 8080
 
 # Comando para rodar a aplicação
