@@ -188,13 +188,13 @@ header {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--water-blue), var(--accent));
+    background: linear-gradient(135deg, var(--primary), var(--accent));
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 600;
     margin-right: 10px;
-    box-shadow: 0 4px 10px rgba(54, 162, 235, 0.3);
+    box-shadow: 0 4px 10px rgba(108, 99, 255, 0.3);
 }
 
 .user-info {
@@ -690,40 +690,6 @@ header {
     transition: width 0.3s ease;
 }
 
-/* ===== DICAS ===== */
-.tips-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.tip-item {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    transition: var(--transition);
-}
-
-.tip-item:hover {
-    background: rgba(255, 255, 255, 0.08);
-    transform: translateX(5px);
-}
-
-.tip-item i {
-    color: var(--water-blue);
-    font-size: 1.2rem;
-    width: 20px;
-    text-align: center;
-}
-
-.tip-item span {
-    color: var(--light);
-    font-size: 0.95rem;
-}
-
 /* ===== EMPTY STATES ===== */
 .empty-state {
     text-align: center;
@@ -757,10 +723,15 @@ header {
     transform: translateY(0);
 }
 
-/* ===== RESPONSIVIDADE ===== */
+/* ===== RESPONSIVIDADE MELHORADA - HIDRATAÇÃO ===== */
 @media (max-width: 1200px) {
     .hydration-grid {
         grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .side-section {
+        order: -1;
     }
 }
 
@@ -769,56 +740,241 @@ header {
         padding: 0 15px;
     }
     
+    .main-content {
+        padding: 20px 0;
+    }
+    
+    .page-header {
+        margin-bottom: 30px;
+    }
+    
     .page-title {
         font-size: 2.2rem;
+        margin-bottom: 8px;
+    }
+    
+    .page-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    /* CARDS MOBILE */
+    .card {
+        padding: 20px;
+        margin-bottom: 20px;
     }
     
     .card-header {
         flex-direction: column;
         gap: 15px;
         align-items: flex-start;
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .card-header h2 {
+        font-size: 1.2rem;
+    }
+    
+    /* META DE HIDRATAÇÃO MOBILE */
+    .hydration-goal {
+        padding: 15px 0;
+    }
+    
+    .goal-value {
+        font-size: 2rem;
+    }
+    
+    .goal-formula {
+        font-size: 0.9rem;
+    }
+    
+    /* REGISTRO DE CONSUMO MOBILE */
+    .consumption-form {
+        gap: 15px;
     }
     
     .quick-actions {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    
+    .btn-quantity {
+        padding: 10px;
+        font-size: 0.85rem;
+        flex-direction: column;
+        gap: 5px;
+        min-height: 60px;
+    }
+    
+    .btn-quantity i {
+        font-size: 1.1rem;
     }
     
     .custom-input {
         flex-direction: column;
+        gap: 8px;
     }
     
+    .custom-input input {
+        width: 100%;
+    }
+    
+    .custom-input .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    /* GRÁFICO DE CONSUMO MOBILE */
     .consumption-stats {
         align-items: flex-start;
+        gap: 3px;
+    }
+    
+    .stat-consumed {
+        font-size: 1.1rem;
+    }
+    
+    .stat-goal {
+        font-size: 0.85rem;
+    }
+    
+    .chart-container {
+        margin: 20px 0;
+    }
+    
+    .water-bar {
+        height: 35px;
+    }
+    
+    .chart-labels {
+        font-size: 0.8rem;
+    }
+    
+    .progress-text {
+        font-size: 1.1rem;
+    }
+    
+    .time-info {
+        font-size: 0.9rem;
+    }
+    
+    /* HISTÓRICO MOBILE */
+    .history-list {
+        max-height: 250px;
+        margin-bottom: 15px;
+    }
+    
+    .history-item {
+        padding: 12px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .history-amount {
+        font-size: 1rem;
+    }
+    
+    .history-time {
+        font-size: 0.8rem;
     }
     
     .history-summary {
         grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .summary-item {
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+    
+    /* DESAFIOS MOBILE */
+    .challenges-list {
+        gap: 12px;
     }
     
     .challenge-item {
-        flex-direction: column;
-        text-align: center;
+        padding: 12px;
+        gap: 12px;
+    }
+    
+    .challenge-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+    
+    .challenge-title {
+        font-size: 1rem;
+        margin-bottom: 4px;
+    }
+    
+    .challenge-description {
+        font-size: 0.85rem;
+        margin-bottom: 8px;
     }
     
     .challenge-progress {
         flex-direction: column;
-        gap: 8px;
+        gap: 6px;
+        align-items: stretch;
     }
     
+    .challenge-status {
+        font-size: 0.75rem;
+        text-align: center;
+    }
+    
+    /* BOTÕES MOBILE */
+    .btn {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+    
+    .btn-small {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+    
+    /* EMPTY STATES MOBILE */
+    .empty-state {
+        padding: 30px 15px;
+    }
+    
+    .empty-state i {
+        font-size: 2.5rem;
+        margin-bottom: 12px;
+    }
+    
+    .empty-state p {
+        font-size: 0.9rem;
+        margin-bottom: 6px;
+    }
+    
+    /* NAVBAR MOBILE */
     .navbar {
         flex-wrap: wrap;
+        padding: 10px 0;
     }
     
     .nav-links {
         display: none;
         width: 100%;
         flex-direction: column;
-        gap: 10px;
-        margin-top: 20px;
+        gap: 8px;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
     
     .nav-links.active {
         display: flex;
+    }
+    
+    .nav-links a {
+        padding: 10px 15px;
+        justify-content: center;
     }
     
     .menu-toggle {
@@ -828,55 +984,261 @@ header {
     .user-profile .user-info {
         display: none;
     }
+    
+    .logo {
+        font-size: 1.5rem;
+    }
+    
+    .logo i {
+        font-size: 1.7rem;
+    }
 }
 
 @media (max-width: 480px) {
+    .container {
+        padding: 0 12px;
+    }
+    
     .page-title {
         font-size: 1.8rem;
     }
     
-    .card {
-        padding: 20px;
+    .page-subtitle {
+        font-size: 1rem;
     }
     
+    /* CARDS MOBILE PEQUENO */
+    .card {
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 12px;
+    }
+    
+    /* META DE HIDRATAÇÃO MOBILE PEQUENO */
     .goal-value {
-        font-size: 2rem;
+        font-size: 1.8rem;
+    }
+    
+    /* BOTÕES DE QUANTIDADE MOBILE PEQUENO */
+    .quick-actions {
+        grid-template-columns: 1fr;
     }
     
     .btn-quantity {
+        min-height: 55px;
+        font-size: 0.8rem;
+    }
+    
+    /* GRÁFICO MOBILE PEQUENO */
+    .water-bar {
+        height: 30px;
+    }
+    
+    .progress-text {
+        font-size: 1rem;
+    }
+    
+    /* HISTÓRICO MOBILE PEQUENO */
+    .history-item {
         padding: 10px;
-        font-size: 0.9rem;
+    }
+    
+    /* DESAFIOS MOBILE PEQUENO */
+    .challenge-item {
+        padding: 10px;
+    }
+    
+    .challenge-content {
+        min-width: 0;
+    }
+    
+    /* FORMULÁRIOS MOBILE PEQUENO */
+    .custom-input input {
+        padding: 10px 12px;
+        font-size: 16px; /* Prevenir zoom no iOS */
     }
 }
 
-/* ===== SCROLLBAR PERSONALIZADA ===== */
-::-webkit-scrollbar {
-    width: 8px;
+/* ===== MELHORIAS ESPECÍFICAS PARA HIDRATAÇÃO MOBILE ===== */
+@media (max-width: 768px) {
+    /* Melhorar visualização do gráfico de consumo */
+    .consumption-chart {
+        padding: 10px 0;
+    }
+    
+    /* Otimizar botões de ação rápida */
+    .btn-quantity {
+        background: rgba(54, 162, 235, 0.15);
+        border-width: 1px;
+    }
+    
+    /* Ajustar cards de desafios para melhor legibilidade */
+    .challenge-item {
+        border-left-width: 2px;
+    }
+    
+    /* Melhorar contraste para outdoor */
+    .card-header h2,
+    .goal-value,
+    .progress-text,
+    .page-title {
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+    
+    /* Reduzir efeitos pesados em mobile */
+    .card:hover .card-glow {
+        opacity: 0.3;
+    }
+    
+    .card:hover {
+        transform: translateY(-3px);
+    }
+    
+    .water-fill:after {
+        animation: none; /* Desativar animação de shimmer em mobile */
+    }
 }
 
-::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
+/* ===== ORIENTAÇÃO LANDSCAPE ===== */
+@media (max-width: 768px) and (orientation: landscape) {
+    .hydration-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+    
+    .side-section {
+        order: 0;
+    }
+    
+    .quick-actions {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .btn-quantity {
+        min-height: 50px;
+        font-size: 0.75rem;
+        padding: 8px;
+    }
+    
+    .history-list {
+        max-height: 120px;
+    }
+    
+    .challenges-list {
+        max-height: 200px;
+        overflow-y: auto;
+    }
 }
 
-::-webkit-scrollbar-thumb {
-    background: var(--water-blue);
-    border-radius: 4px;
+/* ===== MELHORIAS DE ACESSIBILIDADE MOBILE ===== */
+@media (max-width: 768px) {
+    /* Áreas de toque maiores */
+    .btn,
+    .btn-quantity,
+    .history-item,
+    .challenge-item {
+        min-height: 44px; /* Tamanho mínimo recomendado para touch */
+    }
+    
+    /* Feedback visual para touch */
+    .btn:active,
+    .btn-quantity:active,
+    .history-item:active,
+    .challenge-item:active {
+        transform: scale(0.98);
+    }
+    
+    /* Inputs mais legíveis */
+    .custom-input input:focus {
+        border-width: 2px;
+    }
+    
+    /* Melhor contraste para textos importantes */
+    .goal-value,
+    .stat-consumed,
+    .progress-text {
+        font-weight: 700;
+    }
 }
 
-::-webkit-scrollbar-thumb:hover {
-    background: var(--water-dark);
+/* ===== ANIMAÇÕES OTIMIZADAS PARA MOBILE ===== */
+@media (max-width: 768px) {
+    .hydration-section,
+    .side-section {
+        transform: translateY(20px);
+    }
+    
+    .card {
+        transform: translateY(10px);
+    }
+    
+    /* Reduzir animações pesadas em dispositivos mais lentos */
+    .water-fill:after,
+    .card-glow {
+        animation: none;
+    }
+    
+    .page-title {
+        animation: textGlow 3s ease-in-out infinite alternate;
+    }
 }
 
-/* ===== ANIMAÇÕES ESPECÍFICAS ===== */
-@keyframes waterRipple {
-    0% { transform: scaleX(0); }
-    50% { transform: scaleX(1.02); }
-    100% { transform: scaleX(1); }
+/* ===== CORREÇÕES ESPECÍFICAS PARA HIDRATAÇÃO ===== */
+@media (max-width: 768px) {
+    /* Garantir que os botões de quantidade sejam claros */
+    .btn-quantity[data-ml="200"] { border-color: #36a2eb; }
+    .btn-quantity[data-ml="300"] { border-color: #2e8bc0; }
+    .btn-quantity[data-ml="500"] { border-color: #1e6fa8; }
+    .btn-quantity[data-ml="1000"] { border-color: #155d8c; }
+    
+    /* Ajustar espaçamento do gráfico */
+    .chart-container {
+        margin: 15px 0;
+    }
+    
+    /* Melhorar visualização do histórico */
+    .history-item {
+        border-left: 3px solid var(--water-blue);
+    }
+    
+    /* Otimizar cards de desafios */
+    .challenge-item[data-challenge="consistent"] { border-left-color: #36a2eb; }
+    .challenge-item[data-challenge="early"] { border-left-color: #ffa726; }
+    .challenge-item[data-challenge="bottle"] { border-left-color: #4caf50; }
+    .challenge-item[data-challenge="streak"] { border-left-color: #ff6584; }
+    
+    /* Garantir que o botão de limpar seja acessível */
+    .btn-outline {
+        min-width: 44px;
+        min-height: 44px;
+    }
 }
 
-@keyframes fadeInOut {
-    0% { opacity: 0; transform: translate(-50%, -40%); }
-    20% { opacity: 1; transform: translate(-50%, -50%); }
-    80% { opacity: 1; transform: translate(-50%, -50%); }
-    100% { opacity: 0; transform: translate(-50%, -60%); }
+/* ===== MELHORIAS DE TIPOGRAFIA MOBILE ===== */
+@media (max-width: 768px) {
+    .goal-formula,
+    .challenge-description,
+    .history-time,
+    .time-info {
+        line-height: 1.4;
+    }
+    
+    .stat-consumed,
+    .goal-value {
+        line-height: 1.2;
+    }
+}
+
+/* ===== SCROLLBAR OTIMIZADA PARA MOBILE ===== */
+@media (max-width: 768px) {
+    .history-list::-webkit-scrollbar,
+    .challenges-list::-webkit-scrollbar {
+        width: 4px;
+    }
+    
+    .history-list::-webkit-scrollbar-thumb,
+    .challenges-list::-webkit-scrollbar-thumb {
+        background: var(--water-blue);
+        border-radius: 2px;
+    }
 }

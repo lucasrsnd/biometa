@@ -5,11 +5,14 @@ let challenges = {};
 
 document.addEventListener('DOMContentLoaded', function() {
     const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user"));
 
-    if (!token) {
+    if (!token || !user) {
         window.location.href = "login.html";
         return;
     }
+
+    console.log(`=== CARREGANDO DADOS DO USUÁRIO ${user.id} ===`);
 
     // Inicializar navbar
     initNavbar();
@@ -146,6 +149,29 @@ function initParticles() {
             },
             retina_detect: true
         });
+    }
+}
+
+function loadSavedMeals() {
+    const meals = JSON.parse(localStorage.getItem(getUserKey('meals'))) || [];
+    
+    // ✅ VERIFICAR SE SÃO DADOS VÁLIDOS (não dados de outro usuário)
+    const isValidData = meals.every(meal => 
+        meal && typeof meal === 'object' && meal.id && meal.name
+    );
+    
+    if (meals.length > 0 && isValidData) {
+        document.getElementById('noMealsState').style.display = 'none';
+        meals.forEach(meal => renderMeal(meal));
+        
+        if (!selectedMealId && meals.length > 0) {
+            selectMeal(meals[0].id);
+        }
+    } else {
+        // ✅ SE DADOS INVÁLIDOS, LIMPAR E INICIALIZAR VAZIO
+        console.log('Dados de refeições inválidos detectados, limpando...');
+        localStorage.setItem(getUserKey('meals'), JSON.stringify([]));
+        document.getElementById('noMealsState').style.display = 'block';
     }
 }
 
@@ -382,10 +408,12 @@ function updateTimeInfo() {
 }
 
 function clearTodayHistory() {
-    if (confirm('Tem certeza que deseja limpar todo o histórico de hoje?')) {
+    if (confirm('Tem certeza que deseja limpar todo o histórico de hoje? Isso não afetará seus desafios conquistados.')) {
         todayConsumption = [];
         saveTodayConsumption();
         updateDisplay();
+        
+        // Atualizar desafios baseado no novo estado (vazio)
         updateChallenges();
         
         // Feedback visual
@@ -404,12 +432,14 @@ function clearTodayHistory() {
 // ========== DESAFIOS ========== //
 
 function loadChallenges() {
-    challenges = JSON.parse(localStorage.getItem(getUserKey('hydration_challenges'))) || {
-        consistent: { current: 0, max: 7 },
-        early: false,
-        bottle: false,
-        streak: { current: 0, max: 30 },
-        lastUpdated: new Date().toDateString()
+    const saved = JSON.parse(localStorage.getItem(getUserKey('hydration_challenges'))) || {};
+    
+    challenges = {
+        early: saved.early || false,
+        bottle: saved.bottle || false,
+        streak: saved.streak || { current: 0, max: 30, lastCompleted: null },
+        bottleClicks: saved.bottleClicks || 0, // Contador de cliques para garrafa de 1L
+        lastUpdated: saved.lastUpdated || new Date().toDateString()
     };
 }
 
@@ -420,58 +450,126 @@ function saveChallenges() {
 
 function updateChallenges() {
     const totalConsumed = todayConsumption.reduce((total, item) => total + item.ml, 0);
+    const today = new Date().toDateString();
     
-    // Desafio: Consistência Semanal
-    if (totalConsumed >= dailyGoal) {
-        if (challenges.consistent.current < challenges.consistent.max) {
-            challenges.consistent.current++;
-        }
+    // VERIFICAR SE É UM NOVO DIA para resetar desafios diários
+    if (challenges.lastUpdated !== today) {
+        resetDailyChallenges();
     }
     
-    // Desafio: Início Matinal
+    // Desafio: Início Matinal - beber 500ml antes das 10h
     const earlyConsumption = todayConsumption.filter(item => {
         const hour = new Date(item.timestamp).getHours();
-        return hour < 10;
+        return hour < 10; // Antes das 10h
     }).reduce((total, item) => total + item.ml, 0);
     
     challenges.early = earlyConsumption >= 500;
     
-    // Desafio: Garrafa Inteira
+    // Desafio: Garrafa Inteira - completar 2L em um dia
     challenges.bottle = totalConsumed >= 2000;
     
-    // Desafio: Sequência Perfeita
-    if (totalConsumed >= dailyGoal) {
-        if (challenges.streak.current < challenges.streak.max) {
-            challenges.streak.current++;
-        }
-    } else {
-        challenges.streak.current = 0;
-    }
+    // Desafio: Sequência Perfeita - 30 dias consecutivos
+    updateStreakChallenge(totalConsumed, today);
     
     saveChallenges();
     updateChallengesDisplay();
 }
 
-function updateChallengesDisplay() {
-    // Consistência Semanal
-    const consistentProgress = (challenges.consistent.current / challenges.consistent.max) * 100;
-    document.getElementById('consistentProgress').style.width = `${consistentProgress}%`;
-    document.getElementById('consistentDays').textContent = `${challenges.consistent.current}/${challenges.consistent.max} dias`;
+function resetDailyChallenges() {
+    const today = new Date().toDateString();
     
+    // Reset apenas dos desafios diários
+    challenges.early = false;
+    challenges.bottle = false;
+    challenges.bottleClicks = 0;
+    challenges.lastUpdated = today;
+}
+
+function updateStreakChallenge(totalConsumed, today) {
+    // Se já atingiu a meta hoje, não fazer nada
+    if (challenges.streak.lastCompleted === today) {
+        return;
+    }
+    
+    // Se atingiu a meta hoje pela primeira vez
+    if (totalConsumed >= dailyGoal) {
+        challenges.streak.current++;
+        challenges.streak.lastCompleted = today;
+        
+        // Garantir que não ultrapasse o máximo
+        if (challenges.streak.current > challenges.streak.max) {
+            challenges.streak.current = challenges.streak.max;
+        }
+    } 
+    // Se não atingiu a meta e já é um novo dia, resetar streak
+    else if (challenges.streak.lastCompleted && 
+             challenges.streak.lastCompleted !== today) {
+        // Só reseta se o último dia completo não for hoje
+        const lastCompleted = new Date(challenges.streak.lastCompleted);
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        
+        // Se o último dia completo não foi ontem, quebra a sequência
+        if (lastCompleted.toDateString() !== yesterday.toDateString()) {
+            challenges.streak.current = 0;
+        }
+    }
+}
+
+function addConsumption(ml) {
+    const consumption = {
+        id: Date.now(),
+        ml: ml,
+        timestamp: new Date().toISOString(),
+        time: new Date().toLocaleTimeString('pt-BR', { 
+            hour: '2-digit', 
+            minute: '2-digit' 
+        })
+    };
+    
+    todayConsumption.push(consumption);
+    saveTodayConsumption();
+    updateDisplay();
+    
+    // Lógica específica para garrafa de 1L (dois cliques = 2L)
+    if (ml === 1000) {
+        challenges.bottleClicks = (challenges.bottleClicks || 0) + 1;
+        if (challenges.bottleClicks >= 2) {
+            challenges.bottle = true;
+        }
+        saveChallenges();
+    }
+    
+    updateChallenges();
+    
+    // Feedback visual
+    showConsumptionFeedback(ml);
+}
+
+function updateChallengesDisplay() {
     // Início Matinal
     const earlyStatus = document.getElementById('earlyStatus');
-    earlyStatus.textContent = challenges.early ? 'Concluído! 🎉' : 'Não concluído';
-    earlyStatus.className = challenges.early ? 'challenge-status completed' : 'challenge-status';
+    if (earlyStatus) {
+        earlyStatus.textContent = challenges.early ? 'Concluído! 🎉' : 'Não concluído';
+        earlyStatus.className = challenges.early ? 'challenge-status completed' : 'challenge-status';
+    }
     
     // Garrafa Inteira
     const bottleStatus = document.getElementById('bottleStatus');
-    bottleStatus.textContent = challenges.bottle ? 'Concluído! 🎉' : 'Não concluído';
-    bottleStatus.className = challenges.bottle ? 'challenge-status completed' : 'challenge-status';
+    if (bottleStatus) {
+        bottleStatus.textContent = challenges.bottle ? 'Concluído! 🎉' : 'Não concluído';
+        bottleStatus.className = challenges.bottle ? 'challenge-status completed' : 'challenge-status';
+    }
     
     // Sequência Perfeita
-    const streakProgress = (challenges.streak.current / challenges.streak.max) * 100;
-    document.getElementById('streakProgress').style.width = `${streakProgress}%`;
-    document.getElementById('streakDays').textContent = `${challenges.streak.current}/${challenges.streak.max} dias`;
+    const streakProgress = document.getElementById('streakProgress');
+    const streakDays = document.getElementById('streakDays');
+    
+    if (streakProgress && streakDays) {
+        const progress = (challenges.streak.current / challenges.streak.max) * 100;
+        streakProgress.style.width = `${progress}%`;
+        streakDays.textContent = `${challenges.streak.current}/${challenges.streak.max} dias`;
+    }
 }
 
 // ========== RESET DIÁRIO ========== //

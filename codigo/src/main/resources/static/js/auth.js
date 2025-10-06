@@ -33,6 +33,22 @@ function setupPasswordValidation() {
   }
 }
 
+// FUNÇÕES GLOBAIS PARA TODOS OS ARQUIVOS
+window.getCurrentUserId = function() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    return user ? user.id : null;
+};
+
+window.getUserKey = function(key) {
+    const userId = getCurrentUserId();
+    return userId ? `${key}_${userId}` : key;
+};
+
+// DEBUG: Verificar se está funcionando
+console.log('=== CONFIGURAÇÃO GLOBAL ===');
+console.log('User ID:', getCurrentUserId());
+console.log('Workouts key:', getUserKey('workouts'));
+
 // Configurar navegação do formulário
 function setupFormNavigation() {
   document.querySelectorAll('.btn-next').forEach(btn => {
@@ -343,55 +359,78 @@ async function handleRegister(e) {
 }
 
 async function handleLogin(e) {
-  e.preventDefault();
+    e.preventDefault();
 
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-  if (!email || !password) {
-    showMessage("Por favor, preencha todos os campos.", "error");
-    return;
-  }
-
-  try {
-    const response = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-
-      // Salvar token e dados do usuário incluindo o ID
-      localStorage.setItem("token", data.token);
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          id: data.id,
-          firstName: data.firstName,
-          lastName: data.lastName,
-          email: data.email,
-        })
-      );
-
-      window.location.href = "dashboard.html";
-    } else {
-      const errorText = await response.text();
-
-      if (response.status === 401) {
-        showMessage("E-mail ou senha incorretos. Verifique suas credenciais.", "error");
-      } else if (response.status === 400) {
-        showMessage("Dados inválidos. Verifique as informações fornecidas.", "error");
-      } else {
-        showMessage(errorText || "Erro ao fazer login. Tente novamente.", "error");
-      }
+    if (!email || !password) {
+        showMessage("Por favor, preencha todos os campos.", "error");
+        return;
     }
-  } catch (error) {
-    showMessage("Erro de conexão. Verifique sua internet e tente novamente.", "error");
-  }
+
+    try {
+        const response = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, password }),
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+
+            // ✅ NOVO: LIMPAR CACHE ANTES DE SALVAR NOVO USUÁRIO
+            clearUserCache();
+
+            // Salvar token e dados do usuário incluindo o ID
+            localStorage.setItem("token", data.token);
+            localStorage.setItem(
+                "user",
+                JSON.stringify({
+                    id: data.id,
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    email: data.email,
+                })
+            );
+
+            // ✅ FORÇAR RECARREGAMENTO COMPLETO
+            window.location.href = "dashboard.html";
+        } else {
+            const errorText = await response.text();
+            if (response.status === 401) {
+                showMessage("E-mail ou senha incorretos. Verifique suas credenciais.", "error");
+            } else if (response.status === 400) {
+                showMessage("Dados inválidos. Verifique as informações fornecidas.", "error");
+            } else {
+                showMessage(errorText || "Erro ao fazer login. Tente novamente.", "error");
+            }
+        }
+    } catch (error) {
+        showMessage("Erro de conexão. Verifique sua internet e tente novamente.", "error");
+    }
+}
+
+function clearUserCache() {
+    console.log('Limpando cache de usuário anterior...');
+    
+    // Obter TODAS as chaves do localStorage
+    const allKeys = Object.keys(localStorage);
+    
+    // Lista de padrões de chaves que devem ser preservadas
+    const preserveKeys = ['token', 'user'];
+    
+    // Remover TODAS as chaves que não são de autenticação
+    allKeys.forEach(key => {
+        if (!preserveKeys.includes(key)) {
+            localStorage.removeItem(key);
+            console.log('Removido:', key);
+        }
+    });
+    
+    console.log('Limpeza completa!');
 }
 
 // Função para mostrar mensagens

@@ -1,11 +1,17 @@
 // Variáveis globais
 document.addEventListener('DOMContentLoaded', function() {
     const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user"));
 
-    if (!token) {
+    if (!token || !user) {
         window.location.href = "login.html";
         return;
     }
+
+    console.log(`=== CARREGANDO DADOS DO USUÁRIO ${user.id} ===`);
+
+    // Carregar dados do usuário primeiro
+    loadUserData();
 
     // Inicializar navbar
     initNavbar();
@@ -271,13 +277,23 @@ function saveMeal(meal) {
 function loadSavedMeals() {
     const meals = JSON.parse(localStorage.getItem(getUserKey('meals'))) || [];
     
-    if (meals.length > 0) {
+    // ✅ VERIFICAR SE SÃO DADOS VÁLIDOS (não dados de outro usuário)
+    const isValidData = meals.every(meal => 
+        meal && typeof meal === 'object' && meal.id && meal.name
+    );
+    
+    if (meals.length > 0 && isValidData) {
         document.getElementById('noMealsState').style.display = 'none';
         meals.forEach(meal => renderMeal(meal));
         
         if (!selectedMealId && meals.length > 0) {
             selectMeal(meals[0].id);
         }
+    } else {
+        // ✅ SE DADOS INVÁLIDOS, LIMPAR E INICIALIZAR VAZIO
+        console.log('Dados de refeições inválidos detectados, limpando...');
+        localStorage.setItem(getUserKey('meals'), JSON.stringify([]));
+        document.getElementById('noMealsState').style.display = 'block';
     }
 }
 
@@ -368,6 +384,11 @@ function showFoodForm() {
     document.getElementById('addFoodBtn').style.display = 'none';
     editingFoodId = null;
     resetFoodForm();
+    
+    // Garantir que o botão de submit tenha o texto correto
+    const submitButton = document.querySelector('#foodForm button[type="submit"]');
+    submitButton.innerHTML = '<i class="fas fa-plus"></i> Adicionar Alimento';
+    submitButton.dataset.editing = 'false';
 }
 
 // Esconder formulário de alimento
@@ -376,6 +397,11 @@ function hideFoodForm() {
     document.getElementById('addFoodBtn').style.display = 'block';
     editingFoodId = null;
     resetFoodForm();
+    
+    // Resetar texto do botão
+    const submitButton = document.querySelector('#foodForm button[type="submit"]');
+    submitButton.innerHTML = '<i class="fas fa-plus"></i> Adicionar Alimento';
+    submitButton.dataset.editing = 'false';
 }
 
 // Resetar formulário de alimento
@@ -429,24 +455,31 @@ function addFood(e) {
     if (mealIndex === -1) return;
     
     if (editingFoodId) {
-        // Editar alimento existente
+        // Editar alimento existente - CORREÇÃO: Remover do resumo antes de atualizar
         const foodIndex = meals[mealIndex].foods.findIndex(f => f.id === editingFoodId);
         if (foodIndex !== -1) {
             const oldFood = meals[mealIndex].foods[foodIndex];
             
-            // Atualizar dados
+            // REMOVER nutrição antiga do resumo se estava concluído
+            if (oldFood.completed && oldFood.nutrition) {
+                removeFromDailySummary(oldFood.nutrition);
+            }
+            
+            // Atualizar dados do alimento
             meals[mealIndex].foods[foodIndex].description = description;
             meals[mealIndex].foods[foodIndex].nutrition = nutrition;
             
-            // Se estava concluído, atualizar o resumo
-            if (oldFood.completed && oldFood.nutrition) {
-                removeFromDailySummary(oldFood.nutrition);
+            // ADICIONAR nova nutrição ao resumo se estava concluído
+            if (oldFood.completed) {
                 addToDailySummary(nutrition);
             }
             
             localStorage.setItem(getUserKey('meals'), JSON.stringify(meals));
             renderFoods(meals[mealIndex].foods);
             renderMeal(meals[mealIndex]);
+            
+            // Atualizar dashboard
+            updateDashboardData();
         }
     } else {
         // Adicionar novo alimento
@@ -554,9 +587,14 @@ function editFood(foodId) {
     editingFoodId = foodId;
     fillFoodForm(food);
     
-    // Mostrar formulário
+    // Mostrar formulário e MUDAR TEXTO DO BOTÃO para "Salvar Alterações"
     document.getElementById('foodFormContainer').style.display = 'block';
     document.getElementById('addFoodBtn').style.display = 'none';
+    
+    // Atualizar texto do botão de submit
+    const submitButton = document.querySelector('#foodForm button[type="submit"]');
+    submitButton.innerHTML = '<i class="fas fa-save"></i> Salvar Alterações';
+    submitButton.dataset.editing = 'true';
 }
 
 // Alternar conclusão do alimento
@@ -589,6 +627,9 @@ function toggleFoodCompletion(foodId, completed) {
     
     localStorage.setItem(getUserKey('meals'), JSON.stringify(meals));
     renderFoods(meals[mealIndex].foods);
+    
+    // Atualizar dashboard
+    updateDashboardData();
 }
 
 // Excluir alimento
@@ -606,7 +647,7 @@ function deleteFood(foodId) {
         if (foodIndex !== -1) {
             const food = meals[mealIndex].foods[foodIndex];
             
-            // Remover do resumo se estava concluído
+            // CORREÇÃO: Remover do resumo se estava concluído
             if (food.completed && food.nutrition) {
                 removeFromDailySummary(food.nutrition);
             }
@@ -618,8 +659,28 @@ function deleteFood(foodId) {
             // Atualizar visualização
             renderFoods(meals[mealIndex].foods);
             renderMeal(meals[mealIndex]);
+            
+            // Atualizar dashboard
+            updateDashboardData();
         }
     }
+}
+
+function updateDashboardData() {
+    // Disparar evento customizado para notificar o dashboard
+    const updateEvent = new CustomEvent('dietDataUpdated');
+    window.dispatchEvent(updateEvent);
+    
+    // Também atualizar localStorage para sincronização imediata
+    const summary = JSON.parse(localStorage.getItem(getUserKey('dailySummary'))) || {
+        calories: 0,
+        protein: 0,
+        carbs: 0,
+        fat: 0
+    };
+    
+    // Forçar atualização no localStorage
+    localStorage.setItem(getUserKey('dailySummary'), JSON.stringify(summary));
 }
 
 // Excluir refeição
@@ -764,10 +825,11 @@ function addToDailySummary(nutrition) {
         fat: 0
     };
     
-    summary.calories += nutrition.calories || 0;
-    summary.protein += nutrition.protein || 0;
-    summary.carbs += nutrition.carbs || 0;
-    summary.fat += nutrition.fat || 0;
+    // CORREÇÃO: Garantir que todos os valores sejam números
+    summary.calories = (summary.calories || 0) + (nutrition.calories || 0);
+    summary.protein = (summary.protein || 0) + (nutrition.protein || 0);
+    summary.carbs = (summary.carbs || 0) + (nutrition.carbs || 0);
+    summary.fat = (summary.fat || 0) + (nutrition.fat || 0);
     
     saveDailySummary(summary);
     updateSummaryDisplay(summary);
@@ -782,10 +844,11 @@ function removeFromDailySummary(nutrition) {
         fat: 0
     };
     
-    summary.calories = Math.max(0, summary.calories - (nutrition.calories || 0));
-    summary.protein = Math.max(0, summary.protein - (nutrition.protein || 0));
-    summary.carbs = Math.max(0, summary.carbs - (nutrition.carbs || 0));
-    summary.fat = Math.max(0, summary.fat - (nutrition.fat || 0));
+    // CORREÇÃO: Garantir que não fique negativo
+    summary.calories = Math.max(0, (summary.calories || 0) - (nutrition.calories || 0));
+    summary.protein = Math.max(0, (summary.protein || 0) - (nutrition.protein || 0));
+    summary.carbs = Math.max(0, (summary.carbs || 0) - (nutrition.carbs || 0));
+    summary.fat = Math.max(0, (summary.fat || 0) - (nutrition.fat || 0));
     
     saveDailySummary(summary);
     updateSummaryDisplay(summary);

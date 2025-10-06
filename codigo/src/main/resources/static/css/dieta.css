@@ -82,6 +82,10 @@ body {
     background: transparent;
 }
 
+.fa-add:before, .fa-plus:before {
+    color: var(--light);
+}
+
 /* ===== NAVBAR EMBUTIDA ===== */
 header {
     background: rgba(26, 26, 46, 0.8);
@@ -783,10 +787,11 @@ header {
     transform: translateY(0);
 }
 
-/* ===== RESPONSIVIDADE ===== */
+/* ===== RESPONSIVIDADE MELHORADA ===== */
 @media (max-width: 1200px) {
     .diet-grid {
         grid-template-columns: 1fr;
+        gap: 20px;
     }
 }
 
@@ -799,46 +804,169 @@ header {
         font-size: 2.2rem;
     }
     
+    .page-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .main-content {
+        padding: 20px 0;
+    }
+    
+    .card {
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    
     .card-header {
         flex-direction: column;
         gap: 15px;
         align-items: flex-start;
+        padding-bottom: 15px;
+        margin-bottom: 15px;
     }
     
+    .card-header h2 {
+        font-size: 1.2rem;
+    }
+    
+    /* FORMULÁRIOS MOBILE */
     .form-row {
         grid-template-columns: 1fr;
+        gap: 10px;
     }
     
+    .form-group {
+        margin-bottom: 12px;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .form-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    /* RESUMO NUTRICIONAL MOBILE */
     .nutrition-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    
+    .nutrition-item {
+        padding: 12px;
+    }
+    
+    .nutrition-value {
+        font-size: 1.5rem;
+    }
+    
+    /* LISTA DE ALIMENTOS MOBILE */
+    .foods-list {
+        gap: 12px;
+    }
+    
+    .food-item {
+        padding: 15px;
+    }
+    
+    .food-description {
+        font-size: 1rem;
+        margin-bottom: 12px;
+    }
+    
+    .food-nutrition-table {
+        font-size: 0.8rem;
+        margin-bottom: 12px;
+    }
+    
+    .food-nutrition-table th,
+    .food-nutrition-table td {
+        padding: 6px 8px;
     }
     
     .food-action-buttons {
         flex-direction: column;
+        gap: 6px;
+        width: 100%;
     }
     
+    .complete-btn,
+    .edit-food-btn,
+    .delete-food-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 10px;
+        font-size: 0.85rem;
+    }
+    
+    /* LISTA DE REFEIÇÕES MOBILE */
+    .meals-list {
+        gap: 8px;
+    }
+    
+    .meal-item {
+        padding: 12px;
+    }
+    
+    .meal-item-with-calories {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        width: 100%;
+    }
+    
+    .meal-calories {
+        align-self: flex-start;
+    }
+    
+    .meal-item-actions {
+        margin-left: 0;
+        margin-top: 8px;
+        width: 100%;
+        justify-content: flex-end;
+    }
+    
+    /* META DIÁRIA MOBILE */
     .goal-input-container {
         flex-direction: column;
+        gap: 8px;
     }
     
     .goal-input-container input {
         width: 100%;
     }
     
+    .goal-input-container .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    /* NAVBAR MOBILE */
     .navbar {
         flex-wrap: wrap;
+        padding: 10px 0;
     }
     
     .nav-links {
         display: none;
         width: 100%;
         flex-direction: column;
-        gap: 10px;
-        margin-top: 20px;
+        gap: 8px;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
     
     .nav-links.active {
         display: flex;
+    }
+    
+    .nav-links a {
+        padding: 10px 15px;
+        justify-content: center;
     }
     
     .menu-toggle {
@@ -848,6 +976,14 @@ header {
     .user-profile .user-info {
         display: none;
     }
+    
+    .logo {
+        font-size: 1.5rem;
+    }
+    
+    .logo i {
+        font-size: 1.7rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -855,39 +991,165 @@ header {
         font-size: 1.8rem;
     }
     
+    .page-subtitle {
+        font-size: 1rem;
+    }
+    
     .card {
-        padding: 20px;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 12px;
     }
     
-    .form-actions {
-        flex-direction: column;
-    }
-    
-    .meal-item-with-calories {
-        flex-direction: column;
-        align-items: flex-start;
+    /* RESUMO NUTRICIONAL MOBILE PEQUENO */
+    .nutrition-grid {
+        grid-template-columns: 1fr;
         gap: 8px;
     }
     
-    .meal-calories {
-        align-self: flex-start;
+    .nutrition-item {
+        padding: 10px;
+    }
+    
+    .nutrition-value {
+        font-size: 1.3rem;
+    }
+    
+    /* TABELA NUTRICIONAL MOBILE PEQUENO */
+    .food-nutrition-table {
+        font-size: 0.75rem;
+    }
+    
+    .food-nutrition-table th,
+    .food-nutrition-table td {
+        padding: 4px 6px;
+    }
+    
+    /* BOTÕES MOBILE PEQUENO */
+    .btn {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+    
+    .btn-small {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+    
+    .btn-large {
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+    
+    /* FORMULÁRIOS MOBILE PEQUENO */
+    .form-group input {
+        padding: 10px 12px;
+        font-size: 16px; /* Prevenir zoom no iOS */
+    }
+    
+    /* PROGRESS BAR MOBILE */
+    .progress-label {
+        font-size: 0.85rem;
+    }
+    
+    .percentage {
+        font-size: 0.75rem;
+        padding: 2px 6px;
     }
 }
 
-/* ===== SCROLLBAR PERSONALIZADA ===== */
-::-webkit-scrollbar {
-    width: 8px;
+/* ===== MELHORIAS ESPECÍFICAS PARA DIETA MOBILE ===== */
+@media (max-width: 768px) {
+    /* Melhorar legibilidade das tabelas */
+    .food-nutrition-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    
+    .food-nutrition-table thead,
+    .food-nutrition-table tbody {
+        display: table;
+        width: 100%;
+    }
+    
+    /* Ajustar cards de criação */
+    .create-card .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Melhorar empty states */
+    .empty-state {
+        padding: 30px 15px;
+    }
+    
+    .empty-state i {
+        font-size: 2.5rem;
+    }
+    
+    .empty-state p {
+        font-size: 0.9rem;
+    }
 }
 
-::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
+/* ===== ORIENTAÇÃO LANDSCAPE ===== */
+@media (max-width: 768px) and (orientation: landscape) {
+    .nutrition-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .food-action-buttons {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    
+    .complete-btn,
+    .edit-food-btn,
+    .delete-food-btn {
+        flex: 1;
+        min-width: 80px;
+    }
 }
 
-::-webkit-scrollbar-thumb {
-    background: var(--primary);
-    border-radius: 4px;
+/* ===== MELHORIAS DE ACESSIBILIDADE MOBILE ===== */
+@media (max-width: 768px) {
+    /* Áreas de toque maiores */
+    .btn,
+    .meal-item,
+    .food-item,
+    .nutrition-item {
+        min-height: 44px; /* Tamanho mínimo recomendado para touch */
+    }
+    
+    /* Melhor contraste */
+    .card-header h2,
+    .nutrition-value,
+    .page-title {
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+    
+    /* Feedback visual para touch */
+    .btn:active,
+    .meal-item:active,
+    .food-item:active {
+        transform: scale(0.98);
+    }
 }
 
-::-webkit-scrollbar-thumb:hover {
-    background: var(--primary-dark);
+/* ===== ANIMAÇÕES OTIMIZADAS PARA MOBILE ===== */
+@media (max-width: 768px) {
+    .diet-section,
+    .side-section {
+        transform: translateY(20px);
+    }
+    
+    .card {
+        transform: translateY(10px);
+    }
+    
+    /* Reduzir animações pesadas em dispositivos mais lentos */
+    .card-glow,
+    .progress-fill:after {
+        animation: none;
+    }
 }

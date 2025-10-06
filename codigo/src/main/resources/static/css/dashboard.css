@@ -678,32 +678,185 @@ header {
     75% { transform: translateX(5px); }
 }
 
-/* ===== RESPONSIVIDADE ===== */
-@media (max-width: 1024px) {
-    .motivation-grid {
-        grid-template-columns: 1fr;
+/* ===== RESPONSIVIDADE MELHORADA - DASHBOARD ===== */
+@media (max-width: 1200px) {
+    .dashboard-grid,
+    .quick-actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
     }
     
-    .welcome-title {
-        font-size: 2.2rem;
+    .motivation-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
     }
 }
 
 @media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .main-content {
+        padding: 20px 0;
+    }
+    
+    .welcome-section {
+        margin-bottom: 30px;
+        padding: 20px 0;
+    }
+    
+    .welcome-title {
+        font-size: 1.8rem;
+        margin-bottom: 8px;
+    }
+    
+    .current-date {
+        font-size: 1rem;
+        margin-bottom: 15px;
+    }
+    
+    .daily-message {
+        padding: 12px 20px;
+        font-size: 0.9rem;
+        max-width: 100%;
+    }
+    
+    .dashboard-section {
+        margin-bottom: 30px;
+    }
+    
+    .section-title {
+        font-size: 1.4rem;
+        margin-bottom: 20px;
+    }
+    
+    .section-title i {
+        font-size: 1.2rem;
+        margin-right: 10px;
+    }
+    
+    /* CARDS MOBILE */
+    .dashboard-grid,
+    .quick-actions-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .summary-card,
+    .motivation-card,
+    .quick-action {
+        padding: 20px;
+        margin-bottom: 0;
+    }
+    
+    .summary-card:hover,
+    .motivation-card:hover,
+    .quick-action:hover {
+        transform: translateY(-5px);
+    }
+    
+    /* ICONES MOBILE */
+    .card-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+    
+    .action-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+    }
+    
+    .tip-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+    }
+    
+    /* CONTEÚDO DOS CARDS MOBILE */
+    .card-content h3,
+    .quick-action h3 {
+        font-size: 1.2rem;
+        margin-bottom: 12px;
+    }
+    
+    .card-content p,
+    .quick-action p {
+        font-size: 0.9rem;
+        margin-bottom: 15px;
+    }
+    
+    .progress-text {
+        font-size: 0.85rem;
+    }
+    
+    .card-status {
+        font-size: 0.85rem;
+    }
+    
+    /* ESTATÍSTICAS MOBILE */
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .stat-item {
+        padding: 12px;
+    }
+    
+    .stat-value {
+        font-size: 1.5rem;
+    }
+    
+    .stat-label {
+        font-size: 0.8rem;
+    }
+    
+    /* DICA DO DIA MOBILE */
+    .tip-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .tip-content p {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    
+    /* BADGES MOBILE */
+    .action-badge {
+        font-size: 0.75rem;
+        padding: 4px 10px;
+    }
+    
+    /* NAVBAR MOBILE */
     .navbar {
         flex-wrap: wrap;
+        padding: 10px 0;
     }
     
     .nav-links {
         display: none;
         width: 100%;
         flex-direction: column;
-        gap: 10px;
-        margin-top: 20px;
+        gap: 8px;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
     
     .nav-links.active {
         display: flex;
+    }
+    
+    .nav-links a {
+        padding: 10px 15px;
+        justify-content: center;
     }
     
     .menu-toggle {
@@ -714,90 +867,214 @@ header {
         display: none;
     }
     
-    .dashboard-grid,
-    .quick-actions-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .welcome-title {
-        font-size: 1.8rem;
-    }
-    
-    .section-title {
+    .logo {
         font-size: 1.5rem;
     }
     
-    .tip-content {
-        flex-direction: column;
-        text-align: center;
+    .logo i {
+        font-size: 1.7rem;
     }
 }
 
 @media (max-width: 480px) {
     .container {
-        padding: 0 15px;
+        padding: 0 12px;
     }
     
     .welcome-title {
         font-size: 1.5rem;
     }
     
+    .current-date {
+        font-size: 0.9rem;
+    }
+    
     .daily-message {
         padding: 10px 15px;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .daily-message i {
+        margin: 0;
+        font-size: 0.8rem;
+    }
+    
+    .section-title {
+        font-size: 1.2rem;
+    }
+    
+    /* CARDS MOBILE PEQUENO */
+    .summary-card,
+    .motivation-card,
+    .quick-action {
+        padding: 15px;
+        border-radius: 12px;
+    }
+    
+    .card-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+        margin-bottom: 12px;
+    }
+    
+    .card-content h3,
+    .quick-action h3 {
+        font-size: 1.1rem;
+    }
+    
+    /* ESTATÍSTICAS MOBILE PEQUENO */
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .stat-item {
+        padding: 10px;
+    }
+    
+    .stat-value {
+        font-size: 1.3rem;
+    }
+    
+    /* BOTÕES E BADGES MOBILE PEQUENO */
+    .action-badge {
+        font-size: 0.7rem;
+        padding: 3px 8px;
+    }
+    
+    /* PROGRESS BARS MOBILE */
+    .progress-bar {
+        height: 6px;
+    }
+    
+    .progress-text {
+        font-size: 0.8rem;
+    }
+}
+
+/* ===== MELHORIAS ESPECÍFICAS PARA DASHBOARD MOBILE ===== */
+@media (max-width: 768px) {
+    /* Reduzir efeitos pesados em mobile */
+    .summary-card:hover .card-glow,
+    .quick-action:hover .action-glow {
+        opacity: 0.5;
+    }
+    
+    /* Melhorar legibilidade */
+    .card-content h3,
+    .quick-action h3,
+    .section-title {
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+    
+    /* Ajustar animações para performance */
+    .summary-card,
+    .motivation-card,
+    .quick-action {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+}
+
+/* ===== ORIENTAÇÃO LANDSCAPE ===== */
+@media (max-width: 768px) and (orientation: landscape) {
+    .dashboard-grid,
+    .quick-actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .welcome-section {
+        padding: 15px 0;
+    }
+    
+    .welcome-title {
+        font-size: 1.6rem;
+    }
+}
+
+/* ===== MELHORIAS DE ACESSIBILIDADE MOBILE ===== */
+@media (max-width: 768px) {
+    /* Áreas de toque maiores */
+    .summary-card,
+    .motivation-card,
+    .quick-action,
+    .stat-item {
+        min-height: 44px; /* Tamanho mínimo recomendado para touch */
+    }
+    
+    /* Melhor contraste para outdoor */
+    .welcome-title,
+    .section-title,
+    .card-content h3 {
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+    }
+    
+    /* Feedback visual para touch */
+    .summary-card:active,
+    .motivation-card:active,
+    .quick-action:active {
+        transform: scale(0.98);
+    }
+}
+
+/* ===== ANIMAÇÕES OTIMIZADAS PARA MOBILE ===== */
+@media (max-width: 768px) {
+    .dashboard-section {
+        transform: translateY(20px);
     }
     
     .summary-card,
     .motivation-card,
     .quick-action {
-        padding: 20px;
+        transform: translateY(10px);
     }
     
-    .card-icon {
-        width: 60px;
-        height: 60px;
-        font-size: 1.5rem;
+    /* Reduzir animações pesadas em dispositivos mais lentos */
+    .progress-fill:after,
+    .card-glow,
+    .action-glow {
+        animation: none;
+    }
+    
+    .welcome-title {
+        animation: textGlow 3s ease-in-out infinite alternate;
     }
 }
 
-/* ===== ANIMAÇÕES DE SCROLL ===== */
-@keyframes slideInUp {
-    from {
-        opacity: 0;
-        transform: translateY(50px);
+/* ===== CORREÇÕES ESPECÍFICAS ===== */
+@media (max-width: 768px) {
+    /* Garantir que os cards tenham altura consistente */
+    .summary-card,
+    .quick-action {
+        min-height: 180px;
+        display: flex;
+        flex-direction: column;
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    
+    .card-content,
+    .quick-action > *:not(.action-glow) {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
     }
-}
-
-/* ===== LOADING STATES ===== */
-.loading {
-    position: relative;
-    overflow: hidden;
-}
-
-.loading:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    animation: loading 1.5s infinite;
-}
-
-@keyframes loading {
-    0% {
-        transform: translateX(-100%);
+    
+    .progress-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
-    100% {
-        transform: translateX(100%);
+    
+    /* Ajustar badges para não quebrar layout */
+    .action-badge {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }

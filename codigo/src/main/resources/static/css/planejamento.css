@@ -82,6 +82,14 @@ body {
     background: transparent;
 }
 
+.fa-add:before, .fa-plus:before {
+    color: var(--light);
+}
+
+.fa-floppy-disk:before, .fa-save:before {
+    color: var(--light);
+}
+
 /* ===== NAVBAR EMBUTIDA ===== */
 header {
     background: rgba(26, 26, 46, 0.8);
@@ -779,6 +787,11 @@ header {
     background: rgba(255, 255, 255, 0.08);
 }
 
+.form-group select option {
+    background: var(--dark); /* fundo escuro */
+    color: var(--light);
+}
+
 .form-group label {
     display: block;
     margin-bottom: 5px;
@@ -902,10 +915,29 @@ header {
     padding: 25px;
 }
 
-/* ===== RESPONSIVIDADE ===== */
+/* ===== RESPONSIVIDADE MELHORADA ===== */
 @media (max-width: 1200px) {
     .planning-grid {
         grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .calendar-controls {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+    }
+    
+    .calendar-navigation {
+        order: 2;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .calendar-actions {
+        order: 1;
+        width: 100%;
+        justify-content: center;
     }
 }
 
@@ -915,56 +947,211 @@ header {
     }
     
     .page-title {
-        font-size: 2.2rem;
+        font-size: 2rem;
+        margin-bottom: 8px;
     }
     
-    .calendar-controls {
-        flex-direction: column;
-        gap: 15px;
+    .page-subtitle {
+        font-size: 1rem;
     }
     
-    .calendar-navigation {
-        order: 2;
+    .main-content {
+        padding: 20px 0;
     }
     
-    .calendar-actions {
-        order: 1;
-    }
-    
-    .current-month {
-        font-size: 1.5rem;
-        min-width: 200px;
-    }
-    
-    .kanban-board {
-        grid-template-columns: 1fr;
+    .card {
+        padding: 20px;
+        margin-bottom: 20px;
     }
     
     .card-header {
         flex-direction: column;
         gap: 15px;
         align-items: flex-start;
+        padding-bottom: 15px;
+        margin-bottom: 15px;
     }
     
+    .card-header h2 {
+        font-size: 1.2rem;
+    }
+    
+    /* CALENDÁRIO MOBILE */
+    .calendar-controls {
+        margin-bottom: 15px;
+        padding: 12px;
+    }
+    
+    .current-month {
+        font-size: 1.3rem;
+        min-width: auto;
+        flex: 1;
+        text-align: center;
+    }
+    
+    .btn-calendar {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+    
+    .calendar-container {
+        padding: 15px;
+    }
+    
+    .month-container {
+        padding: 15px;
+    }
+    
+    .month-grid {
+        gap: 4px;
+    }
+    
+    .day {
+        font-size: 0.85rem;
+        padding: 8px 2px;
+        border-radius: 6px;
+    }
+    
+    .day-header {
+        font-size: 0.8rem;
+        padding: 8px 2px;
+    }
+    
+    /* KANBAN BOARD MOBILE */
+    .kanban-board {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .kanban-column {
+        min-height: auto;
+    }
+    
+    .column-content {
+        min-height: 150px;
+        max-height: 200px;
+    }
+    
+    .column-header {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+    }
+    
+    .task-item {
+        padding: 10px;
+        margin-bottom: 6px;
+    }
+    
+    .task-title {
+        font-size: 0.9rem;
+    }
+    
+    /* EVENTOS DO DIA MOBILE */
+    .day-events {
+        margin-top: 20px;
+        padding: 15px;
+    }
+    
+    .day-events-header {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+    
+    .day-events-header h3 {
+        font-size: 1.1rem;
+    }
+    
+    .event-item {
+        padding: 12px;
+        gap: 10px;
+    }
+    
+    .event-title {
+        font-size: 0.95rem;
+    }
+    
+    .event-description {
+        font-size: 0.85rem;
+    }
+    
+    /* NOTAS MOBILE */
+    .notes-container {
+        margin-top: 10px;
+    }
+    
+    #dailyNotes {
+        height: 200px;
+        padding: 12px;
+        font-size: 0.9rem;
+    }
+    
+    .notes-date {
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+    }
+    
+    /* FORMULÁRIOS MOBILE */
+    .form-group {
+        margin-bottom: 12px;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .form-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    /* MODAL MOBILE */
     .modal-content {
         margin: 10% auto;
         width: 95%;
+        max-width: none;
     }
     
+    .modal-header {
+        padding: 20px;
+    }
+    
+    .modal-content form {
+        padding: 20px;
+    }
+    
+    /* NAVBAR MOBILE */
     .navbar {
         flex-wrap: wrap;
+        padding: 10px 0;
     }
     
     .nav-links {
         display: none;
         width: 100%;
         flex-direction: column;
-        gap: 10px;
-        margin-top: 20px;
+        gap: 8px;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
     
     .nav-links.active {
         display: flex;
+    }
+    
+    .nav-links a {
+        padding: 10px 15px;
+        justify-content: center;
     }
     
     .menu-toggle {
@@ -974,68 +1161,179 @@ header {
     .user-profile .user-info {
         display: none;
     }
+    
+    .logo {
+        font-size: 1.5rem;
+    }
+    
+    .logo i {
+        font-size: 1.7rem;
+    }
 }
 
 @media (max-width: 480px) {
+    .container {
+        padding: 0 10px;
+    }
+    
     .page-title {
-        font-size: 1.8rem;
+        font-size: 1.7rem;
     }
     
-    .card {
-        padding: 20px;
-    }
-    
-    .month-grid {
-        gap: 4px;
-    }
-    
-    .day {
+    .page-subtitle {
         font-size: 0.9rem;
     }
     
-    .form-actions {
-        flex-direction: column;
+    .card {
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 12px;
     }
     
-    .btn-calendar {
-        width: 40px;
-        height: 40px;
+    .calendar-controls {
+        padding: 10px;
     }
     
     .current-month {
-        font-size: 1.3rem;
-        min-width: 150px;
+        font-size: 1.1rem;
+    }
+    
+    .btn-calendar {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .month-container {
+        padding: 10px;
+    }
+    
+    .month-grid {
+        gap: 2px;
+    }
+    
+    .day {
+        font-size: 0.8rem;
+        padding: 6px 1px;
+    }
+    
+    .day-header {
+        font-size: 0.75rem;
+        padding: 6px 1px;
+    }
+    
+    .btn {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+    
+    .btn-small {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+    
+    /* KANBAN MOBILE PEQUENO */
+    .kanban-board {
+        gap: 8px;
+    }
+    
+    .column-header {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+    }
+    
+    .column-content {
+        padding: 8px;
+        min-height: 120px;
+    }
+    
+    .task-item {
+        padding: 8px;
+        margin-bottom: 4px;
+    }
+    
+    .task-title {
+        font-size: 0.85rem;
+    }
+    
+    /* EVENTOS MOBILE PEQUENO */
+    .day-events {
+        padding: 12px;
+    }
+    
+    .event-item {
+        padding: 10px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .event-color {
+        width: 10px;
+        height: 10px;
+    }
+    
+    .event-actions {
+        align-self: flex-end;
+    }
+    
+    /* MELHORIAS DE USABILIDADE PARA TOUCH */
+    .day {
+        min-height: 35px;
+    }
+    
+    .btn {
+        min-height: 44px; /* Tamanho mínimo para touch */
+    }
+    
+    input, select, textarea {
+        font-size: 16px; /* Prevenir zoom no iOS */
     }
 }
 
-/* ===== ANIMAÇÕES DE SCROLL ===== */
-.planning-section,
-.side-section {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
+/* ===== ORIENTAÇÃO LANDSCAPE ===== */
+@media (max-width: 768px) and (orientation: landscape) {
+    .kanban-board {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .column-content {
+        min-height: 120px;
+        max-height: 150px;
+    }
+    
+    .calendar-container {
+        max-height: 60vh;
+        overflow-y: auto;
+    }
 }
 
-.planning-section.visible,
-.side-section.visible {
-    opacity: 1;
-    transform: translateY(0);
+/* ===== ANIMAÇÕES SUAVES PARA MOBILE ===== */
+@media (max-width: 768px) {
+    .planning-section,
+    .side-section {
+        transform: translateY(20px);
+    }
+    
+    .card {
+        transform: translateY(10px);
+    }
 }
 
-/* ===== SCROLLBAR PERSONALIZADA ===== */
-::-webkit-scrollbar {
-    width: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--primary);
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--primary-dark);
+/* ===== MELHORIAS DE ACESSIBILIDADE MOBILE ===== */
+@media (max-width: 768px) {
+    .day:focus,
+    .btn:focus,
+    input:focus,
+    select:focus,
+    textarea:focus {
+        outline: 2px solid var(--primary);
+        outline-offset: 2px;
+    }
+    
+    /* Melhor contraste para outdoor */
+    .card-header h2,
+    .current-month,
+    .page-title {
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
 }

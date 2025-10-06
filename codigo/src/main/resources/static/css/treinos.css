@@ -82,6 +82,10 @@ body {
     background: transparent;
 }
 
+.fa-add:before, .fa-plus:before {
+    color: var(--light);
+}
+
 /* ===== NAVBAR EMBUTIDA ===== */
 header {
     background: rgba(26, 26, 46, 0.8);
@@ -700,10 +704,15 @@ header {
     transform: translateY(0);
 }
 
-/* ===== RESPONSIVIDADE ===== */
+/* ===== RESPONSIVIDADE MELHORADA - TREINOS ===== */
 @media (max-width: 1200px) {
     .workout-grid {
         grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .side-section {
+        order: -1;
     }
 }
 
@@ -712,32 +721,132 @@ header {
         padding: 0 15px;
     }
     
+    .main-content {
+        padding: 20px 0;
+    }
+    
+    .page-header {
+        margin-bottom: 30px;
+    }
+    
     .page-title {
         font-size: 2.2rem;
+        margin-bottom: 8px;
+    }
+    
+    .page-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    /* CARDS MOBILE */
+    .card {
+        padding: 20px;
+        margin-bottom: 20px;
     }
     
     .card-header {
         flex-direction: column;
         gap: 15px;
         align-items: flex-start;
+        padding-bottom: 15px;
+        margin-bottom: 15px;
     }
     
+    .card-header h2 {
+        font-size: 1.2rem;
+    }
+    
+    /* FORMULÁRIOS MOBILE */
     .form-row {
         grid-template-columns: 1fr;
+        gap: 10px;
     }
     
-    .performance-inputs {
-        grid-template-columns: 1fr;
+    .form-group {
+        margin-bottom: 12px;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .form-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    /* LISTA DE FICHAS MOBILE */
+    .workouts-list {
+        gap: 8px;
+    }
+    
+    .workout-item {
+        padding: 12px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .workout-item-actions {
+        align-self: flex-end;
+        margin-top: 8px;
+    }
+    
+    /* LISTA DE EXERCÍCIOS MOBILE */
+    .exercises-list {
+        gap: 12px;
+    }
+    
+    .exercise-item {
+        padding: 15px;
+    }
+    
+    .exercise-name {
+        font-size: 1rem;
+    }
+    
+    .exercise-details {
+        font-size: 0.85rem;
     }
     
     .exercise-performance {
         grid-template-columns: 1fr;
-        gap: 15px;
+        gap: 12px;
+    }
+    
+    .performance-inputs {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .performance-input label {
+        font-size: 0.75rem;
+    }
+    
+    .performance-input input {
+        padding: 6px 10px;
+        font-size: 0.9rem;
+    }
+    
+    .exercise-actions {
+        justify-content: center;
+    }
+    
+    /* CRONÔMETRO MOBILE */
+    .timer-container {
+        padding: 10px 0;
+    }
+    
+    .timer-display {
+        font-size: 2.2rem;
+        margin-bottom: 15px;
     }
     
     .timer-controls {
         flex-direction: column;
-        align-items: center;
+        gap: 8px;
+        margin-bottom: 20px;
     }
     
     .timer-controls .btn {
@@ -745,24 +854,76 @@ header {
         justify-content: center;
     }
     
-    .input-with-button {
-        flex-direction: column;
+    .timer-input {
+        margin-bottom: 15px;
     }
     
+    .input-with-button {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .input-with-button input {
+        width: 100%;
+    }
+    
+    .timer-progress {
+        margin-top: 15px;
+    }
+    
+    /* BOTÕES MOBILE */
+    .btn {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+    
+    .btn-small {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+    
+    .btn-full {
+        width: 100%;
+    }
+    
+    /* EMPTY STATES MOBILE */
+    .empty-state {
+        padding: 30px 15px;
+    }
+    
+    .empty-state i {
+        font-size: 2.5rem;
+        margin-bottom: 12px;
+    }
+    
+    .empty-state p {
+        font-size: 0.9rem;
+        margin-bottom: 6px;
+    }
+    
+    /* NAVBAR MOBILE */
     .navbar {
         flex-wrap: wrap;
+        padding: 10px 0;
     }
     
     .nav-links {
         display: none;
         width: 100%;
         flex-direction: column;
-        gap: 10px;
-        margin-top: 20px;
+        gap: 8px;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
     
     .nav-links.active {
         display: flex;
+    }
+    
+    .nav-links a {
+        padding: 10px 15px;
+        justify-content: center;
     }
     
     .menu-toggle {
@@ -772,40 +933,218 @@ header {
     .user-profile .user-info {
         display: none;
     }
+    
+    .logo {
+        font-size: 1.5rem;
+    }
+    
+    .logo i {
+        font-size: 1.7rem;
+    }
 }
 
 @media (max-width: 480px) {
+    .container {
+        padding: 0 12px;
+    }
+    
     .page-title {
         font-size: 1.8rem;
     }
     
+    .page-subtitle {
+        font-size: 1rem;
+    }
+    
+    /* CARDS MOBILE PEQUENO */
     .card {
-        padding: 20px;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 12px;
+    }
+    
+    /* CRONÔMETRO MOBILE PEQUENO */
+    .timer-display {
+        font-size: 1.8rem;
+    }
+    
+    /* FORMULÁRIOS MOBILE PEQUENO */
+    .form-group input {
+        padding: 10px 12px;
+        font-size: 16px; /* Prevenir zoom no iOS */
+    }
+    
+    /* LISTA DE EXERCÍCIOS MOBILE PEQUENO */
+    .exercise-item {
+        padding: 12px;
+    }
+    
+    .performance-inputs {
+        gap: 8px;
+    }
+    
+    /* BOTÕES MOBILE PEQUENO */
+    .btn {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+    }
+}
+
+/* ===== MELHORIAS ESPECÍFICAS PARA TREINOS MOBILE ===== */
+@media (max-width: 768px) {
+    /* Garantir que o formulário de exercício seja fácil de usar */
+    #exerciseFormContainer {
+        margin: 10px 0;
+    }
+    
+    .exercise-form .form-row {
+        gap: 8px;
+    }
+    
+    /* Melhorar a visualização das fichas */
+    .workout-item {
+        min-height: 60px;
+    }
+    
+    .workout-item-name {
+        font-size: 1rem;
+        font-weight: 600;
+    }
+    
+    .workout-item-exercises {
+        font-size: 0.8rem;
+    }
+    
+    /* Otimizar espaço do cronômetro */
+    .timer-card {
+        min-height: auto;
+    }
+    
+    /* Reduzir efeitos pesados em mobile */
+    .card:hover .card-glow {
+        opacity: 0.3;
+    }
+    
+    .card:hover {
+        transform: translateY(-3px);
+    }
+}
+
+/* ===== ORIENTAÇÃO LANDSCAPE ===== */
+@media (max-width: 768px) and (orientation: landscape) {
+    .workout-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+    
+    .side-section {
+        order: 0;
     }
     
     .timer-display {
-        font-size: 2.5rem;
+        font-size: 1.8rem;
     }
     
-    .form-actions {
-        flex-direction: column;
+    .timer-controls {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    
+    .timer-controls .btn {
+        flex: 1;
+        min-width: 80px;
     }
 }
 
-/* ===== SCROLLBAR PERSONALIZADA ===== */
-::-webkit-scrollbar {
-    width: 8px;
+/* ===== MELHORIAS DE ACESSIBILIDADE MOBILE ===== */
+@media (max-width: 768px) {
+    /* Áreas de toque maiores */
+    .btn,
+    .workout-item,
+    .exercise-item,
+    .performance-input input {
+        min-height: 44px; /* Tamanho mínimo recomendado para touch */
+    }
+    
+    /* Melhor contraste */
+    .card-header h2,
+    .exercise-name,
+    .page-title {
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+    
+    /* Feedback visual para touch */
+    .btn:active,
+    .workout-item:active,
+    .exercise-item:active {
+        transform: scale(0.98);
+    }
+    
+    /* Inputs mais legíveis */
+    .form-group input:focus {
+        border-width: 2px;
+    }
 }
 
-::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
+/* ===== ANIMAÇÕES OTIMIZADAS PARA MOBILE ===== */
+@media (max-width: 768px) {
+    .workout-section,
+    .side-section {
+        transform: translateY(20px);
+    }
+    
+    .card {
+        transform: translateY(10px);
+    }
+    
+    /* Reduzir animações pesadas em dispositivos mais lentos */
+    .progress-fill:after,
+    .card-glow {
+        animation: none;
+    }
+    
+    .page-title {
+        animation: textGlow 3s ease-in-out infinite alternate;
+    }
 }
 
-::-webkit-scrollbar-thumb {
-    background: var(--primary);
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--primary-dark);
+/* ===== CORREÇÕES ESPECÍFICAS PARA TREINOS ===== */
+@media (max-width: 768px) {
+    /* Garantir que os botões de ação sejam acessíveis */
+    .delete-workout,
+    .delete-exercise {
+        min-width: 44px;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Ajustar espaçamento entre elementos de exercício */
+    .exercise-info {
+        margin-bottom: 12px;
+    }
+    
+    /* Melhorar visualização dos inputs de performance */
+    .performance-input {
+        gap: 4px;
+    }
+    
+    /* Garantir que o cronômetro seja funcional */
+    .timer-controls .btn:disabled {
+        opacity: 0.6;
+    }
+    
+    /* Otimizar formulário de criação */
+    .create-card .form-row {
+        gap: 12px;
+    }
+    
+    /* Ajustar badges e contadores */
+    .workout-item-exercises {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 0.75rem;
+    }
 }

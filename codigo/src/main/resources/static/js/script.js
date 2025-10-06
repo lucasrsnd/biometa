@@ -37,11 +37,13 @@ particlesJS('particles-js', {
 const menuToggle = document.querySelector(".menu-toggle");
 const navLinks = document.querySelector(".nav-links");
 
-menuToggle.addEventListener("click", () => {
-    navLinks.classList.toggle("active");
-    menuToggle.querySelector("i").classList.toggle("fa-bars");
-    menuToggle.querySelector("i").classList.toggle("fa-times");
-});
+if (menuToggle && navLinks) {
+    menuToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("active");
+        menuToggle.querySelector("i").classList.toggle("fa-bars");
+        menuToggle.querySelector("i").classList.toggle("fa-times");
+    });
+}
 
 // Scroll animations
 const observer = new IntersectionObserver((entries) => {
@@ -61,10 +63,12 @@ hiddenElements.forEach((el) => observer.observe(el));
 // Header scroll effect
 window.addEventListener("scroll", () => {
     const header = document.getElementById("header");
-    if (window.scrollY > 50) {
-        header.classList.add("scrolled");
-    } else {
-        header.classList.remove("scrolled");
+    if (header) {
+        if (window.scrollY > 50) {
+            header.classList.add("scrolled");
+        } else {
+            header.classList.remove("scrolled");
+        }
     }
 });
 
@@ -83,10 +87,13 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
                 behavior: "smooth",
             });
 
-            if (navLinks.classList.contains("active")) {
+            // Fechar menu mobile se estiver aberto
+            if (navLinks && navLinks.classList.contains("active")) {
                 navLinks.classList.remove("active");
-                menuToggle.querySelector("i").classList.add("fa-bars");
-                menuToggle.querySelector("i").classList.remove("fa-times");
+                if (menuToggle) {
+                    menuToggle.querySelector("i").classList.add("fa-bars");
+                    menuToggle.querySelector("i").classList.remove("fa-times");
+                }
             }
         }
     });
@@ -128,3 +135,42 @@ const heroSection = document.querySelector('.hero');
 if (heroSection) {
     heroObserver.observe(heroSection);
 }
+
+// ===== BOTÃO VOLTAR AO TOPO =====
+function initBackToTop() {
+    const backToTopButton = document.getElementById('backToTop');
+    
+    if (!backToTopButton) return;
+    
+    // Mostrar/ocultar botão baseado no scroll
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            backToTopButton.classList.add('show');
+        } else {
+            backToTopButton.classList.remove('show');
+        }
+    });
+    
+    // Rolagem suave para o topo
+    backToTopButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+    
+    // Também permitir rolagem com a tecla Enter para acessibilidade
+    backToTopButton.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    });
+}
+
+// Inicializar botão voltar ao topo quando a página carregar
+initBackToTop();

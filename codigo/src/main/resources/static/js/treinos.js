@@ -1,12 +1,18 @@
 // Variáveis globais
 document.addEventListener('DOMContentLoaded', function() {
     const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user"));
 
-    if (!token) {
+    if (!token || !user) {
         window.location.href = "login.html";
         return;
     }
 
+    console.log(`=== CARREGANDO DADOS DO USUÁRIO ${user.id} ===`);
+
+    // Carregar dados do usuário primeiro
+    loadUserData();
+    
     // Inicializar navbar
     initNavbar();
     
@@ -142,6 +148,29 @@ function initParticles() {
             },
             retina_detect: true
         });
+    }
+}
+
+function loadSavedMeals() {
+    const meals = JSON.parse(localStorage.getItem(getUserKey('meals'))) || [];
+    
+    // ✅ VERIFICAR SE SÃO DADOS VÁLIDOS (não dados de outro usuário)
+    const isValidData = meals.every(meal => 
+        meal && typeof meal === 'object' && meal.id && meal.name
+    );
+    
+    if (meals.length > 0 && isValidData) {
+        document.getElementById('noMealsState').style.display = 'none';
+        meals.forEach(meal => renderMeal(meal));
+        
+        if (!selectedMealId && meals.length > 0) {
+            selectMeal(meals[0].id);
+        }
+    } else {
+        // ✅ SE DADOS INVÁLIDOS, LIMPAR E INICIALIZAR VAZIO
+        console.log('Dados de refeições inválidos detectados, limpando...');
+        localStorage.setItem(getUserKey('meals'), JSON.stringify([]));
+        document.getElementById('noMealsState').style.display = 'block';
     }
 }
 

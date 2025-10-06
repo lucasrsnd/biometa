@@ -2,10 +2,14 @@
 document.addEventListener("DOMContentLoaded", function () {
     const token = localStorage.getItem("token");
 
-    if (!token) {
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (!token || !user) {
         window.location.href = "login.html";
         return;
     }
+
+    console.log(`=== CARREGANDO DADOS DO USUÁRIO ${user.id} ===`);
 
     // Inicializar navbar
     initNavbar();
@@ -170,13 +174,58 @@ function setupIntersectionObserver() {
 async function initializeDashboard() {
     await loadUserData();
     updateDateAndGreeting();
+    
+    // ✅ VERIFICAR SE EXISTEM DADOS ANTES DE CARREGAR
+    const hasWorkouts = localStorage.getItem(getUserKey('workouts'));
+    const hasMeals = localStorage.getItem(getUserKey('meals'));
+    
+    if (hasWorkouts) {
+        loadDailySummary();
+    } else {
+        // Se não tem dados, inicializar vazio
+        resetEmptyData();
+    }
+    
+    if (hasMeals) {
+        loadMotivationalContent();
+        loadQuickStats();
+        updateQuickActions();
+    }
+    
+    // Efeito de digitação apenas se tiver dados
+    typeWriterEffect();
+}
+
+// ✅ NOVA FUNÇÃO: Resetar dados vazios
+function resetEmptyData() {
+    console.log('Inicializando dados vazios para novo usuário');
+    
+    // Inicializar estruturas vazias
+    const emptyData = {
+        workouts: [],
+        meals: [],
+        dailySummary: { calories: 0, protein: 0, carbs: 0, fat: 0 },
+        dailyCalorieGoal: 2000,
+        hydration: { date: new Date().toDateString(), consumption: [] },
+        hydration_challenges: {
+            early: false,
+            bottle: false,
+            streak: { current: 0, max: 30, lastCompleted: null },
+            bottleClicks: 0,
+            lastUpdated: new Date().toDateString()
+        }
+    };
+    
+    // Salvar dados vazios
+    Object.keys(emptyData).forEach(key => {
+        localStorage.setItem(getUserKey(key), JSON.stringify(emptyData[key]));
+    });
+    
+    // Atualizar displays com dados vazios
     loadDailySummary();
     loadMotivationalContent();
     loadQuickStats();
     updateQuickActions();
-    
-    // Adicionar efeito de digitação no título de boas-vindas
-    typeWriterEffect();
 }
 
 // ========== DADOS DO USUÁRIO ========== //
@@ -256,6 +305,29 @@ async function loadUserData() {
         if (navbarName) {
             navbarName.textContent = `${userData.firstName} ${userData.lastName}`;
         }
+    }
+}
+
+function loadSavedMeals() {
+    const meals = JSON.parse(localStorage.getItem(getUserKey('meals'))) || [];
+    
+    // ✅ VERIFICAR SE SÃO DADOS VÁLIDOS (não dados de outro usuário)
+    const isValidData = meals.every(meal => 
+        meal && typeof meal === 'object' && meal.id && meal.name
+    );
+    
+    if (meals.length > 0 && isValidData) {
+        document.getElementById('noMealsState').style.display = 'none';
+        meals.forEach(meal => renderMeal(meal));
+        
+        if (!selectedMealId && meals.length > 0) {
+            selectMeal(meals[0].id);
+        }
+    } else {
+        // ✅ SE DADOS INVÁLIDOS, LIMPAR E INICIALIZAR VAZIO
+        console.log('Dados de refeições inválidos detectados, limpando...');
+        localStorage.setItem(getUserKey('meals'), JSON.stringify([]));
+        document.getElementById('noMealsState').style.display = 'block';
     }
 }
 
@@ -364,20 +436,35 @@ function updateWorkoutSummary() {
 }
 
 function updateDietSummary() {
-    const summary = JSON.parse(localStorage.getItem(getUserKey('dailySummary'))) || { calories: 0 };
-    const goal = parseInt(localStorage.getItem(getUserKey('dailyCalorieGoal'))) || 2000;
-    
-    const progress = Math.min((summary.calories / goal) * 100, 100);
-    
-    document.getElementById('dietProgress').textContent = 
-        `${Math.round(summary.calories)}/${goal} calorias`;
-    document.getElementById('dietProgressFill').style.width = `${progress}%`;
-    
-    let status = 'Aguardando refeições';
-    if (summary.calories > 0) {
-        status = progress >= 100 ? 'Meta atingida! 🎉' : 'Em andamento';
+    try {
+        const summary = JSON.parse(localStorage.getItem(getUserKey('dailySummary'))) || { 
+            calories: 0, 
+            protein: 0, 
+            carbs: 0, 
+            fat: 0 
+        };
+        const goal = parseInt(localStorage.getItem(getUserKey('dailyCalorieGoal'))) || 2000;
+        
+        // CORREÇÃO: Garantir que os valores sejam números
+        const currentCalories = Number(summary.calories) || 0;
+        const progress = goal > 0 ? Math.min((currentCalories / goal) * 100, 100) : 0;
+        
+        document.getElementById('dietProgress').textContent = 
+            `${Math.round(currentCalories)}/${goal} calorias`;
+        document.getElementById('dietProgressFill').style.width = `${progress}%`;
+        
+        let status = 'Aguardando refeições';
+        if (currentCalories > 0) {
+            status = progress >= 100 ? 'Meta atingida! 🎉' : 'Em andamento';
+        }
+        document.getElementById('dietStatus').textContent = status;
+    } catch (error) {
+        console.error('Erro ao atualizar resumo da dieta:', error);
+        // Reset em caso de erro
+        document.getElementById('dietProgress').textContent = '0/2000 calorias';
+        document.getElementById('dietProgressFill').style.width = '0%';
+        document.getElementById('dietStatus').textContent = 'Aguardando refeições';
     }
-    document.getElementById('dietStatus').textContent = status;
 }
 
 function updateHydrationSummary() {

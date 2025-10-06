@@ -562,10 +562,15 @@ header {
     transform: translateY(0);
 }
 
-/* ===== RESPONSIVIDADE ===== */
+/* ===== RESPONSIVIDADE MELHORADA - PERFIL ===== */
 @media (max-width: 1200px) {
     .profile-grid {
         grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .side-section {
+        order: -1;
     }
 }
 
@@ -574,43 +579,144 @@ header {
         padding: 0 15px;
     }
     
+    .main-content {
+        padding: 20px 0;
+    }
+    
+    .page-header {
+        margin-bottom: 30px;
+    }
+    
     .page-title {
         font-size: 2.2rem;
+        margin-bottom: 8px;
+    }
+    
+    .page-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    /* CARDS MOBILE */
+    .card {
+        padding: 20px;
+        margin-bottom: 20px;
     }
     
     .card-header {
         flex-direction: column;
         gap: 15px;
         align-items: flex-start;
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .card-header h2 {
+        font-size: 1.2rem;
+    }
+    
+    /* FORMULÁRIOS MOBILE */
+    .profile-form {
+        margin-top: 10px;
     }
     
     .form-row {
         grid-template-columns: 1fr;
         gap: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .form-group {
+        margin-bottom: 12px;
+    }
+    
+    .form-group input,
+    .form-group select {
+        padding: 10px 12px;
+        font-size: 16px; /* Prevenir zoom no iOS */
+    }
+    
+    .input-help {
+        font-size: 0.75rem;
     }
     
     .form-actions {
         flex-direction: column;
+        gap: 8px;
+        margin-top: 20px;
+        padding-top: 15px;
+    }
+    
+    .form-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    /* IMC MOBILE */
+    .imc-display {
+        margin-bottom: 20px;
     }
     
     .imc-value {
         font-size: 2.8rem;
     }
     
+    .imc-classification {
+        padding: 6px 16px;
+        font-size: 1rem;
+    }
+    
+    .imc-scale {
+        margin: 20px 0;
+    }
+    
+    .scale-bar {
+        height: 10px;
+        margin-bottom: 8px;
+    }
+    
+    .scale-labels {
+        font-size: 0.75rem;
+    }
+    
+    .imc-info {
+        font-size: 0.9rem;
+        margin-top: 15px;
+    }
+    
+    /* BOTÕES MOBILE */
+    .btn {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+    
+    .btn-small {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+    
+    /* NAVBAR MOBILE */
     .navbar {
         flex-wrap: wrap;
+        padding: 10px 0;
     }
     
     .nav-links {
         display: none;
         width: 100%;
         flex-direction: column;
-        gap: 10px;
-        margin-top: 20px;
+        gap: 8px;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
     
     .nav-links.active {
         display: flex;
+    }
+    
+    .nav-links a {
+        padding: 10px 15px;
+        justify-content: center;
     }
     
     .menu-toggle {
@@ -620,41 +726,279 @@ header {
     .user-profile .user-info {
         display: none;
     }
+    
+    .logo {
+        font-size: 1.5rem;
+    }
+    
+    .logo i {
+        font-size: 1.7rem;
+    }
 }
 
 @media (max-width: 480px) {
+    .container {
+        padding: 0 12px;
+    }
+    
     .page-title {
         font-size: 1.8rem;
     }
     
-    .card {
-        padding: 20px;
+    .page-subtitle {
+        font-size: 1rem;
     }
     
+    /* CARDS MOBILE PEQUENO */
+    .card {
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 12px;
+    }
+    
+    /* FORMULÁRIOS MOBILE PEQUENO */
+    .form-group label {
+        font-size: 0.9rem;
+        margin-bottom: 6px;
+    }
+    
+    .form-group input,
+    .form-group select {
+        padding: 8px 10px;
+        font-size: 14px;
+    }
+    
+    /* IMC MOBILE PEQUENO */
     .imc-value {
         font-size: 2.2rem;
     }
     
-    .btn {
-        padding: 8px 16px;
+    .imc-classification {
         font-size: 0.9rem;
+        padding: 5px 12px;
+    }
+    
+    .scale-labels {
+        font-size: 0.7rem;
+    }
+    
+    .imc-info {
+        font-size: 0.85rem;
+    }
+    
+    /* BOTÕES MOBILE PEQUENO */
+    .btn {
+        padding: 8px 12px;
+        font-size: 0.8rem;
     }
 }
 
-/* ===== SCROLLBAR PERSONALIZADA ===== */
-::-webkit-scrollbar {
-    width: 8px;
+/* ===== MELHORIAS ESPECÍFICAS PARA PERFIL MOBILE ===== */
+@media (max-width: 768px) {
+    /* Melhorar visualização do IMC */
+    .imc-content {
+        padding: 10px 0;
+    }
+    
+    /* Otimizar formulários para touch */
+    .form-group input:focus,
+    .form-group select:focus {
+        border-width: 2px;
+    }
+    
+    /* Ajustar cards de informações para melhor legibilidade */
+    .card-header h2 {
+        line-height: 1.3;
+    }
+    
+    /* Melhorar contraste para outdoor */
+    .card-header h2,
+    .imc-value,
+    .page-title {
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+    
+    /* Reduzir efeitos pesados em mobile */
+    .card:hover .card-glow {
+        opacity: 0.3;
+    }
+    
+    .card:hover {
+        transform: translateY(-3px);
+    }
+    
+    .scale-fill:after {
+        animation: none; /* Desativar animação de shimmer em mobile */
+    }
 }
 
-::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
+/* ===== ORIENTAÇÃO LANDSCAPE ===== */
+@media (max-width: 768px) and (orientation: landscape) {
+    .profile-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+    
+    .side-section {
+        order: 0;
+    }
+    
+    .form-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .form-group.full-width {
+        grid-column: 1 / -1;
+    }
+    
+    .imc-content {
+        max-height: 300px;
+        overflow-y: auto;
+    }
 }
 
-::-webkit-scrollbar-thumb {
-    background: var(--primary);
-    border-radius: 4px;
+/* ===== MELHORIAS DE ACESSIBILIDADE MOBILE ===== */
+@media (max-width: 768px) {
+    /* Áreas de toque maiores */
+    .btn,
+    .form-group input,
+    .form-group select {
+        min-height: 44px; /* Tamanho mínimo recomendado para touch */
+    }
+    
+    /* Feedback visual para touch */
+    .btn:active,
+    .form-group input:active,
+    .form-group select:active {
+        transform: scale(0.98);
+    }
+    
+    /* Melhor contraste para textos importantes */
+    .imc-value,
+    .page-title {
+        font-weight: 700;
+    }
+    
+    /* Labels de formulário mais claros */
+    .form-group label {
+        font-weight: 600;
+    }
 }
 
-::-webkit-scrollbar-thumb:hover {
-    background: var(--primary-dark);
+/* ===== ANIMAÇÕES OTIMIZADAS PARA MOBILE ===== */
+@media (max-width: 768px) {
+    .profile-section,
+    .side-section {
+        transform: translateY(20px);
+    }
+    
+    .card {
+        transform: translateY(10px);
+    }
+    
+    /* Reduzir animações pesadas em dispositivos mais lentos */
+    .scale-fill:after,
+    .card-glow {
+        animation: none;
+    }
+    
+    .page-title {
+        animation: textGlow 3s ease-in-out infinite alternate;
+    }
+}
+
+/* ===== CORREÇÕES ESPECÍFICAS PARA PERFIL ===== */
+@media (max-width: 768px) {
+    /* Garantir que os selects sejam legíveis */
+    .form-group select {
+        background-image: none; /* Remover seta padrão se houver */
+        padding-right: 12px;
+    }
+    
+    /* Ajustar espaçamento do IMC */
+    .imc-scale {
+        margin: 15px 0;
+    }
+    
+    /* Melhorar visualização das ações do formulário */
+    .form-actions {
+        position: sticky;
+        bottom: 0;
+        background: rgba(26, 26, 46, 0.95);
+        backdrop-filter: blur(10px);
+        margin: 20px -15px -15px;
+        padding: 15px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Garantir que o botão de logout seja bem visível */
+    .btn-danger {
+        min-height: 44px;
+        font-weight: 600;
+    }
+}
+
+/* ===== MELHORIAS DE TIPOGRAFIA MOBILE ===== */
+@media (max-width: 768px) {
+    .imc-info,
+    .input-help,
+    .page-subtitle {
+        line-height: 1.4;
+    }
+    
+    .imc-value,
+    .page-title {
+        line-height: 1.2;
+    }
+    
+    .form-group label {
+        line-height: 1.3;
+    }
+}
+
+/* ===== SCROLLBAR OTIMIZADA PARA MOBILE ===== */
+@media (max-width: 768px) {
+    .imc-content::-webkit-scrollbar {
+        width: 4px;
+    }
+    
+    .imc-content::-webkit-scrollbar-thumb {
+        background: var(--primary);
+        border-radius: 2px;
+    }
+}
+
+/* ===== CORREÇÃO PARA FORMULÁRIOS EM DISPOSITIVOS PEQUENOS ===== */
+@media (max-width: 480px) {
+    /* Garantir que inputs numéricos não quebrem o layout */
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
+    
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    
+    /* Ajustar selects para caber melhor */
+    .form-group select {
+        font-size: 14px;
+    }
+}
+
+/* ===== MELHORIAS PARA TABLETS ===== */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .profile-grid {
+        grid-template-columns: 1.5fr 1fr;
+        gap: 25px;
+    }
+    
+    .form-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .form-group.full-width {
+        grid-column: 1 / -1;
+    }
 }
