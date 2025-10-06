@@ -112,36 +112,7 @@
                                 <label for="birthDate">
                                     <i class="fas fa-calendar"></i> Data de Nascimento
                                 </label>
-                                <div class="date-input-group">
-                                    <div class="date-field">
-                                        <input type="number" id="birthDay" min="1" max="31" placeholder="DD" required>
-                                        <label for="birthDay">Dia</label>
-                                    </div>
-                                    <div class="date-field">
-                                        <select id="birthMonth" required>
-                                            <option value="">Mês</option>
-                                            <option value="1">Janeiro</option>
-                                            <option value="2">Fevereiro</option>
-                                            <option value="3">Março</option>
-                                            <option value="4">Abril</option>
-                                            <option value="5">Maio</option>
-                                            <option value="6">Junho</option>
-                                            <option value="7">Julho</option>
-                                            <option value="8">Agosto</option>
-                                            <option value="9">Setembro</option>
-                                            <option value="10">Outubro</option>
-                                            <option value="11">Novembro</option>
-                                            <option value="12">Dezembro</option>
-                                        </select>
-                                        <label for="birthMonth">Mês</label>
-                                    </div>
-                                    <div class="date-field">
-                                        <input type="number" id="birthYear" min="1900" max="2025" placeholder="AAAA"
-                                            required>
-                                        <label for="birthYear">Ano</label>
-                                    </div>
-                                </div>
-                                <small class="input-help">Digite sua data de nascimento</small>
+                                <input type="date" id="birthDate">
                             </div>
                         </div>
 
@@ -386,68 +357,6 @@
                         step.classList.add('completed');
                     }
                 });
-            }
-
-            function setupDateInput() {
-                const dayInput = document.getElementById('birthDay');
-                const monthInput = document.getElementById('birthMonth');
-                const yearInput = document.getElementById('birthYear');
-
-                [dayInput, monthInput, yearInput].forEach(input => {
-                    input.addEventListener('input', validateDate);
-                    input.addEventListener('blur', validateDate);
-                });
-
-                dayInput.addEventListener('input', function () {
-                    if (this.value.length === 2) {
-                        monthInput.focus();
-                    }
-                });
-
-                monthInput.addEventListener('change', function () {
-                    if (this.value) {
-                        yearInput.focus();
-                    }
-                });
-            }
-
-            function validateDate() {
-                const day = document.getElementById('birthDay').value;
-                const month = document.getElementById('birthMonth').value;
-                const year = document.getElementById('birthYear').value;
-
-                const dayField = document.getElementById('birthDay');
-                const monthField = document.getElementById('birthMonth');
-                const yearField = document.getElementById('birthYear');
-
-                [dayField, monthField, yearField].forEach(field => {
-                    field.classList.remove('valid', 'invalid');
-                });
-
-                if (day && month && year) {
-                    const isValid = isValidDate(day, month, year);
-                    [dayField, monthField, yearField].forEach(field => {
-                        field.classList.add(isValid ? 'valid' : 'invalid');
-                    });
-                }
-            }
-
-            function isValidDate(day, month, year) {
-                const date = new Date(year, month - 1, day);
-                return date.getFullYear() == year &&
-                    date.getMonth() == month - 1 &&
-                    date.getDate() == day;
-            }
-
-            function getFormattedDate() {
-                const day = document.getElementById('birthDay').value.padStart(2, '0');
-                const month = document.getElementById('birthMonth').value.padStart(2, '0');
-                const year = document.getElementById('birthYear').value;
-
-                if (day && month && year) {
-                    return `${year}-${month}-${day}`;
-                }
-                return null;
             }
 
             document.querySelectorAll('.btn-next').forEach(btn => {
