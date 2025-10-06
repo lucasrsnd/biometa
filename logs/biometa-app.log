@@ -1,0 +1,35 @@
+2025-10-06T15:14:18.035-03:00  INFO 15384 --- [restartedMain] com.biometa.BioMetaApplication           : Starting BioMetaApplication using Java 21.0.8 with PID 15384 (C:\Users\Lucas\OneDrive\Documentos\GitHub\biometa\codigo\target\classes started by Lucas in C:\Users\Lucas\OneDrive\Documentos\GitHub\biometa)
+2025-10-06T15:14:18.037-03:00 DEBUG 15384 --- [restartedMain] com.biometa.BioMetaApplication           : Running with Spring Boot v3.2.0, Spring v6.1.1
+2025-10-06T15:14:18.039-03:00  INFO 15384 --- [restartedMain] com.biometa.BioMetaApplication           : No active profile set, falling back to 1 default profile: "default"
+2025-10-06T15:14:18.148-03:00  INFO 15384 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-10-06T15:14:18.148-03:00  INFO 15384 --- [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-10-06T15:14:19.738-03:00  INFO 15384 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-10-06T15:14:19.860-03:00  INFO 15384 --- [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 107 ms. Found 1 JPA repository interface.
+2025-10-06T15:14:21.280-03:00  INFO 15384 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-10-06T15:14:21.298-03:00  INFO 15384 --- [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-10-06T15:14:21.299-03:00  INFO 15384 --- [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.16]
+2025-10-06T15:14:21.418-03:00  INFO 15384 --- [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-10-06T15:14:21.419-03:00  INFO 15384 --- [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3269 ms
+2025-10-06T15:14:21.694-03:00  INFO 15384 --- [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-10-06T15:14:21.817-03:00  INFO 15384 --- [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.3.1.Final
+2025-10-06T15:14:21.882-03:00  INFO 15384 --- [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-10-06T15:14:22.347-03:00  INFO 15384 --- [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-10-06T15:14:22.465-03:00  INFO 15384 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-10-06T15:14:22.861-03:00  INFO 15384 --- [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@2423dc23
+2025-10-06T15:14:22.864-03:00  INFO 15384 --- [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-10-06T15:14:22.918-03:00  WARN 15384 --- [restartedMain] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-10-06T15:14:24.303-03:00  INFO 15384 --- [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-10-06T15:14:24.425-03:00  WARN 15384 --- [restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2025-10-06T15:14:24.426-03:00  WARN 15384 --- [restartedMain] o.h.engine.jdbc.spi.SqlExceptionHelper   : restrição "uk6dotkott2kjsp8vw4d0m25fb7" da relação "users" não existe, ignorando
+2025-10-06T15:14:24.434-03:00  INFO 15384 --- [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-10-06T15:14:25.056-03:00 DEBUG 15384 --- [restartedMain] c.b.security.JwtAuthenticationFilter     : Filter 'jwtAuthenticationFilter' configured for use
+2025-10-06T15:14:25.223-03:00  WARN 15384 --- [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-10-06T15:14:25.432-03:00  INFO 15384 --- [restartedMain] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2025-10-06T15:14:25.713-03:00  INFO 15384 --- [restartedMain] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@56eaa049, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@27463e79, org.springframework.security.web.context.SecurityContextHolderFilter@6cf77613, org.springframework.security.web.header.HeaderWriterFilter@299fd014, org.springframework.web.filter.CorsFilter@5664e0b4, org.springframework.security.web.authentication.logout.LogoutFilter@658ce23c, com.biometa.security.JwtAuthenticationFilter@50cc2661, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@1d1e22af, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@412b6494, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@7fd7c3fe, org.springframework.security.web.session.SessionManagementFilter@6102b8e5, org.springframework.security.web.access.ExceptionTranslationFilter@39dbd679, org.springframework.security.web.access.intercept.AuthorizationFilter@5614e924]
+2025-10-06T15:14:26.125-03:00  INFO 15384 --- [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-10-06T15:14:26.196-03:00  INFO 15384 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path ''
+2025-10-06T15:14:26.209-03:00  INFO 15384 --- [restartedMain] com.biometa.BioMetaApplication           : Started BioMetaApplication in 8.952 seconds (process running for 9.67)
+2025-10-06T15:14:33.734-03:00  INFO 15384 --- [File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-10-06T15:14:33.749-03:00  INFO 15384 --- [Thread-5] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-10-06T15:14:33.755-03:00  INFO 15384 --- [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-10-06T15:14:33.764-03:00  INFO 15384 --- [Thread-5] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
