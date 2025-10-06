@@ -1,6 +1,4 @@
-// Funções para autenticação
 document.addEventListener("DOMContentLoaded", function () {
-  // Verificar se estamos na página de registro
   const registerForm = document.getElementById("registerForm");
   if (registerForm) {
     registerForm.addEventListener("submit", handleRegister);
@@ -8,14 +6,12 @@ document.addEventListener("DOMContentLoaded", function () {
     setupFormNavigation();
   }
 
-  // Verificar se estamos na página de login
   const loginForm = document.getElementById("loginForm");
   if (loginForm) {
     loginForm.addEventListener("submit", handleLogin);
   }
 });
 
-// Configurar validação de senha em tempo real
 function setupPasswordValidation() {
   const passwordInput = document.getElementById("password");
   const confirmPasswordInput = document.getElementById("confirmPassword");
@@ -33,79 +29,69 @@ function setupPasswordValidation() {
   }
 }
 
-// FUNÇÕES GLOBAIS PARA TODOS OS ARQUIVOS
-window.getCurrentUserId = function() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    return user ? user.id : null;
+window.getCurrentUserId = function () {
+  const user = JSON.parse(localStorage.getItem("user"));
+  return user ? user.id : null;
 };
 
-window.getUserKey = function(key) {
-    const userId = getCurrentUserId();
-    return userId ? `${key}_${userId}` : key;
+window.getUserKey = function (key) {
+  const userId = getCurrentUserId();
+  return userId ? `${key}_${userId}` : key;
 };
 
-// DEBUG: Verificar se está funcionando
-console.log('=== CONFIGURAÇÃO GLOBAL ===');
-console.log('User ID:', getCurrentUserId());
-console.log('Workouts key:', getUserKey('workouts'));
+console.log("=== CONFIGURAÇÃO GLOBAL ===");
+console.log("User ID:", getCurrentUserId());
+console.log("Workouts key:", getUserKey("workouts"));
 
-// Configurar navegação do formulário
 function setupFormNavigation() {
-  document.querySelectorAll('.btn-next').forEach(btn => {
-    btn.addEventListener('click', function() {
+  document.querySelectorAll(".btn-next").forEach((btn) => {
+    btn.addEventListener("click", function () {
       const nextSection = parseInt(this.dataset.next);
       showSection(nextSection);
     });
   });
-  
-  document.querySelectorAll('.btn-prev').forEach(btn => {
-    btn.addEventListener('click', function() {
+
+  document.querySelectorAll(".btn-prev").forEach((btn) => {
+    btn.addEventListener("click", function () {
       const prevSection = parseInt(this.dataset.prev);
       showSection(prevSection);
     });
   });
 }
 
-// Mostrar seção específica
 function showSection(sectionNumber) {
-  // Esconder todas as seções
-  document.querySelectorAll('.form-section').forEach(section => {
-    section.classList.remove('active');
+  document.querySelectorAll(".form-section").forEach((section) => {
+    section.classList.remove("active");
   });
-  
-  // Mostrar seção atual
+
   const targetSection = document.getElementById(`section-${sectionNumber}`);
   if (targetSection) {
-    targetSection.classList.add('active');
+    targetSection.classList.add("active");
     updateProgressVisual(sectionNumber);
   }
 }
 
-// Atualizar barra de progresso visual
 function updateProgressVisual(sectionNumber) {
-  const progressFill = document.getElementById('progressFill');
+  const progressFill = document.getElementById("progressFill");
   const totalSections = 3;
   const progress = (sectionNumber / totalSections) * 100;
-  
+
   if (progressFill) {
     progressFill.style.width = `${progress}%`;
   }
-  
-  // Atualizar steps visuais
-  document.querySelectorAll('.progress-step').forEach((step, index) => {
+
+  document.querySelectorAll(".progress-step").forEach((step, index) => {
     const stepNumber = index + 1;
-    step.classList.remove('active', 'completed');
-    
+    step.classList.remove("active", "completed");
+
     if (stepNumber === sectionNumber) {
-      step.classList.add('active');
+      step.classList.add("active");
     } else if (stepNumber < sectionNumber) {
-      step.classList.add('completed');
+      step.classList.add("completed");
     }
   });
 }
 
-// Validar força da senha
-// Validar força da senha
 function validatePassword() {
   const password = document.getElementById("password").value;
   const requirements = {
@@ -116,28 +102,23 @@ function validatePassword() {
     special: /[!@#$%&*]/.test(password),
   };
 
-  // Atualizar indicadores visuais
   updateRequirement("req-length", requirements.length);
   updateRequirement("req-uppercase", requirements.uppercase);
   updateRequirement("req-lowercase", requirements.lowercase);
   updateRequirement("req-number", requirements.number);
   updateRequirement("req-special", requirements.special);
 
-  // Atualizar barra de força
   updateStrengthBar(requirements);
 
-  // Validar confirmação de senha também
   validatePasswordConfirmation();
 
-  // Habilitar/desabilitar botão de submit
   updateSubmitButton(requirements);
 }
 
-// Atualizar indicador de requisito individual
 function updateRequirement(elementId, isValid) {
   const element = document.getElementById(elementId);
   if (!element) return;
-  
+
   const icon = element.querySelector("i");
   if (!icon) return;
 
@@ -152,24 +133,23 @@ function updateRequirement(elementId, isValid) {
   }
 }
 
-// Atualizar barra de força da senha
-// Atualizar barra de força da senha
 function updateStrengthBar(requirements) {
   const strengthBar = document.getElementById("strengthBar");
   if (!strengthBar) {
     console.warn("Elemento strengthBar não encontrado");
     return;
   }
-  
+
   const validRequirements = Object.values(requirements).filter(Boolean).length;
 
-  // Resetar classes
   strengthBar.className = "strength-bar";
-  
-  // Remover classes anteriores
-  strengthBar.classList.remove("strength-weak", "strength-medium", "strength-strong");
-  
-  // Adicionar classe baseada na força
+
+  strengthBar.classList.remove(
+    "strength-weak",
+    "strength-medium",
+    "strength-strong"
+  );
+
   if (validRequirements <= 2) {
     strengthBar.classList.add("strength-weak");
   } else if (validRequirements <= 4) {
@@ -177,32 +157,28 @@ function updateStrengthBar(requirements) {
   } else {
     strengthBar.classList.add("strength-strong");
   }
-  
-  // Atualizar também a barra de preenchimento visual
+
   updateStrengthFill(validRequirements);
 }
 
-// Atualizar preenchimento visual da barra de força
 function updateStrengthFill(validRequirements) {
   const strengthFill = document.getElementById("strengthFill");
   if (!strengthFill) return;
-  
-  const totalRequirements = 5; // length, uppercase, lowercase, number, special
+
+  const totalRequirements = 5;
   const percentage = (validRequirements / totalRequirements) * 100;
-  
+
   strengthFill.style.width = `${percentage}%`;
-  
-  // Cor baseada na força
+
   if (validRequirements <= 2) {
-    strengthFill.style.background = '#e74c3c'; // Vermelho
+    strengthFill.style.background = "#e74c3c";
   } else if (validRequirements <= 4) {
-    strengthFill.style.background = '#f39c12'; // Laranja
+    strengthFill.style.background = "#f39c12";
   } else {
-    strengthFill.style.background = '#2ecc71'; // Verde
+    strengthFill.style.background = "#2ecc71";
   }
 }
 
-// Validar confirmação de senha
 function validatePasswordConfirmation() {
   const password = document.getElementById("password").value;
   const confirmPassword = document.getElementById("confirmPassword").value;
@@ -228,7 +204,6 @@ function validatePasswordConfirmation() {
   }
 }
 
-// Atualizar botão de submit
 function updateSubmitButton(requirements) {
   const submitBtn = document.getElementById("submitBtn");
   if (!submitBtn) return;
@@ -244,7 +219,6 @@ function updateSubmitButton(requirements) {
   }
 }
 
-// Validar senha antes do envio
 function validatePasswordBeforeSubmit() {
   const password = document.getElementById("password").value;
   const requirements = {
@@ -261,7 +235,6 @@ function validatePasswordBeforeSubmit() {
   return allValid && confirmationValid;
 }
 
-// Obter mensagens de erro detalhadas da senha
 function getPasswordErrors(password) {
   const errors = [];
 
@@ -288,9 +261,11 @@ async function handleRegister(e) {
   e.preventDefault();
   console.log("Iniciando cadastro...");
 
-  // Validar senha antes de enviar
   if (!validatePasswordBeforeSubmit()) {
-    showMessage("Por favor, corrija os erros na senha antes de continuar.", "error");
+    showMessage(
+      "Por favor, corrija os erros na senha antes de continuar.",
+      "error"
+    );
     return;
   }
 
@@ -303,9 +278,8 @@ async function handleRegister(e) {
   const country = document.getElementById("country").value;
   const height = document.getElementById("height").value;
   const weight = document.getElementById("weight").value;
-  const objective = document.getElementById("objective").value; // NOVO CAMPO
+  const objective = document.getElementById("objective").value;
 
-  // Validação adicional para altura
   if (height) {
     const heightValue = parseFloat(height);
     if (heightValue < 0.5 || heightValue > 2.5) {
@@ -324,7 +298,7 @@ async function handleRegister(e) {
     country,
     height: height ? parseFloat(height) : null,
     weight: weight ? parseFloat(weight) : null,
-    objective: objective || null // NOVO CAMPO ADICIONADO
+    objective: objective || null,
   };
 
   try {
@@ -341,9 +315,11 @@ async function handleRegister(e) {
 
     if (response.ok) {
       console.log("Cadastro realizado com sucesso!");
-      showMessage("Cadastro realizado com sucesso! Redirecionando para login...", "success");
+      showMessage(
+        "Cadastro realizado com sucesso! Redirecionando para login...",
+        "success"
+      );
 
-      // Redirecionar para login após 2 segundos
       setTimeout(() => {
         window.location.href = "login.html";
       }, 2000);
@@ -359,106 +335,108 @@ async function handleRegister(e) {
 }
 
 async function handleLogin(e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
-    if (!email || !password) {
-        showMessage("Por favor, preencha todos os campos.", "error");
-        return;
+  if (!email || !password) {
+    showMessage("Por favor, preencha todos os campos.", "error");
+    return;
+  }
+
+  try {
+    const response = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+
+      clearUserCache();
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          id: data.id,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: data.email,
+        })
+      );
+
+      window.location.href = "dashboard.html";
+    } else {
+      const errorText = await response.text();
+      if (response.status === 401) {
+        showMessage(
+          "E-mail ou senha incorretos. Verifique suas credenciais.",
+          "error"
+        );
+      } else if (response.status === 400) {
+        showMessage(
+          "Dados inválidos. Verifique as informações fornecidas.",
+          "error"
+        );
+      } else {
+        showMessage(
+          errorText || "Erro ao fazer login. Tente novamente.",
+          "error"
+        );
+      }
     }
-
-    try {
-        const response = await fetch("/api/auth/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email, password }),
-        });
-
-        if (response.ok) {
-            const data = await response.json();
-
-            // ✅ NOVO: LIMPAR CACHE ANTES DE SALVAR NOVO USUÁRIO
-            clearUserCache();
-
-            // Salvar token e dados do usuário incluindo o ID
-            localStorage.setItem("token", data.token);
-            localStorage.setItem(
-                "user",
-                JSON.stringify({
-                    id: data.id,
-                    firstName: data.firstName,
-                    lastName: data.lastName,
-                    email: data.email,
-                })
-            );
-
-            // ✅ FORÇAR RECARREGAMENTO COMPLETO
-            window.location.href = "dashboard.html";
-        } else {
-            const errorText = await response.text();
-            if (response.status === 401) {
-                showMessage("E-mail ou senha incorretos. Verifique suas credenciais.", "error");
-            } else if (response.status === 400) {
-                showMessage("Dados inválidos. Verifique as informações fornecidas.", "error");
-            } else {
-                showMessage(errorText || "Erro ao fazer login. Tente novamente.", "error");
-            }
-        }
-    } catch (error) {
-        showMessage("Erro de conexão. Verifique sua internet e tente novamente.", "error");
-    }
+  } catch (error) {
+    showMessage(
+      "Erro de conexão. Verifique sua internet e tente novamente.",
+      "error"
+    );
+  }
 }
 
 function clearUserCache() {
-    console.log('Limpando cache de usuário anterior...');
-    
-    // Obter TODAS as chaves do localStorage
-    const allKeys = Object.keys(localStorage);
-    
-    // Lista de padrões de chaves que devem ser preservadas
-    const preserveKeys = ['token', 'user'];
-    
-    // Remover TODAS as chaves que não são de autenticação
-    allKeys.forEach(key => {
-        if (!preserveKeys.includes(key)) {
-            localStorage.removeItem(key);
-            console.log('Removido:', key);
-        }
-    });
-    
-    console.log('Limpeza completa!');
+  console.log("Limpando cache de usuário anterior...");
+
+  const allKeys = Object.keys(localStorage);
+
+  const preserveKeys = ["token", "user"];
+
+  allKeys.forEach((key) => {
+    if (!preserveKeys.includes(key)) {
+      localStorage.removeItem(key);
+      console.log("Removido:", key);
+    }
+  });
+
+  console.log("Limpeza completa!");
 }
 
-// Função para mostrar mensagens
-function showMessage(message, type = 'error') {
-  const errorElement = document.getElementById('errorMessage');
-  const successElement = document.getElementById('successMessage');
+function showMessage(message, type = "error") {
+  const errorElement = document.getElementById("errorMessage");
+  const successElement = document.getElementById("successMessage");
 
-  // Esconder ambas as mensagens primeiro
   if (errorElement) {
-    errorElement.textContent = '';
-    errorElement.classList.add('message-hidden');
+    errorElement.textContent = "";
+    errorElement.classList.add("message-hidden");
   }
   if (successElement) {
-    successElement.textContent = '';
-    successElement.classList.add('message-hidden');
+    successElement.textContent = "";
+    successElement.classList.add("message-hidden");
   }
 
-  const targetElement = type === 'error' ? errorElement : successElement;
-  
+  const targetElement = type === "error" ? errorElement : successElement;
+
   if (targetElement) {
     targetElement.textContent = message;
-    targetElement.classList.remove('message-hidden');
-    
-    // Para mensagens de sucesso, manter visível
-    // Para mensagens de erro, auto-esconder após 5 segundos
-    if (type === 'error') {
+    targetElement.classList.remove("message-hidden");
+
+    if (type === "error") {
       setTimeout(() => {
-        targetElement.classList.add('message-hidden');
+        targetElement.classList.add("message-hidden");
       }, 5000);
     }
   }

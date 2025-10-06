@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,15 +9,14 @@
     <link rel="stylesheet" href="css/login.css?v=3.0">
     <link rel="shortcut icon" type="image/x-icon" href="img/logo.png">
 </head>
+
 <body>
-    <!-- Background com efeitos -->
     <div class="background-effects">
         <div class="particles" id="particles-js"></div>
         <div class="gradient-bg"></div>
     </div>
 
     <div class="auth-container">
-        <!-- Logo e Header -->
         <div class="auth-header">
             <div class="logo">
                 <i class="fas fa-dumbbell"></i> BioMeta
@@ -26,7 +26,6 @@
         </div>
 
         <div class="auth-content">
-            <!-- Imagem Ilustrativa -->
             <div class="auth-image">
                 <div class="image-container">
                     <i class="fas fa-sign-in-alt"></i>
@@ -67,7 +66,6 @@
                 </div>
             </div>
 
-            <!-- Formulário de Login -->
             <div class="auth-form">
                 <form id="loginForm">
                     <div class="form-group">
@@ -121,11 +119,9 @@
                     </div>
                 </form>
 
-                <!-- Mensagens de Feedback -->
                 <div id="errorMessage" class="error message-hidden"></div>
                 <div id="successMessage" class="success message-hidden"></div>
 
-                <!-- Link para Cadastro -->
                 <div class="auth-links">
                     <p>Não tem uma conta? <a href="register.html">Cadastre-se agora</a></p>
                 </div>
@@ -135,24 +131,18 @@
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="js/auth.js"></script>
-    
-    <!-- SCRIPT CORRIGIDO COM TODAS AS FUNCIONALIDADES -->
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Inicializar partículas (apenas visual)
+        document.addEventListener('DOMContentLoaded', function () {
             initParticles();
-            
-            // Configurar todas as funcionalidades
+
             setupLoginFunctionalities();
-            
-            // Iniciar animações dos elementos
+
             initAnimations();
-            
-            // Carregar credenciais salvas se "Lembrar de mim" estava ativo
+
             loadSavedCredentials();
         });
 
-        // Inicializar partículas no background (apenas visual)
         function initParticles() {
             if (typeof particlesJS !== 'undefined') {
                 particlesJS('particles-js', {
@@ -189,18 +179,15 @@
             }
         }
 
-        // Configurar todas as funcionalidades do login
         function setupLoginFunctionalities() {
-            // Toggle de visibilidade da senha
             const toggleBtn = document.getElementById('togglePassword');
             if (toggleBtn) {
                 toggleBtn.addEventListener('click', togglePasswordVisibility);
             }
 
-            // Validação em tempo real
             const emailInput = document.getElementById('email');
             const passwordInput = document.getElementById('password');
-            
+
             if (emailInput) {
                 emailInput.addEventListener('input', validateEmailRealTime);
             }
@@ -208,10 +195,9 @@
                 passwordInput.addEventListener('input', validatePasswordRealTime);
             }
 
-            // Botões de login social
             const googleBtn = document.getElementById('googleLogin');
             const facebookBtn = document.getElementById('facebookLogin');
-            
+
             if (googleBtn) {
                 googleBtn.addEventListener('click', handleGoogleLogin);
             }
@@ -219,20 +205,17 @@
                 facebookBtn.addEventListener('click', handleFacebookLogin);
             }
 
-            // Lembrar de mim
             const rememberMe = document.getElementById('rememberMe');
             if (rememberMe) {
                 rememberMe.addEventListener('change', handleRememberMe);
             }
         }
 
-        // Iniciar animações
         function initAnimations() {
             animateFloatingElements();
             animateStats();
         }
 
-        // Alternar visibilidade da senha
         function togglePasswordVisibility() {
             const passwordInput = document.getElementById('password');
             const toggleIcon = document.getElementById('togglePassword').querySelector('i');
@@ -245,7 +228,6 @@
             }
         }
 
-        // Validação do email em tempo real
         function validateEmailRealTime() {
             const emailInput = document.getElementById('email');
             const email = emailInput.value.trim();
@@ -260,7 +242,6 @@
             }
         }
 
-        // Validação da senha em tempo real
         function validatePasswordRealTime() {
             const passwordInput = document.getElementById('password');
             const password = passwordInput.value;
@@ -274,11 +255,9 @@
             }
         }
 
-        // Handler para Google Login
         function handleGoogleLogin() {
             showMessage('Login com Google está em desenvolvimento! Em breve disponível.', 'info');
-            
-            // Feedback visual
+
             const btn = document.getElementById('googleLogin');
             btn.style.transform = 'scale(0.95)';
             setTimeout(() => {
@@ -286,11 +265,9 @@
             }, 150);
         }
 
-        // Handler para Facebook Login
         function handleFacebookLogin() {
             showMessage('Login com Facebook está em desenvolvimento! Em breve disponível.', 'info');
-            
-            // Feedback visual
+
             const btn = document.getElementById('facebookLogin');
             btn.style.transform = 'scale(0.95)';
             setTimeout(() => {
@@ -298,28 +275,24 @@
             }, 150);
         }
 
-        // Handler para Lembrar de mim
         function handleRememberMe() {
             const rememberMe = document.getElementById('rememberMe');
             const emailInput = document.getElementById('email');
-            
+
             if (rememberMe.checked && emailInput.value) {
-                // Salvar no localStorage
                 localStorage.setItem('rememberMe', 'true');
                 localStorage.setItem('savedEmail', emailInput.value);
                 showMessage('Credenciais salvas! Seu e-mail será lembrado.', 'success', 3000);
             } else {
-                // Remover do localStorage
                 localStorage.removeItem('rememberMe');
                 localStorage.removeItem('savedEmail');
             }
         }
 
-        // Carregar credenciais salvas
         function loadSavedCredentials() {
             const rememberMe = localStorage.getItem('rememberMe');
             const savedEmail = localStorage.getItem('savedEmail');
-            
+
             if (rememberMe === 'true' && savedEmail) {
                 document.getElementById('rememberMe').checked = true;
                 document.getElementById('email').value = savedEmail;
@@ -327,9 +300,7 @@
             }
         }
 
-        // Função para mostrar mensagens
         function showMessage(message, type = 'info', duration = 5000) {
-            // Criar elemento de mensagem se não existir
             let messageElement = document.getElementById('infoMessage');
             if (!messageElement) {
                 messageElement = document.createElement('div');
@@ -338,7 +309,6 @@
                 document.querySelector('.auth-form').appendChild(messageElement);
             }
 
-            // Configurar cores baseadas no tipo
             const colors = {
                 info: '#3498db',
                 success: '#2ecc71',
@@ -350,7 +320,6 @@
             messageElement.textContent = message;
             messageElement.classList.remove('message-hidden');
 
-            // Auto-esconder após o tempo especificado
             if (duration > 0) {
                 setTimeout(() => {
                     messageElement.classList.add('message-hidden');
@@ -358,7 +327,6 @@
             }
         }
 
-        // Animar elementos flutuantes
         function animateFloatingElements() {
             const elements = document.querySelectorAll('.floating-element');
             elements.forEach((element, index) => {
@@ -367,16 +335,15 @@
             });
         }
 
-        // Animar estatísticas
         function animateStats() {
             const stats = document.querySelectorAll('.stat-number');
-            
+
             stats.forEach(stat => {
                 const finalValue = stat.textContent;
                 let currentValue = 0;
                 const duration = 2000;
                 const increment = parseInt(finalValue) / (duration / 16);
-                
+
                 if (finalValue.includes('+')) {
                     stat.textContent = '+0';
                     const timer = setInterval(() => {
@@ -405,4 +372,5 @@
     </script>
 
 </body>
+
 </html>

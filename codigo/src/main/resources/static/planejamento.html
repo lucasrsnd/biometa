@@ -11,13 +11,11 @@
 </head>
 
 <body>
-    <!-- Background com efeitos -->
     <div class="background-effects">
         <div class="particles" id="particles-js"></div>
         <div class="gradient-bg"></div>
     </div>
 
-    <!-- Header & Navigation INLINE -->
     <header>
         <div class="container">
             <nav class="navbar">
@@ -45,7 +43,6 @@
         </div>
     </header>
 
-    <!-- Conteúdo Principal -->
     <main class="main-content">
         <div class="container">
             <div class="page-header">
@@ -54,60 +51,52 @@
             </div>
 
             <div class="planning-grid">
-                <!-- Seção Agenda -->
-<section class="planning-section">
-    <div class="card calendar-card">
-        <div class="card-glow"></div>
-        <div class="card-header">
-            <h2><i class="fas fa-calendar-alt"></i> Agenda</h2>
-            <button class="btn btn-primary btn-small" id="addEventBtn">
-                <i class="fas fa-plus"></i> Adicionar Evento
-            </button>
-        </div>
+                <section class="planning-section">
+                    <div class="card calendar-card">
+                        <div class="card-glow"></div>
+                        <div class="card-header">
+                            <h2><i class="fas fa-calendar-alt"></i> Agenda</h2>
+                            <button class="btn btn-primary btn-small" id="addEventBtn">
+                                <i class="fas fa-plus"></i> Adicionar Evento
+                            </button>
+                        </div>
 
-        <!-- Controles do Calendário CARROSSEL -->
-        <div class="calendar-controls">
-            <div class="calendar-navigation">
-                <button class="btn-calendar" id="prevMonth">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <div class="current-month" id="currentMonth">Janeiro 2024</div>
-                <button class="btn-calendar" id="nextMonth">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
-            <div class="calendar-actions">
-                <button class="btn btn-outline btn-small" onclick="goToToday()">
-                    <i class="fas fa-calendar-day"></i> Hoje
-                </button>
-            </div>
-        </div>
+                        <div class="calendar-controls">
+                            <div class="calendar-navigation">
+                                <button class="btn-calendar" id="prevMonth">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <div class="current-month" id="currentMonth">Janeiro 2024</div>
+                                <button class="btn-calendar" id="nextMonth">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                            <div class="calendar-actions">
+                                <button class="btn btn-outline btn-small" onclick="goToToday()">
+                                    <i class="fas fa-calendar-day"></i> Hoje
+                                </button>
+                            </div>
+                        </div>
 
-        <!-- Calendário Carrossel -->
-        <div class="calendar-container">
-            <div class="calendar" id="calendar">
-                <!-- O calendário será gerado via JavaScript -->
-            </div>
-        </div>
+                        <div class="calendar-container">
+                            <div class="calendar" id="calendar">
+                            </div>
+                        </div>
 
-        <!-- Eventos do Dia Selecionado -->
-        <div class="day-events" id="dayEvents" style="display: none;">
-            <div class="day-events-header">
-                <h3>Eventos para <span id="selectedDate"></span></h3>
-                <button class="btn btn-primary btn-small" id="addEventToDay">
-                    <i class="fas fa-plus"></i> Adicionar Evento
-                </button>
-            </div>
-            <div class="events-list" id="eventsList">
-                <!-- Eventos serão adicionados aqui -->
-            </div>
-        </div>
-    </div>
-</section>
+                        <div class="day-events" id="dayEvents" style="display: none;">
+                            <div class="day-events-header">
+                                <h3>Eventos para <span id="selectedDate"></span></h3>
+                                <button class="btn btn-primary btn-small" id="addEventToDay">
+                                    <i class="fas fa-plus"></i> Adicionar Evento
+                                </button>
+                            </div>
+                            <div class="events-list" id="eventsList">
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
-                <!-- Seção Lateral -->
                 <section class="side-section">
-                    <!-- To-Do List -->
                     <div class="card todo-card">
                         <div class="card-glow"></div>
                         <div class="card-header">
@@ -117,7 +106,6 @@
                             </button>
                         </div>
 
-                        <!-- Formulário para Nova Tarefa (inicialmente oculto) -->
                         <div id="taskFormContainer" style="display: none;">
                             <form id="taskForm" class="task-form">
                                 <div class="form-group">
@@ -138,7 +126,6 @@
                             <hr style="margin: 15px 0;">
                         </div>
 
-                        <!-- Kanban Board -->
                         <div class="kanban-board">
                             <div class="kanban-column">
                                 <div class="column-header todo">
@@ -146,7 +133,6 @@
                                     <span class="task-count" id="todoCount">0</span>
                                 </div>
                                 <div class="column-content" id="todoColumn" data-column="todo">
-                                    <!-- Tarefas A Fazer -->
                                 </div>
                             </div>
 
@@ -156,7 +142,6 @@
                                     <span class="task-count" id="doingCount">0</span>
                                 </div>
                                 <div class="column-content" id="doingColumn" data-column="doing">
-                                    <!-- Tarefas Fazendo -->
                                 </div>
                             </div>
 
@@ -166,13 +151,11 @@
                                     <span class="task-count" id="doneCount">0</span>
                                 </div>
                                 <div class="column-content" id="doneColumn" data-column="done">
-                                    <!-- Tarefas Feitas -->
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Notas do Dia -->
                     <div class="card notes-card">
                         <div class="card-glow"></div>
                         <div class="card-header">
@@ -184,9 +167,9 @@
 
                         <div class="notes-container">
                             <div class="notes-date" id="notesDate">
-                                <!-- Data atual será preenchida via JavaScript -->
                             </div>
-                            <textarea id="dailyNotes" placeholder="Escreva suas observações, ideias ou lembretes para hoje..."></textarea>
+                            <textarea id="dailyNotes"
+                                placeholder="Escreva suas observações, ideias ou lembretes para hoje..."></textarea>
                             <div class="notes-info">
                                 <span id="notesCount">0</span> caracteres
                             </div>
@@ -197,7 +180,6 @@
         </div>
     </main>
 
-    <!-- Modal para Adicionar Evento -->
     <div id="eventModal" class="modal">
         <div class="modal-overlay"></div>
         <div class="modal-content">
@@ -223,16 +205,16 @@
                     <div class="color-picker">
                         <input type="radio" id="color-blue" name="eventColor" value="#3498db" checked>
                         <label for="color-blue" style="background-color: #3498db;"></label>
-                        
+
                         <input type="radio" id="color-green" name="eventColor" value="#2ecc71">
                         <label for="color-green" style="background-color: #2ecc71;"></label>
-                        
+
                         <input type="radio" id="color-red" name="eventColor" value="#e74c3c">
                         <label for="color-red" style="background-color: #e74c3c;"></label>
-                        
+
                         <input type="radio" id="color-orange" name="eventColor" value="#f39c12">
                         <label for="color-orange" style="background-color: #f39c12;"></label>
-                        
+
                         <input type="radio" id="color-purple" name="eventColor" value="#9b59b6">
                         <label for="color-purple" style="background-color: #9b59b6;"></label>
                     </div>

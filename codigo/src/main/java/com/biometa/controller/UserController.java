@@ -22,7 +22,7 @@ import com.biometa.security.CustomUserDetails;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
-    
+
     @Autowired
     private UserRepository userRepository;
 
@@ -30,21 +30,21 @@ public class UserController {
     public ResponseEntity<?> getCurrentUser(Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         Optional<User> userOptional = userRepository.findByEmail(userDetails.getUsername());
-        
+
         if (userOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        
+
         User user = userOptional.get();
 
         Integer age = null;
         if (user.getBirthDate() != null) {
             age = Period.between(user.getBirthDate(), LocalDate.now()).getYears();
         }
-        
+
         UserResponse userResponse = new UserResponse(
-                user.getFirstName(), 
-                user.getLastName(), 
+                user.getFirstName(),
+                user.getLastName(),
                 user.getEmail(),
                 user.getBirthDate(),
                 age,
@@ -52,21 +52,21 @@ public class UserController {
                 user.getHeight(),
                 user.getWeight(),
                 user.getCountry(),
-                user.getObjective()  // NOVO CAMPO ADICIONADO
-        );
-        
+                user.getObjective());
+
         return ResponseEntity.ok(userResponse);
     }
 
     @PutMapping("/me")
-    public ResponseEntity<?> updateCurrentUser(@RequestBody UpdateUserRequest updateRequest, Authentication authentication) {
+    public ResponseEntity<?> updateCurrentUser(@RequestBody UpdateUserRequest updateRequest,
+            Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         Optional<User> userOptional = userRepository.findByEmail(userDetails.getUsername());
-        
+
         if (userOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        
+
         User user = userOptional.get();
 
         if (updateRequest.getFirstName() != null) {
@@ -90,21 +90,20 @@ public class UserController {
         if (updateRequest.getCountry() != null) {
             user.setCountry(updateRequest.getCountry());
         }
-        // NOVA LINHA ADICIONADA - ATUALIZAR OBJETIVO
         if (updateRequest.getObjective() != null) {
             user.setObjective(updateRequest.getObjective());
         }
-        
+
         User updatedUser = userRepository.save(user);
 
         Integer age = null;
         if (updatedUser.getBirthDate() != null) {
             age = Period.between(updatedUser.getBirthDate(), LocalDate.now()).getYears();
         }
-        
+
         UserResponse userResponse = new UserResponse(
-                updatedUser.getFirstName(), 
-                updatedUser.getLastName(), 
+                updatedUser.getFirstName(),
+                updatedUser.getLastName(),
                 updatedUser.getEmail(),
                 updatedUser.getBirthDate(),
                 age,
@@ -112,9 +111,8 @@ public class UserController {
                 updatedUser.getHeight(),
                 updatedUser.getWeight(),
                 updatedUser.getCountry(),
-                updatedUser.getObjective()  // NOVO CAMPO ADICIONADO
-        );
-        
+                updatedUser.getObjective());
+
         return ResponseEntity.ok(userResponse);
     }
 }

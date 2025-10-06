@@ -59,8 +59,6 @@ public class AuthController {
         user.setCountry(registerRequest.getCountry());
         user.setHeight(registerRequest.getHeight());
         user.setWeight(registerRequest.getWeight());
-        
-        // NOVA LINHA ADICIONADA - SALVAR OBJETIVO
         user.setObjective(registerRequest.getObjective());
 
         User savedUser = userService.createUser(user);
@@ -79,15 +77,14 @@ public class AuthController {
             String jwt = jwtUtil.generateToken(userDetails);
 
             Optional<User> user = userService.findByEmail(userDetails.getUsername());
-            
+
             if (user.isPresent()) {
                 AuthResponse authResponse = new AuthResponse(
-                    jwt, 
-                    userDetails.getFirstName(), 
-                    userDetails.getLastName(), 
-                    userDetails.getUsername(),
-                    user.get().getId()
-                );
+                        jwt,
+                        userDetails.getFirstName(),
+                        userDetails.getLastName(),
+                        userDetails.getUsername(),
+                        user.get().getId());
                 return ResponseEntity.ok(authResponse);
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não encontrado");

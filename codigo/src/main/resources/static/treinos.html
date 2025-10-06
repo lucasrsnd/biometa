@@ -11,13 +11,11 @@
 </head>
 
 <body>
-    <!-- Background com efeitos -->
     <div class="background-effects">
         <div class="particles" id="particles-js"></div>
         <div class="gradient-bg"></div>
     </div>
 
-    <!-- Header & Navigation EMBUTIDA -->
     <header>
         <div class="container">
             <nav class="navbar">
@@ -45,7 +43,6 @@
         </div>
     </header>
 
-    <!-- Conteúdo Principal -->
     <main class="main-content">
         <div class="container">
             <div class="page-header">
@@ -54,9 +51,7 @@
             </div>
 
             <div class="workout-grid">
-                <!-- Seção de Fichas e Exercícios -->
                 <section class="workout-section">
-                    <!-- Criação de Nova Ficha -->
                     <div class="card create-card">
                         <div class="card-glow"></div>
                         <div class="card-header">
@@ -78,7 +73,6 @@
                         </form>
                     </div>
 
-                    <!-- Ficha Selecionada -->
                     <div class="card workout-card" id="selectedWorkoutCard" style="display: none;">
                         <div class="card-glow"></div>
                         <div class="card-header">
@@ -88,7 +82,6 @@
                             </button>
                         </div>
 
-                        <!-- Formulário para Adicionar Exercício (inicialmente oculto) -->
                         <div id="exerciseFormContainer" style="display: none;">
                             <form id="exerciseForm" class="exercise-form">
                                 <div class="form-row">
@@ -124,18 +117,15 @@
                             <hr style="margin: 20px 0;">
                         </div>
 
-                        <!-- Lista de Exercícios da Ficha -->
                         <div class="exercises-list" id="exercisesList">
                             <div class="empty-state" id="emptyState">
                                 <i class="fas fa-dumbbell"></i>
                                 <p>Nenhum exercício nesta ficha.</p>
                                 <p>Clique em "Adicionar Exercício" para começar!</p>
                             </div>
-                            <!-- Os exercícios serão adicionados aqui via JavaScript -->
                         </div>
                     </div>
 
-                    <!-- Mensagem quando nenhuma ficha está selecionada -->
                     <div class="card" id="noWorkoutSelectedCard">
                         <div class="empty-state">
                             <i class="fas fa-clipboard-list"></i>
@@ -145,9 +135,7 @@
                     </div>
                 </section>
 
-                <!-- Seção Lateral com Cronômetro e Lista de Fichas -->
                 <section class="side-section">
-                    <!-- Cronômetro de Treino -->
                     <div class="card timer-card">
                         <div class="card-glow"></div>
                         <div class="card-header">
@@ -186,7 +174,6 @@
                         </div>
                     </div>
 
-                    <!-- Lista de Fichas -->
                     <div class="card workouts-card">
                         <div class="card-glow"></div>
                         <div class="card-header">
@@ -199,7 +186,6 @@
                                 <p>Você ainda não criou nenhuma ficha.</p>
                                 <p>Use o formulário ao lado para criar sua primeira ficha!</p>
                             </div>
-                            <!-- As fichas serão adicionadas aqui via JavaScript -->
                         </div>
                     </div>
                 </section>

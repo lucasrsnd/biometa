@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,21 +9,20 @@
     <link rel="stylesheet" href="css/hidratacao.css?v=2.0">
     <link rel="shortcut icon" type="image/x-icon" href="/img/logo.png">
 </head>
+
 <body>
-    <!-- Background com efeitos -->
     <div class="background-effects">
         <div class="particles" id="particles-js"></div>
         <div class="gradient-bg"></div>
     </div>
 
-    <!-- Header & Navigation EMBUTIDA -->
     <header>
         <div class="container">
             <nav class="navbar">
                 <a href="dashboard.html" class="logo">
                     <i class="fas fa-dumbbell"></i> BioMeta
                 </a>
-                
+
                 <ul class="nav-links">
                     <li><a href="dashboard.html"><i class="fas fa-home"></i> Início</a></li>
                     <li><a href="planejamento.html"><i class="fas fa-calendar"></i> Planejamento</a></li>
@@ -30,12 +30,12 @@
                     <li><a href="dieta.html"><i class="fas fa-utensils"></i> Dieta</a></li>
                     <li><a href="hidratacao.html" class="active"><i class="fas fa-tint"></i> Hidratação</a></li>
                 </ul>
-                
+
                 <a href="perfil.html" class="user-profile">
                     <div class="user-avatar" id="navbarAvatar"></div>
                     <div class="user-info" id="navbarName"></div>
                 </a>
-                
+
                 <div class="menu-toggle">
                     <i class="fas fa-bars"></i>
                 </div>
@@ -43,18 +43,15 @@
         </div>
     </header>
 
-    <!-- Conteúdo Principal -->
     <main class="main-content">
         <div class="container">
             <div class="page-header">
                 <h1 class="page-title">Hidratação</h1>
                 <p class="page-subtitle">Acompanhe seu consumo de água e mantenha-se hidratado</p>
             </div>
-            
+
             <div class="hydration-grid">
-                <!-- Seção Principal -->
                 <section class="hydration-section">
-                    <!-- Meta de Hidratação -->
                     <div class="card">
                         <div class="card-glow"></div>
                         <div class="card-header">
@@ -68,7 +65,6 @@
                         </div>
                     </div>
 
-                    <!-- Registro de Consumo -->
                     <div class="card">
                         <div class="card-glow"></div>
                         <div class="card-header">
@@ -98,7 +94,6 @@
                         </div>
                     </div>
 
-                    <!-- Gráfico de Consumo -->
                     <div class="card">
                         <div class="card-glow"></div>
                         <div class="card-header">
@@ -127,9 +122,7 @@
                     </div>
                 </section>
 
-                <!-- Seção Lateral -->
                 <section class="side-section">
-                    <!-- Histórico do Dia -->
                     <div class="card">
                         <div class="card-glow"></div>
                         <div class="card-header">
@@ -157,53 +150,52 @@
                         </div>
                     </div>
 
-                    <!-- Desafios de Hidratação -->
-<div class="card">
-    <div class="card-glow"></div>
-    <div class="card-header">
-        <h2><i class="fas fa-trophy"></i> Desafios</h2>
-    </div>
-    <div class="challenges-list">
+                    <div class="card">
+                        <div class="card-glow"></div>
+                        <div class="card-header">
+                            <h2><i class="fas fa-trophy"></i> Desafios</h2>
+                        </div>
+                        <div class="challenges-list">
 
-        <div class="challenge-item" data-challenge="early">
-            <div class="challenge-icon">
-                <i class="fas fa-sun"></i>
-            </div>
-            <div class="challenge-content">
-                <div class="challenge-title">Início Matinal</div>
-                <div class="challenge-description">Beba 500ml antes das 10h da manhã</div>
-                <div class="challenge-status" id="earlyStatus">Não concluído</div>
-            </div>
-        </div>
+                            <div class="challenge-item" data-challenge="early">
+                                <div class="challenge-icon">
+                                    <i class="fas fa-sun"></i>
+                                </div>
+                                <div class="challenge-content">
+                                    <div class="challenge-title">Início Matinal</div>
+                                    <div class="challenge-description">Beba 500ml antes das 10h da manhã</div>
+                                    <div class="challenge-status" id="earlyStatus">Não concluído</div>
+                                </div>
+                            </div>
 
-        <div class="challenge-item" data-challenge="bottle">
-            <div class="challenge-icon">
-                <i class="fas fa-wine-bottle"></i>
-            </div>
-            <div class="challenge-content">
-                <div class="challenge-title">Garrafa Inteira</div>
-                <div class="challenge-description">Complete 2L em um dia (2 cliques de 1L)</div>
-                <div class="challenge-status" id="bottleStatus">Não concluído</div>
-            </div>
-        </div>
+                            <div class="challenge-item" data-challenge="bottle">
+                                <div class="challenge-icon">
+                                    <i class="fas fa-wine-bottle"></i>
+                                </div>
+                                <div class="challenge-content">
+                                    <div class="challenge-title">Garrafa Inteira</div>
+                                    <div class="challenge-description">Complete 2L em um dia (2 cliques de 1L)</div>
+                                    <div class="challenge-status" id="bottleStatus">Não concluído</div>
+                                </div>
+                            </div>
 
-        <div class="challenge-item" data-challenge="streak">
-            <div class="challenge-icon">
-                <i class="fas fa-fire"></i>
-            </div>
-            <div class="challenge-content">
-                <div class="challenge-title">Sequência Perfeita</div>
-                <div class="challenge-description">30 dias consecutivos atingindo a meta</div>
-                <div class="challenge-progress">
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="streakProgress"></div>
+                            <div class="challenge-item" data-challenge="streak">
+                                <div class="challenge-icon">
+                                    <i class="fas fa-fire"></i>
+                                </div>
+                                <div class="challenge-content">
+                                    <div class="challenge-title">Sequência Perfeita</div>
+                                    <div class="challenge-description">30 dias consecutivos atingindo a meta</div>
+                                    <div class="challenge-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" id="streakProgress"></div>
+                                        </div>
+                                        <span id="streakDays">0/30 dias</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <span id="streakDays">0/30 dias</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
                 </section>
             </div>
@@ -213,4 +205,5 @@
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="js/hidratacao.js?v=2.0"></script>
 </body>
+
 </html>

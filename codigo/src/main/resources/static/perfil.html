@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,21 +9,20 @@
     <link rel="stylesheet" href="css/perfil.css?v=2.0">
     <link rel="shortcut icon" type="image/x-icon" href="/img/logo.png">
 </head>
+
 <body>
-    <!-- Background com efeitos -->
     <div class="background-effects">
         <div class="particles" id="particles-js"></div>
         <div class="gradient-bg"></div>
     </div>
 
-    <!-- Header & Navigation EMBUTIDA -->
     <header>
         <div class="container">
             <nav class="navbar">
                 <a href="dashboard.html" class="logo">
                     <i class="fas fa-dumbbell"></i> BioMeta
                 </a>
-                
+
                 <ul class="nav-links">
                     <li><a href="dashboard.html"><i class="fas fa-home"></i> Início</a></li>
                     <li><a href="planejamento.html"><i class="fas fa-calendar"></i> Planejamento</a></li>
@@ -30,12 +30,12 @@
                     <li><a href="dieta.html"><i class="fas fa-utensils"></i> Dieta</a></li>
                     <li><a href="hidratacao.html"><i class="fas fa-tint"></i> Hidratação</a></li>
                 </ul>
-                
+
                 <a href="perfil.html" class="user-profile">
                     <div class="user-avatar" id="navbarAvatar"></div>
                     <div class="user-info" id="navbarName"></div>
                 </a>
-                
+
                 <div class="menu-toggle">
                     <i class="fas fa-bars"></i>
                 </div>
@@ -43,7 +43,6 @@
         </div>
     </header>
 
-    <!-- Conteúdo Principal -->
     <main class="main-content">
         <div class="container">
             <div class="page-header">
@@ -52,7 +51,6 @@
             </div>
 
             <div class="profile-grid">
-                <!-- Seção de Informações do Usuário -->
                 <section class="profile-section">
                     <div class="card">
                         <div class="card-glow"></div>
@@ -62,7 +60,7 @@
                                 <i class="fas fa-edit"></i> Editar
                             </button>
                         </div>
-                        
+
                         <div class="profile-content">
                             <form id="profileForm" class="profile-form">
                                 <div class="form-row">
@@ -144,7 +142,7 @@
                                     <button type="submit" class="btn btn-primary">Salvar Alterações</button>
                                 </div>
                             </form>
-                            
+
                             <button id="logoutBtn" class="btn btn-danger btn-full" style="margin-top: 20px;">
                                 <i class="fas fa-sign-out-alt"></i> Sair da Conta
                             </button>
@@ -152,7 +150,6 @@
                     </div>
                 </section>
 
-                <!-- Seção IMC -->
                 <section class="side-section">
                     <div class="card">
                         <div class="card-glow"></div>
@@ -191,4 +188,5 @@
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="js/perfil.js?v=2.0"></script>
 </body>
+
 </html>

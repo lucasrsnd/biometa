@@ -1,1150 +1,1126 @@
-/* ===== VARIÁVEIS CSS ===== */
 :root {
-    --primary: #6c63ff;
-    --primary-dark: #5a52d5;
-    --secondary: #ff6584;
-    --accent: #36d1dc;
-    --success: #4caf50;
-    --warning: #ff9800;
-    --danger: #f44336;
-    --dark: #1a1a2e;
-    --darker: #16213e;
-    --light: #f8f9fa;
-    --gray: #6c757d;
-    --border-radius: 16px;
-    --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  --primary: #6c63ff;
+  --primary-dark: #5a52d5;
+  --secondary: #ff6584;
+  --accent: #36d1dc;
+  --success: #4caf50;
+  --warning: #ff9800;
+  --danger: #f44336;
+  --dark: #1a1a2e;
+  --darker: #16213e;
+  --light: #f8f9fa;
+  --gray: #6c757d;
+  --border-radius: 16px;
+  --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* ===== RESET E BASE ===== */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 html {
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
-    color: var(--light);
-    line-height: 1.6;
-    overflow-x: hidden;
-    position: relative;
-    min-height: 100vh;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+  color: var(--light);
+  line-height: 1.6;
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
 }
 
 .container {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
-/* ===== BACKGROUND EFFECTS ===== */
 .background-effects {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
 }
 
 .gradient-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 10% 20%, rgba(108, 99, 255, 0.1) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(255, 101, 132, 0.1) 0%, transparent 20%),
-                radial-gradient(circle at 50% 50%, rgba(54, 209, 220, 0.05) 0%, transparent 20%);
-    animation: gradientShift 15s ease-in-out infinite alternate;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+      circle at 10% 20%,
+      rgba(108, 99, 255, 0.1) 0%,
+      transparent 20%
+    ),
+    radial-gradient(
+      circle at 90% 80%,
+      rgba(255, 101, 132, 0.1) 0%,
+      transparent 20%
+    ),
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(54, 209, 220, 0.05) 0%,
+      transparent 20%
+    );
+  animation: gradientShift 15s ease-in-out infinite alternate;
 }
 
 @keyframes gradientShift {
-    0% {
-        background-position: 0% 50%;
-    }
-    100% {
-        background-position: 100% 50%;
-    }
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
 }
 
 #particles-js {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: transparent;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: transparent;
 }
 
-.fa-add:before, .fa-plus:before {
-    color: var(--light);
+.fa-add:before,
+.fa-plus:before {
+  color: var(--light);
 }
 
-/* ===== NAVBAR EMBUTIDA ===== */
 header {
-    background: rgba(26, 26, 46, 0.8);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    transition: var(--transition);
+  background: rgba(26, 26, 46, 0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: var(--transition);
 }
 
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
 }
 
 .logo {
-    display: flex;
-    align-items: center;
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--light);
-    text-decoration: none;
-    transition: var(--transition);
+  display: flex;
+  align-items: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--light);
+  text-decoration: none;
+  transition: var(--transition);
 }
 
 .logo i {
-    color: var(--primary);
-    margin-right: 10px;
-    font-size: 2rem;
+  color: var(--primary);
+  margin-right: 10px;
+  font-size: 2rem;
 }
 
 .logo:hover {
-    transform: translateY(-2px);
-    color: var(--primary);
+  transform: translateY(-2px);
+  color: var(--primary);
 }
 
 .nav-links {
-    display: flex;
-    list-style: none;
-    gap: 30px;
+  display: flex;
+  list-style: none;
+  gap: 30px;
 }
 
 .nav-links a {
-    display: flex;
-    align-items: center;
-    color: var(--light);
-    text-decoration: none;
-    font-weight: 500;
-    padding: 8px 16px;
-    border-radius: 8px;
-    transition: var(--transition);
-    position: relative;
-    overflow: hidden;
+  display: flex;
+  align-items: center;
+  color: var(--light);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
 }
 
 .nav-links a i {
-    margin-right: 8px;
-    font-size: 1.1rem;
+  margin-right: 8px;
+  font-size: 1.1rem;
 }
 
 .nav-links a:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    transition: left 0.5s;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: left 0.5s;
 }
 
 .nav-links a:hover:before {
-    left: 100%;
+  left: 100%;
 }
 
 .nav-links a:hover,
 .nav-links a.active {
-    background: rgba(108, 99, 255, 0.2);
-    color: var(--primary);
-    transform: translateY(-2px);
+  background: rgba(108, 99, 255, 0.2);
+  color: var(--primary);
+  transform: translateY(-2px);
 }
 
 .user-profile {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: var(--light);
-    transition: var(--transition);
-    padding: 8px 16px;
-    border-radius: 8px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--light);
+  transition: var(--transition);
+  padding: 8px 16px;
+  border-radius: 8px;
 }
 
 .user-profile:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
 }
 
 .user-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--primary), var(--accent));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    margin-right: 10px;
-    box-shadow: 0 4px 10px rgba(108, 99, 255, 0.3);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  margin-right: 10px;
+  box-shadow: 0 4px 10px rgba(108, 99, 255, 0.3);
 }
 
 .user-info {
-    font-weight: 500;
+  font-weight: 500;
 }
 
 .menu-toggle {
-    display: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: var(--light);
+  display: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--light);
 }
 
-/* ===== MAIN CONTENT ===== */
 .main-content {
-    padding: 40px 0;
-    animation: fadeIn 1s ease-out;
+  padding: 40px 0;
+  animation: fadeIn 1s ease-out;
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .page-header {
-    text-align: center;
-    margin-bottom: 40px;
-    position: relative;
+  text-align: center;
+  margin-bottom: 40px;
+  position: relative;
 }
 
 .page-title {
-    font-size: 2.8rem;
-    margin-bottom: 10px;
-    background: linear-gradient(135deg, var(--primary), var(--accent));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: textGlow 2s ease-in-out infinite alternate;
+  font-size: 2.8rem;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: textGlow 2s ease-in-out infinite alternate;
 }
 
 @keyframes textGlow {
-    from {
-        text-shadow: 0 0 10px rgba(108, 99, 255, 0.5);
-    }
-    to {
-        text-shadow: 0 0 20px rgba(108, 99, 255, 0.8), 0 0 30px rgba(108, 99, 255, 0.6);
-    }
+  from {
+    text-shadow: 0 0 10px rgba(108, 99, 255, 0.5);
+  }
+  to {
+    text-shadow: 0 0 20px rgba(108, 99, 255, 0.8),
+      0 0 30px rgba(108, 99, 255, 0.6);
+  }
 }
 
 .page-subtitle {
-    font-size: 1.2rem;
-    color: var(--gray);
-    max-width: 600px;
-    margin: 0 auto;
+  font-size: 1.2rem;
+  color: var(--gray);
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-/* ===== WORKOUT GRID ===== */
 .workout-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 30px;
-    align-items: start;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+  align-items: start;
 }
 
-/* ===== CARDS ===== */
 .card {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    border-radius: var(--border-radius);
-    padding: 25px;
-    box-shadow: var(--box-shadow);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: var(--transition);
-    position: relative;
-    overflow: hidden;
-    margin-bottom: 25px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-radius: var(--border-radius);
+  padding: 25px;
+  box-shadow: var(--box-shadow);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 25px;
 }
 
 .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    border-color: rgba(108, 99, 255, 0.3);
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border-color: rgba(108, 99, 255, 0.3);
 }
 
 .card-glow {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(108, 99, 255, 0.1), transparent 30%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(108, 99, 255, 0.1), transparent 30%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
 }
 
 .card:hover .card-glow {
-    opacity: 1;
+  opacity: 1;
 }
 
 .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .card-header h2 {
-    font-size: 1.4rem;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--light);
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--light);
 }
 
 .card-header i {
-    color: var(--primary);
+  color: var(--primary);
 }
 
-/* ===== BUTTONS ===== */
 .btn {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: var(--transition);
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
 }
 
 .btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(108, 99, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(108, 99, 255, 0.4);
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
 }
 
 .btn-outline {
-    background: transparent;
-    border: 2px solid var(--primary);
-    color: var(--primary);
+  background: transparent;
+  border: 2px solid var(--primary);
+  color: var(--primary);
 }
 
 .btn-outline:hover {
-    background: var(--primary);
-    color: white;
+  background: var(--primary);
+  color: white;
 }
 
 .btn-small {
-    padding: 8px 16px;
-    font-size: 0.9rem;
+  padding: 8px 16px;
+  font-size: 0.9rem;
 }
 
 .btn-full {
-    width: 100%;
-    justify-content: center;
+  width: 100%;
+  justify-content: center;
 }
 
-/* ===== FORMULÁRIOS ===== */
 .workout-form,
 .exercise-form {
-    margin-top: 15px;
+  margin-top: 15px;
 }
 
 .form-row {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 15px;
-    align-items: end;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 15px;
+  align-items: end;
 }
 
 .form-group {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 .form-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
-    color: var(--light);
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--light);
 }
 
 .form-group input,
 .form-group select {
-    width: 100%;
-    padding: 12px 15px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    color: var(--light);
-    font-family: inherit;
-    transition: var(--transition);
+  width: 100%;
+  padding: 12px 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: var(--light);
+  font-family: inherit;
+  transition: var(--transition);
 }
 
 .form-group input:focus,
 .form-group select:focus {
-    outline: none;
-    border-color: var(--primary);
-    background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.2);
+  outline: none;
+  border-color: var(--primary);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.2);
 }
 
 .form-actions {
-    display: flex;
-    gap: 10px;
-    justify-content: flex-end;
-    margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 20px;
 }
 
-/* ===== LISTA DE FICHAS ===== */
 .workouts-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .workout-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: var(--transition);
-    border-left: 3px solid transparent;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition);
+  border-left: 3px solid transparent;
 }
 
 .workout-item:hover {
-    background: rgba(255, 255, 255, 0.08);
-    transform: translateX(5px);
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateX(5px);
 }
 
 .workout-item.active {
-    background: rgba(108, 99, 255, 0.1);
-    border-left-color: var(--primary);
-    transform: translateX(5px);
+  background: rgba(108, 99, 255, 0.1);
+  border-left-color: var(--primary);
+  transform: translateX(5px);
 }
 
 .workout-item-name {
-    font-weight: 600;
-    margin-bottom: 4px;
+  font-weight: 600;
+  margin-bottom: 4px;
 }
 
 .workout-item-exercises {
-    font-size: 0.9rem;
-    color: var(--gray);
+  font-size: 0.9rem;
+  color: var(--gray);
 }
 
 .workout-item-actions {
-    display: flex;
-    gap: 8px;
+  display: flex;
+  gap: 8px;
 }
 
 .delete-workout {
-    color: var(--danger);
-    cursor: pointer;
-    padding: 5px;
-    border-radius: 4px;
-    transition: var(--transition);
+  color: var(--danger);
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 4px;
+  transition: var(--transition);
 }
 
 .delete-workout:hover {
-    background: rgba(244, 67, 54, 0.1);
-    transform: scale(1.1);
+  background: rgba(244, 67, 54, 0.1);
+  transform: scale(1.1);
 }
 
-/* ===== LISTA DE EXERCÍCIOS ===== */
 .exercises-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .exercise-item {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    padding: 20px;
-    border-left: 4px solid var(--primary);
-    transition: var(--transition);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 20px;
+  border-left: 4px solid var(--primary);
+  transition: var(--transition);
 }
 
 .exercise-item:hover {
-    background: rgba(255, 255, 255, 0.08);
-    transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
 }
 
 .exercise-info {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 .exercise-name {
-    font-weight: 600;
-    font-size: 1.1rem;
-    margin-bottom: 8px;
-    color: var(--light);
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  color: var(--light);
 }
 
 .exercise-details {
-    color: var(--gray);
-    font-size: 0.9rem;
+  color: var(--gray);
+  font-size: 0.9rem;
 }
 
 .exercise-performance {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 15px;
-    align-items: start;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 15px;
+  align-items: start;
 }
 
 .performance-inputs {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
 }
 
 .performance-input {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .performance-input label {
-    font-size: 0.8rem;
-    color: var(--gray);
-    margin-bottom: 5px;
+  font-size: 0.8rem;
+  color: var(--gray);
+  margin-bottom: 5px;
 }
 
 .performance-input input {
-    padding: 8px 12px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 6px;
-    color: var(--light);
-    font-family: inherit;
-    transition: var(--transition);
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: var(--light);
+  font-family: inherit;
+  transition: var(--transition);
 }
 
 .performance-input input:focus {
-    outline: none;
-    border-color: var(--primary);
-    background: rgba(255, 255, 255, 0.08);
+  outline: none;
+  border-color: var(--primary);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .exercise-actions {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .delete-exercise {
-    color: var(--danger);
-    cursor: pointer;
-    padding: 8px;
-    border-radius: 6px;
-    transition: var(--transition);
+  color: var(--danger);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 6px;
+  transition: var(--transition);
 }
 
 .delete-exercise:hover {
-    background: rgba(244, 67, 54, 0.1);
-    transform: scale(1.1);
+  background: rgba(244, 67, 54, 0.1);
+  transform: scale(1.1);
 }
 
-/* ===== CRONÔMETRO ===== */
 .timer-container {
-    text-align: center;
+  text-align: center;
 }
 
 .timer-display {
-    font-size: 3rem;
-    font-weight: 700;
-    font-family: 'Courier New', monospace;
-    background: linear-gradient(135deg, var(--primary), var(--accent));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    margin-bottom: 20px;
-    text-shadow: 0 0 20px rgba(108, 99, 255, 0.3);
+  font-size: 3rem;
+  font-weight: 700;
+  font-family: "Courier New", monospace;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 20px;
+  text-shadow: 0 0 20px rgba(108, 99, 255, 0.3);
 }
 
 .timer-controls {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    margin-bottom: 25px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 25px;
 }
 
 .timer-input {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .timer-input label {
-    display: block;
-    margin-bottom: 8px;
-    color: var(--gray);
-    font-weight: 500;
+  display: block;
+  margin-bottom: 8px;
+  color: var(--gray);
+  font-weight: 500;
 }
 
 .input-with-button {
-    display: flex;
-    gap: 10px;
-    align-items: center;
+  display: flex;
+  gap: 10px;
+  align-items: center;
 }
 
 .input-with-button input {
-    flex: 1;
-    padding: 10px 15px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    color: var(--light);
-    font-family: inherit;
+  flex: 1;
+  padding: 10px 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: var(--light);
+  font-family: inherit;
 }
 
 .timer-progress {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .progress-bar {
-    height: 8px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    overflow: hidden;
-    margin-bottom: 8px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 8px;
 }
 
 .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--primary), var(--accent));
-    border-radius: 4px;
-    transition: width 0.3s ease;
-    position: relative;
-    overflow: hidden;
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 4px;
+  transition: width 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .progress-fill:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-    animation: shimmer 2s infinite;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  animation: shimmer 2s infinite;
 }
 
 @keyframes shimmer {
-    0% {
-        left: -100%;
-    }
-    100% {
-        left: 100%;
-    }
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
 }
 
 .progress-text {
-    font-size: 0.9rem;
-    color: var(--gray);
-    text-align: center;
+  font-size: 0.9rem;
+  color: var(--gray);
+  text-align: center;
 }
 
-/* ===== EMPTY STATES ===== */
 .empty-state {
-    text-align: center;
-    padding: 40px 20px;
-    color: var(--gray);
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--gray);
 }
 
 .empty-state i {
-    font-size: 3rem;
-    margin-bottom: 15px;
-    color: var(--primary);
-    opacity: 0.7;
+  font-size: 3rem;
+  margin-bottom: 15px;
+  color: var(--primary);
+  opacity: 0.7;
 }
 
 .empty-state p {
-    margin-bottom: 8px;
-    line-height: 1.5;
+  margin-bottom: 8px;
+  line-height: 1.5;
 }
 
-/* ===== ANIMAÇÕES DE SCROLL ===== */
 .workout-section,
 .side-section {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
 .workout-section.visible,
 .side-section.visible {
-    opacity: 1;
-    transform: translateY(0);
+  opacity: 1;
+  transform: translateY(0);
 }
 
-/* ===== RESPONSIVIDADE MELHORADA - TREINOS ===== */
 @media (max-width: 1200px) {
-    .workout-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-    
-    .side-section {
-        order: -1;
-    }
+  .workout-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .side-section {
+    order: -1;
+  }
 }
 
 @media (max-width: 768px) {
-    .container {
-        padding: 0 15px;
-    }
-    
-    .main-content {
-        padding: 20px 0;
-    }
-    
-    .page-header {
-        margin-bottom: 30px;
-    }
-    
-    .page-title {
-        font-size: 2.2rem;
-        margin-bottom: 8px;
-    }
-    
-    .page-subtitle {
-        font-size: 1.1rem;
-    }
-    
-    /* CARDS MOBILE */
-    .card {
-        padding: 20px;
-        margin-bottom: 20px;
-    }
-    
-    .card-header {
-        flex-direction: column;
-        gap: 15px;
-        align-items: flex-start;
-        padding-bottom: 15px;
-        margin-bottom: 15px;
-    }
-    
-    .card-header h2 {
-        font-size: 1.2rem;
-    }
-    
-    /* FORMULÁRIOS MOBILE */
-    .form-row {
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-    
-    .form-group {
-        margin-bottom: 12px;
-    }
-    
-    .form-actions {
-        flex-direction: column;
-        gap: 8px;
-    }
-    
-    .form-actions .btn {
-        width: 100%;
-        justify-content: center;
-    }
-    
-    /* LISTA DE FICHAS MOBILE */
-    .workouts-list {
-        gap: 8px;
-    }
-    
-    .workout-item {
-        padding: 12px;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }
-    
-    .workout-item-actions {
-        align-self: flex-end;
-        margin-top: 8px;
-    }
-    
-    /* LISTA DE EXERCÍCIOS MOBILE */
-    .exercises-list {
-        gap: 12px;
-    }
-    
-    .exercise-item {
-        padding: 15px;
-    }
-    
-    .exercise-name {
-        font-size: 1rem;
-    }
-    
-    .exercise-details {
-        font-size: 0.85rem;
-    }
-    
-    .exercise-performance {
-        grid-template-columns: 1fr;
-        gap: 12px;
-    }
-    
-    .performance-inputs {
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-    
-    .performance-input label {
-        font-size: 0.75rem;
-    }
-    
-    .performance-input input {
-        padding: 6px 10px;
-        font-size: 0.9rem;
-    }
-    
-    .exercise-actions {
-        justify-content: center;
-    }
-    
-    /* CRONÔMETRO MOBILE */
-    .timer-container {
-        padding: 10px 0;
-    }
-    
-    .timer-display {
-        font-size: 2.2rem;
-        margin-bottom: 15px;
-    }
-    
-    .timer-controls {
-        flex-direction: column;
-        gap: 8px;
-        margin-bottom: 20px;
-    }
-    
-    .timer-controls .btn {
-        width: 100%;
-        justify-content: center;
-    }
-    
-    .timer-input {
-        margin-bottom: 15px;
-    }
-    
-    .input-with-button {
-        flex-direction: column;
-        gap: 8px;
-    }
-    
-    .input-with-button input {
-        width: 100%;
-    }
-    
-    .timer-progress {
-        margin-top: 15px;
-    }
-    
-    /* BOTÕES MOBILE */
-    .btn {
-        padding: 8px 16px;
-        font-size: 0.85rem;
-    }
-    
-    .btn-small {
-        padding: 6px 12px;
-        font-size: 0.8rem;
-    }
-    
-    .btn-full {
-        width: 100%;
-    }
-    
-    /* EMPTY STATES MOBILE */
-    .empty-state {
-        padding: 30px 15px;
-    }
-    
-    .empty-state i {
-        font-size: 2.5rem;
-        margin-bottom: 12px;
-    }
-    
-    .empty-state p {
-        font-size: 0.9rem;
-        margin-bottom: 6px;
-    }
-    
-    /* NAVBAR MOBILE */
-    .navbar {
-        flex-wrap: wrap;
-        padding: 10px 0;
-    }
-    
-    .nav-links {
-        display: none;
-        width: 100%;
-        flex-direction: column;
-        gap: 8px;
-        margin-top: 15px;
-        padding-top: 15px;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    .nav-links.active {
-        display: flex;
-    }
-    
-    .nav-links a {
-        padding: 10px 15px;
-        justify-content: center;
-    }
-    
-    .menu-toggle {
-        display: block;
-    }
-    
-    .user-profile .user-info {
-        display: none;
-    }
-    
-    .logo {
-        font-size: 1.5rem;
-    }
-    
-    .logo i {
-        font-size: 1.7rem;
-    }
+  .container {
+    padding: 0 15px;
+  }
+
+  .main-content {
+    padding: 20px 0;
+  }
+
+  .page-header {
+    margin-bottom: 30px;
+  }
+
+  .page-title {
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+  }
+
+  .page-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .card {
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .card-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+  }
+
+  .card-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .form-group {
+    margin-bottom: 12px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .form-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .workouts-list {
+    gap: 8px;
+  }
+
+  .workout-item {
+    padding: 12px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .workout-item-actions {
+    align-self: flex-end;
+    margin-top: 8px;
+  }
+
+  .exercises-list {
+    gap: 12px;
+  }
+
+  .exercise-item {
+    padding: 15px;
+  }
+
+  .exercise-name {
+    font-size: 1rem;
+  }
+
+  .exercise-details {
+    font-size: 0.85rem;
+  }
+
+  .exercise-performance {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .performance-inputs {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .performance-input label {
+    font-size: 0.75rem;
+  }
+
+  .performance-input input {
+    padding: 6px 10px;
+    font-size: 0.9rem;
+  }
+
+  .exercise-actions {
+    justify-content: center;
+  }
+
+  .timer-container {
+    padding: 10px 0;
+  }
+
+  .timer-display {
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+  }
+
+  .timer-controls {
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .timer-controls .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .timer-input {
+    margin-bottom: 15px;
+  }
+
+  .input-with-button {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .input-with-button input {
+    width: 100%;
+  }
+
+  .timer-progress {
+    margin-top: 15px;
+  }
+
+  .btn {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+  }
+
+  .btn-small {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  .btn-full {
+    width: 100%;
+  }
+
+  .empty-state {
+    padding: 30px 15px;
+  }
+
+  .empty-state i {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+  }
+
+  .empty-state p {
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+  }
+
+  .navbar {
+    flex-wrap: wrap;
+    padding: 10px 0;
+  }
+
+  .nav-links {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .nav-links a {
+    padding: 10px 15px;
+    justify-content: center;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .user-profile .user-info {
+    display: none;
+  }
+
+  .logo {
+    font-size: 1.5rem;
+  }
+
+  .logo i {
+    font-size: 1.7rem;
+  }
 }
 
 @media (max-width: 480px) {
-    .container {
-        padding: 0 12px;
-    }
-    
-    .page-title {
-        font-size: 1.8rem;
-    }
-    
-    .page-subtitle {
-        font-size: 1rem;
-    }
-    
-    /* CARDS MOBILE PEQUENO */
-    .card {
-        padding: 15px;
-        margin-bottom: 15px;
-        border-radius: 12px;
-    }
-    
-    /* CRONÔMETRO MOBILE PEQUENO */
-    .timer-display {
-        font-size: 1.8rem;
-    }
-    
-    /* FORMULÁRIOS MOBILE PEQUENO */
-    .form-group input {
-        padding: 10px 12px;
-        font-size: 16px; /* Prevenir zoom no iOS */
-    }
-    
-    /* LISTA DE EXERCÍCIOS MOBILE PEQUENO */
-    .exercise-item {
-        padding: 12px;
-    }
-    
-    .performance-inputs {
-        gap: 8px;
-    }
-    
-    /* BOTÕES MOBILE PEQUENO */
-    .btn {
-        padding: 10px 16px;
-        font-size: 0.9rem;
-    }
+  .container {
+    padding: 0 12px;
+  }
+
+  .page-title {
+    font-size: 1.8rem;
+  }
+
+  .page-subtitle {
+    font-size: 1rem;
+  }
+
+  .card {
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 12px;
+  }
+
+  .timer-display {
+    font-size: 1.8rem;
+  }
+
+  .form-group input {
+    padding: 10px 12px;
+    font-size: 16px;
+  }
+
+  .exercise-item {
+    padding: 12px;
+  }
+
+  .performance-inputs {
+    gap: 8px;
+  }
+
+  .btn {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
 }
 
-/* ===== MELHORIAS ESPECÍFICAS PARA TREINOS MOBILE ===== */
 @media (max-width: 768px) {
-    /* Garantir que o formulário de exercício seja fácil de usar */
-    #exerciseFormContainer {
-        margin: 10px 0;
-    }
-    
-    .exercise-form .form-row {
-        gap: 8px;
-    }
-    
-    /* Melhorar a visualização das fichas */
-    .workout-item {
-        min-height: 60px;
-    }
-    
-    .workout-item-name {
-        font-size: 1rem;
-        font-weight: 600;
-    }
-    
-    .workout-item-exercises {
-        font-size: 0.8rem;
-    }
-    
-    /* Otimizar espaço do cronômetro */
-    .timer-card {
-        min-height: auto;
-    }
-    
-    /* Reduzir efeitos pesados em mobile */
-    .card:hover .card-glow {
-        opacity: 0.3;
-    }
-    
-    .card:hover {
-        transform: translateY(-3px);
-    }
+  #exerciseFormContainer {
+    margin: 10px 0;
+  }
+
+  .exercise-form .form-row {
+    gap: 8px;
+  }
+
+  .workout-item {
+    min-height: 60px;
+  }
+
+  .workout-item-name {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .workout-item-exercises {
+    font-size: 0.8rem;
+  }
+
+  .timer-card {
+    min-height: auto;
+  }
+
+  .card:hover .card-glow {
+    opacity: 0.3;
+  }
+
+  .card:hover {
+    transform: translateY(-3px);
+  }
 }
 
-/* ===== ORIENTAÇÃO LANDSCAPE ===== */
 @media (max-width: 768px) and (orientation: landscape) {
-    .workout-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 15px;
-    }
-    
-    .side-section {
-        order: 0;
-    }
-    
-    .timer-display {
-        font-size: 1.8rem;
-    }
-    
-    .timer-controls {
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
-    
-    .timer-controls .btn {
-        flex: 1;
-        min-width: 80px;
-    }
+  .workout-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+
+  .side-section {
+    order: 0;
+  }
+
+  .timer-display {
+    font-size: 1.8rem;
+  }
+
+  .timer-controls {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .timer-controls .btn {
+    flex: 1;
+    min-width: 80px;
+  }
 }
 
-/* ===== MELHORIAS DE ACESSIBILIDADE MOBILE ===== */
 @media (max-width: 768px) {
-    /* Áreas de toque maiores */
-    .btn,
-    .workout-item,
-    .exercise-item,
-    .performance-input input {
-        min-height: 44px; /* Tamanho mínimo recomendado para touch */
-    }
-    
-    /* Melhor contraste */
-    .card-header h2,
-    .exercise-name,
-    .page-title {
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-    }
-    
-    /* Feedback visual para touch */
-    .btn:active,
-    .workout-item:active,
-    .exercise-item:active {
-        transform: scale(0.98);
-    }
-    
-    /* Inputs mais legíveis */
-    .form-group input:focus {
-        border-width: 2px;
-    }
+  .btn,
+  .workout-item,
+  .exercise-item,
+  .performance-input input {
+    min-height: 44px;
+  }
+
+  .card-header h2,
+  .exercise-name,
+  .page-title {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  }
+
+  .btn:active,
+  .workout-item:active,
+  .exercise-item:active {
+    transform: scale(0.98);
+  }
+
+  .form-group input:focus {
+    border-width: 2px;
+  }
 }
 
-/* ===== ANIMAÇÕES OTIMIZADAS PARA MOBILE ===== */
 @media (max-width: 768px) {
-    .workout-section,
-    .side-section {
-        transform: translateY(20px);
-    }
-    
-    .card {
-        transform: translateY(10px);
-    }
-    
-    /* Reduzir animações pesadas em dispositivos mais lentos */
-    .progress-fill:after,
-    .card-glow {
-        animation: none;
-    }
-    
-    .page-title {
-        animation: textGlow 3s ease-in-out infinite alternate;
-    }
+  .workout-section,
+  .side-section {
+    transform: translateY(20px);
+  }
+
+  .card {
+    transform: translateY(10px);
+  }
+
+  .progress-fill:after,
+  .card-glow {
+    animation: none;
+  }
+
+  .page-title {
+    animation: textGlow 3s ease-in-out infinite alternate;
+  }
 }
 
-/* ===== CORREÇÕES ESPECÍFICAS PARA TREINOS ===== */
 @media (max-width: 768px) {
-    /* Garantir que os botões de ação sejam acessíveis */
-    .delete-workout,
-    .delete-exercise {
-        min-width: 44px;
-        min-height: 44px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    /* Ajustar espaçamento entre elementos de exercício */
-    .exercise-info {
-        margin-bottom: 12px;
-    }
-    
-    /* Melhorar visualização dos inputs de performance */
-    .performance-input {
-        gap: 4px;
-    }
-    
-    /* Garantir que o cronômetro seja funcional */
-    .timer-controls .btn:disabled {
-        opacity: 0.6;
-    }
-    
-    /* Otimizar formulário de criação */
-    .create-card .form-row {
-        gap: 12px;
-    }
-    
-    /* Ajustar badges e contadores */
-    .workout-item-exercises {
-        background: rgba(255, 255, 255, 0.05);
-        padding: 2px 8px;
-        border-radius: 10px;
-        font-size: 0.75rem;
-    }
+  .delete-workout,
+  .delete-exercise {
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .exercise-info {
+    margin-bottom: 12px;
+  }
+
+  .performance-input {
+    gap: 4px;
+  }
+
+  .timer-controls .btn:disabled {
+    opacity: 0.6;
+  }
+
+  .create-card .form-row {
+    gap: 12px;
+  }
+
+  .workout-item-exercises {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+  }
 }

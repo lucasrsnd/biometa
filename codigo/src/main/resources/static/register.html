@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,15 +9,14 @@
     <link rel="stylesheet" href="css/register.css?v=3.0">
     <link rel="shortcut icon" type="image/x-icon" href="img/logo.png">
 </head>
+
 <body>
-    <!-- Background com efeitos -->
     <div class="background-effects">
         <div class="particles" id="particles-js"></div>
         <div class="gradient-bg"></div>
     </div>
 
     <div class="auth-container">
-        <!-- Logo e Header -->
         <div class="auth-header">
             <div class="logo">
                 <i class="fas fa-dumbbell"></i> BioMeta
@@ -26,7 +26,6 @@
         </div>
 
         <div class="auth-content">
-            <!-- Imagem Ilustrativa -->
             <div class="auth-image">
                 <div class="image-container">
                     <i class="fas fa-user-plus"></i>
@@ -65,16 +64,14 @@
                 </div>
             </div>
 
-            <!-- Formulário de Cadastro -->
             <div class="auth-form">
                 <form id="registerForm">
-                    <!-- Seção 1: Informações Básicas -->
                     <div class="form-section active" id="section-1">
                         <div class="section-header">
                             <div class="section-number">1</div>
                             <h3>Informações Pessoais</h3>
                         </div>
-                        
+
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="firstName">
@@ -82,7 +79,7 @@
                                 </label>
                                 <input type="text" id="firstName" required placeholder="Seu primeiro nome">
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="lastName">
                                     <i class="fas fa-user"></i> Último Nome
@@ -90,7 +87,7 @@
                                 <input type="text" id="lastName" required placeholder="Seu último nome">
                             </div>
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="email">
                                 <i class="fas fa-envelope"></i> E-mail
@@ -110,7 +107,7 @@
                                     <option value="Prefiro não dizer">Prefiro não dizer</option>
                                 </select>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="birthDate">
                                     <i class="fas fa-calendar"></i> Data de Nascimento
@@ -126,19 +123,19 @@
                         </div>
                     </div>
 
-                    <!-- Seção 2: Segurança -->
                     <div class="form-section" id="section-2">
                         <div class="section-header">
                             <div class="section-number">2</div>
                             <h3>Segurança da Conta</h3>
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="password">
                                 <i class="fas fa-lock"></i> Senha
                             </label>
-                            <input type="password" id="password" required minlength="8" placeholder="Crie uma senha segura">
-                            
+                            <input type="password" id="password" required minlength="8"
+                                placeholder="Crie uma senha segura">
+
                             <div class="password-requirements">
                                 <div class="requirement invalid" id="req-length">
                                     <i class="fas fa-times"></i>
@@ -161,7 +158,7 @@
                                     Pelo menos um caractere especial (!@#$%&*)
                                 </div>
                             </div>
-                            
+
                             <div class="password-strength">
                                 <div class="strength-labels">
                                     <span>Fraca</span>
@@ -173,7 +170,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="confirmPassword">
                                 <i class="fas fa-lock"></i> Confirmar Senha
@@ -194,13 +191,12 @@
                         </div>
                     </div>
 
-                    <!-- Seção 3: Perfil Fitness -->
                     <div class="form-section" id="section-3">
                         <div class="section-header">
                             <div class="section-number">3</div>
                             <h3>Perfil Fitness</h3>
                         </div>
-                        
+
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="country">
@@ -215,23 +211,22 @@
                                     <option value="Outro">Outro</option>
                                 </select>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="height">
                                     <i class="fas fa-ruler-vertical"></i> Altura (m)
                                 </label>
-                                <input type="number" id="height" step="0.01" min="0.5" max="2.5" 
-                                       placeholder="Ex: 1.75" lang="pt-BR">
+                                <input type="number" id="height" step="0.01" min="0.5" max="2.5" placeholder="Ex: 1.75"
+                                    lang="pt-BR">
                                 <small class="input-help">Use ponto como separador decimal (ex: 1.75)</small>
                             </div>
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="weight">
                                 <i class="fas fa-weight"></i> Peso (kg)
                             </label>
-                            <input type="number" id="weight" step="0.1" min="0" max="300" 
-                                   placeholder="Ex: 70.2">
+                            <input type="number" id="weight" step="0.1" min="0" max="300" placeholder="Ex: 70.2">
                         </div>
 
                         <div class="form-group">
@@ -258,7 +253,6 @@
                         </div>
                     </div>
 
-                    <!-- Indicador de Progresso -->
                     <div class="form-progress">
                         <div class="progress-steps">
                             <div class="progress-step active" data-step="1">
@@ -280,11 +274,9 @@
                     </div>
                 </form>
 
-                <!-- Mensagens de Feedback -->
                 <div id="errorMessage" class="error message-hidden"></div>
                 <div id="successMessage" class="success message-hidden"></div>
 
-                <!-- Link para Login -->
                 <div class="auth-links">
                     <p>Já tem uma conta? <a href="login.html">Faça login aqui</a></p>
                 </div>
@@ -294,11 +286,9 @@
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="js/auth.js"></script>
-    
-    <!-- APENAS ANIMAÇÕES - SEM INTERFERIR NA AUTENTICAÇÃO -->
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Inicializar partículas (apenas visual)
+        document.addEventListener('DOMContentLoaded', function () {
             if (typeof particlesJS !== 'undefined') {
                 particlesJS('particles-js', {
                     particles: {
@@ -333,17 +323,14 @@
                 });
             }
 
-            // Configurar navegação entre seções (apenas visual)
             let currentSection = 1;
             const totalSections = 3;
 
             function showSection(sectionNumber) {
-                // Esconder todas as seções
                 document.querySelectorAll('.form-section').forEach(section => {
                     section.classList.remove('active');
                 });
-                
-                // Mostrar seção atual
+
                 const targetSection = document.getElementById(`section-${sectionNumber}`);
                 if (targetSection) {
                     targetSection.classList.add('active');
@@ -355,16 +342,15 @@
             function updateProgressVisual(sectionNumber) {
                 const progressFill = document.getElementById('progressFill');
                 const progress = (sectionNumber / totalSections) * 100;
-                
+
                 if (progressFill) {
                     progressFill.style.width = `${progress}%`;
                 }
-                
-                // Atualizar steps visuais
+
                 document.querySelectorAll('.progress-step').forEach((step, index) => {
                     const stepNumber = index + 1;
                     step.classList.remove('active', 'completed');
-                    
+
                     if (stepNumber === sectionNumber) {
                         step.classList.add('active');
                     } else if (stepNumber < sectionNumber) {
@@ -373,22 +359,20 @@
                 });
             }
 
-            // Event listeners para navegação
             document.querySelectorAll('.btn-next').forEach(btn => {
-                btn.addEventListener('click', function() {
+                btn.addEventListener('click', function () {
                     const nextSection = parseInt(this.dataset.next);
                     showSection(nextSection);
                 });
             });
-            
+
             document.querySelectorAll('.btn-prev').forEach(btn => {
-                btn.addEventListener('click', function() {
+                btn.addEventListener('click', function () {
                     const prevSection = parseInt(this.dataset.prev);
                     showSection(prevSection);
                 });
             });
 
-            // Animar elementos flutuantes
             function animateFloatingElements() {
                 const elements = document.querySelectorAll('.floating-element');
                 elements.forEach((element, index) => {
@@ -401,4 +385,5 @@
         });
     </script>
 </body>
+
 </html>

@@ -10,33 +10,70 @@ public class UpdateUserRequest {
     private Double height;
     private Double weight;
     private String country;
-    
-    // NOVO CAMPO ADICIONADO
+
     private String objective;
 
-    // Getters e Setters
-    public String getFirstName() { return firstName; }
-    public void setFirstName(String firstName) { this.firstName = firstName; }
-    
-    public String getLastName() { return lastName; }
-    public void setLastName(String lastName) { this.lastName = lastName; }
-    
-    public LocalDate getBirthDate() { return birthDate; }
-    public void setBirthDate(LocalDate birthDate) { this.birthDate = birthDate; }
-    
-    public String getGender() { return gender; }
-    public void setGender(String gender) { this.gender = gender; }
-    
-    public Double getHeight() { return height; }
-    public void setHeight(Double height) { this.height = height; }
-    
-    public Double getWeight() { return weight; }
-    public void setWeight(Double weight) { this.weight = weight; }
-    
-    public String getCountry() { return country; }
-    public void setCountry(String country) { this.country = country; }
-    
-    // NOVO GETTER E SETTER
-    public String getObjective() { return objective; }
-    public void setObjective(String objective) { this.objective = objective; }
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public Double getHeight() {
+        return height;
+    }
+
+    public void setHeight(Double height) {
+        this.height = height;
+    }
+
+    public Double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(Double weight) {
+        this.weight = weight;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getObjective() {
+        return objective;
+    }
+
+    public void setObjective(String objective) {
+        this.objective = objective;
+    }
 }
