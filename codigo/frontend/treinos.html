@@ -195,6 +195,49 @@
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="js/treinos.js?v=2.0"></script>
+
+    <script>
+        console.log('=== VERIFICANDO AUTENTICAÇÃO ===');
+
+        const token = localStorage.getItem('token');
+        const user = localStorage.getItem('user');
+
+        console.log('Token:', !!token);
+        console.log('User:', !!user);
+
+        if (!token || !user) {
+            console.log('❌ Não autenticado, redirecionando para login...');
+            window.location.href = 'login.html';
+        } else {
+            try {
+                const userData = JSON.parse(user);
+                if (!userData.id) {
+                    console.log('❌ Dados de usuário inválidos, redirecionando...');
+                    window.location.href = 'login.html';
+                } else {
+                    console.log('✅ Usuário autenticado:', userData.email);
+                }
+            } catch (error) {
+                console.log('❌ Erro ao verificar usuário, redirecionando...');
+                window.location.href = 'login.html';
+            }
+        }
+
+        function getCurrentUserId() {
+            try {
+                const user = JSON.parse(localStorage.getItem('user'));
+                return user ? user.id : null;
+            } catch (error) {
+                console.error('Erro ao obter user ID:', error);
+                return null;
+            }
+        }
+
+        function getUserKey(key) {
+            const userId = getCurrentUserId();
+            return userId ? `${key}_${userId}` : key;
+        }
+    </script>
 </body>
 
 </html>

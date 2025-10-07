@@ -370,12 +370,33 @@ function updateAgeFromBirthDate() {
 }
 
 function logout() {
-  if (confirm("Tem certeza que deseja sair?")) {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    if (confirm('Tem certeza que deseja sair?')) {
+        console.log('🚪 Fazendo logout...');
 
-    window.location.href = "login.html";
-  }
+        const userId = getCurrentUserId();
+        console.log('User ID para limpeza:', userId);
+
+        if (userId) {
+            const keysToRemove = [
+                'workouts', 'meals', 'dailySummary', 'dailyCalorieGoal',
+                'hydration', 'hydration_challenges', 'planning_events',
+                'planning_tasks', 'planning_notes', 'last_hydration_reset',
+                'lastDailyReset'
+            ];
+            
+            keysToRemove.forEach(key => {
+                const userKey = `${key}_${userId}`;
+                localStorage.removeItem(userKey);
+                console.log('Removido:', userKey);
+            });
+        }
+
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        
+        console.log('✅ Logout concluído');
+        window.location.href = 'login.html';
+    }
 }
 
 function toggleEditMode() {

@@ -384,6 +384,40 @@
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="js/script.js?v=2.0"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log('=== VERIFICANDO AUTENTICAÇÃO NA PÁGINA INICIAL ===');
+
+            const token = localStorage.getItem('token');
+            const user = localStorage.getItem('user');
+
+            console.log('Token presente:', !!token);
+            console.log('User presente:', !!user);
+
+            if (token && user) {
+                try {
+                    const userData = JSON.parse(user);
+                    if (userData.id) {
+                        console.log('✅ Usuário já logado, redirecionando para dashboard...');
+                        setTimeout(() => {
+                            window.location.href = 'dashboard.html';
+                        }, 1000);
+                    }
+                } catch (error) {
+                    console.log('❌ Dados de usuário inválidos, mantendo na página inicial');
+                }
+            }
+        });
+
+        function handleLogout() {
+            if (confirm('Tem certeza que deseja sair?')) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
 </body>
 
 </html>

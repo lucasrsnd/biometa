@@ -1,23 +1,310 @@
+// Sistema de inicialização corrigido
 document.addEventListener("DOMContentLoaded", function () {
-  const token = localStorage.getItem("token");
-
-  const user = JSON.parse(localStorage.getItem("user"));
-
-  if (!token || !user) {
-    window.location.href = "login.html";
-    return;
+  console.log("=== INICIANDO DASHBOARD ===");
+  
+  // Verificar autenticação PRIMEIRO
+  if (!checkAuthAndRedirect()) {
+    return; // Se não está autenticado, para aqui
   }
 
-  console.log(`=== CARREGANDO DADOS DO USUÁRIO ${user.id} ===`);
+  console.log(`=== CARREGANDO DADOS DO USUÁRIO ${getCurrentUserId()} ===`);
 
+  // Inicializar componentes
   initNavbar();
-
   initializeDashboard();
-
   initParticles();
-
   setupIntersectionObserver();
+  
+  // Iniciar keep-alive do backend
+  startBackendKeepAlive();
 });
+
+// Sistema de autenticação corrigido para páginas protegidas
+function checkAuthAndRedirect() {
+  const token = localStorage.getItem("token");
+  const user = localStorage.getItem("user");
+
+  console.log("=== VERIFICAÇÃO DE AUTENTICAÇÃO NO DASHBOARD ===");
+  console.log("Token presente:", !!token);
+  console.log("User presente:", !!user);
+
+  if (!token || !user) {
+    console.log("❌ Usuário não autenticado, redirecionando para login...");
+    window.location.href = "login.html";
+    return false;
+  }
+
+  try {
+    const userData = JSON.parse(user);
+    if (!userData.id) {
+      console.log("❌ Dados de usuário inválidos, redirecionando...");
+      window.location.href = "login.html";
+      return false;
+    }
+    
+    console.log("✅ Usuário autenticado:", userData.email);
+    return true;
+  } catch (error) {
+    console.log("❌ Erro ao parsear dados do usuário, redirecionando...");
+    window.location.href = "login.html";
+    return false;
+  }
+}
+
+// Sistema de gestão de dados por usuário (CORRIGIDO)
+function getCurrentUserId() {
+  try {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user || !user.id) {
+      console.error("❌ User ID não encontrado ou inválido");
+      return null;
+    }
+    return user.id;
+  } catch (error) {
+    console.error("❌ Erro ao obter user ID:", error);
+    return null;
+  }
+}
+
+function getUserKey(key) {
+  const userId = getCurrentUserId();
+  if (!userId) {
+    console.error("❌ Não foi possível gerar chave - User ID não disponível");
+    return key; // Fallback para evitar quebras
+  }
+  
+  const userKey = `${key}_${userId}`;
+  console.log(`🗝️ Gerando chave: ${key} -> ${userKey}`);
+  return userKey;
+}
+
+// Função para salvar dados com verificação
+function saveUserData(key, data) {
+  try {
+    const userKey = getUserKey(key);
+    const dataString = JSON.stringify(data);
+    localStorage.setItem(userKey, dataString);
+    console.log(`💾 Dados salvos em ${userKey}:`, data);
+    return true;
+  } catch (error) {
+    console.error(`❌ Erro ao salvar dados em ${key}:`, error);
+    return false;
+  }
+}
+
+// Função para carregar dados com verificação
+function loadUserData(key, defaultValue = null) {
+  try {
+    const userKey = getUserKey(key);
+    const dataString = localStorage.getItem(userKey);
+    
+    if (!dataString) {
+      console.log(`📁 Nenhum dado encontrado para ${userKey}, usando padrão`);
+      return defaultValue;
+    }
+    
+    const data = JSON.parse(dataString);
+    console.log(`📂 Dados carregados de ${userKey}:`, data);
+    return data;
+  } catch (error) {
+    console.error(`❌ Erro ao carregar dados de ${key}:`, error);
+    return defaultValue;
+  }
+}
+
+// Sistema de inicialização do dashboard corrigido
+async function initializeDashboard() {
+  console.log("🔄 Inicializando dashboard...");
+  
+  try {
+    // Carregar dados do usuário do backend
+    await loadUserDataFromBackend();
+    
+    // Atualizar interface
+    updateDateAndGreeting();
+    
+    // Verificar se existem dados salvos
+    const hasWorkouts = localStorage.getItem(getUserKey("workouts"));
+    const hasMeals = localStorage.getItem(getUserKey("meals"));
+    
+    console.log("📊 Dados existentes - Workouts:", !!hasWorkouts, "Meals:", !!hasMeals);
+
+    if (!hasWorkouts && !hasMeals) {
+      console.log("🆕 Inicializando dados para novo usuário...");
+      resetEmptyData();
+    } else {
+      console.log("🔄 Carregando dados existentes...");
+      loadDailySummary();
+    }
+
+    loadMotivationalContent();
+    loadQuickStats();
+    updateQuickActions();
+    typeWriterEffect();
+    
+    console.log("✅ Dashboard inicializado com sucesso!");
+  } catch (error) {
+    console.error("❌ Erro ao inicializar dashboard:", error);
+    // Fallback: carregar dados básicos mesmo com erro
+    loadBasicData();
+  }
+}
+
+// Carregar dados do usuário do backend
+async function loadUserDataFromBackend() {
+  const token = localStorage.getItem("token");
+  
+  try {
+    console.log("🔍 Buscando dados do usuário no backend...");
+    const response = await fetch("https://biometa.onrender.com/api/user/me", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+      signal: AbortSignal.timeout(10000)
+    });
+
+    if (response.ok) {
+      const userData = await response.json();
+      console.log("✅ Dados do usuário recebidos:", userData);
+      
+      // Atualizar interface
+      updateUserInterface(userData);
+      
+      // Atualizar localStorage com dados completos
+      const currentUser = JSON.parse(localStorage.getItem("user")) || {};
+      const updatedUser = {
+        ...currentUser,
+        ...userData,
+        id: currentUser.id // Manter o ID original
+      };
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      
+      return userData;
+    } else if (response.status === 401) {
+      console.log("❌ Token inválido, fazendo logout...");
+      logout();
+    } else {
+      throw new Error(`Erro ${response.status}`);
+    }
+  } catch (error) {
+    console.warn("⚠️ Não foi possível carregar dados do backend, usando dados locais:", error.message);
+    // Usar dados do localStorage como fallback
+    const localUser = JSON.parse(localStorage.getItem("user")) || {};
+    updateUserInterface(localUser);
+  }
+}
+
+function updateUserInterface(userData) {
+  // Atualizar nome na dashboard
+  const userNameElement = document.getElementById("userName");
+  if (userNameElement) {
+    userNameElement.textContent = `${userData.firstName} ${userData.lastName}`;
+  }
+
+  // Atualizar navbar
+  const navbarAvatar = document.getElementById("navbarAvatar");
+  const navbarName = document.getElementById("navbarName");
+
+  if (navbarAvatar) {
+    const initials = (userData.firstName?.charAt(0) || 'U') + (userData.lastName?.charAt(0) || 'B');
+    navbarAvatar.textContent = initials;
+  }
+
+  if (navbarName) {
+    navbarName.textContent = `${userData.firstName} ${userData.lastName}`;
+  }
+}
+
+// Sistema de dados vazios corrigido
+function resetEmptyData() {
+  console.log("🆕 Inicializando dados vazios...");
+  
+  const emptyData = {
+    workouts: [],
+    meals: [],
+    dailySummary: { 
+      calories: 0, 
+      protein: 0, 
+      carbs: 0, 
+      fat: 0,
+      lastUpdated: new Date().toISOString().split('T')[0]
+    },
+    dailyCalorieGoal: 2000,
+    hydration: { 
+      date: new Date().toISOString().split('T')[0], 
+      consumption: [] 
+    },
+    hydration_challenges: {
+      early: false,
+      bottle: false,
+      streak: { current: 0, max: 30, lastCompleted: null },
+      bottleClicks: 0,
+      lastUpdated: new Date().toISOString().split('T')[0]
+    },
+    planning_events: {},
+    planning_tasks: {
+      todo: [],
+      doing: [],
+      done: []
+    },
+    planning_notes: {}
+  };
+
+  // Salvar todos os dados vazios
+  Object.keys(emptyData).forEach((key) => {
+    saveUserData(key, emptyData[key]);
+  });
+
+  console.log("✅ Dados vazios inicializados com sucesso!");
+  loadDailySummary();
+}
+
+// Carregar dados básicos (fallback)
+function loadBasicData() {
+  const localUser = JSON.parse(localStorage.getItem("user")) || {
+    firstName: "Usuário",
+    lastName: "BioMeta"
+  };
+  
+  updateUserInterface(localUser);
+  loadDailySummary();
+  loadMotivationalContent();
+  loadQuickStats();
+  updateQuickActions();
+}
+
+// Sistema de logout corrigido
+function logout() {
+  if (confirm("Tem certeza que deseja sair?")) {
+    console.log("🚪 Fazendo logout...");
+    
+    // Limpar dados específicos do usuário
+    const userId = getCurrentUserId();
+    if (userId) {
+      const keysToRemove = [
+        'workouts', 'meals', 'dailySummary', 'dailyCalorieGoal',
+        'hydration', 'hydration_challenges', 'planning_events',
+        'planning_tasks', 'planning_notes', 'last_hydration_reset',
+        'lastDailyReset'
+      ];
+      
+      keysToRemove.forEach(key => {
+        localStorage.removeItem(`${key}_${userId}`);
+      });
+    }
+    
+    // Limpar dados de autenticação
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    
+    console.log("✅ Logout concluído, redirecionando...");
+    window.location.href = "login.html";
+  }
+}
+
+// Restante das funções do dashboard (mantenha as existentes, mas usando as novas funções de persistência)
 
 function initNavbar() {
   const menuToggle = document.querySelector(".menu-toggle");
@@ -150,9 +437,7 @@ function setupIntersectionObserver() {
           );
           cards.forEach((card, index) => {
             setTimeout(() => {
-              card.style.animation = `slideInUp 0.6s ease-out ${
-                index * 0.1
-              }s both`;
+              card.style.animation = `slideInUp 0.6s ease-out ${index * 0.1}s both`;
             }, 100);
           });
         }
@@ -169,155 +454,13 @@ function setupIntersectionObserver() {
   });
 }
 
-async function initializeDashboard() {
-  await loadUserData();
-  updateDateAndGreeting();
-
-  const hasWorkouts = localStorage.getItem(getUserKey("workouts"));
-  const hasMeals = localStorage.getItem(getUserKey("meals"));
-
-  if (hasWorkouts) {
-    loadDailySummary();
-  } else {
-    resetEmptyData();
-  }
-
-  if (hasMeals) {
-    loadMotivationalContent();
-    loadQuickStats();
-    updateQuickActions();
-  }
-
-  typeWriterEffect();
-}
-
-function resetEmptyData() {
-  console.log("Inicializando dados vazios para novo usuário");
-
-  const emptyData = {
-    workouts: [],
-    meals: [],
-    dailySummary: { calories: 0, protein: 0, carbs: 0, fat: 0 },
-    dailyCalorieGoal: 2000,
-    hydration: { date: new Date().toDateString(), consumption: [] },
-    hydration_challenges: {
-      early: false,
-      bottle: false,
-      streak: { current: 0, max: 30, lastCompleted: null },
-      bottleClicks: 0,
-      lastUpdated: new Date().toDateString(),
-    },
-  };
-
-  Object.keys(emptyData).forEach((key) => {
-    localStorage.setItem(getUserKey(key), JSON.stringify(emptyData[key]));
-  });
-
-  loadDailySummary();
-  loadMotivationalContent();
-  loadQuickStats();
-  updateQuickActions();
-}
-
-async function loadUserData() {
-  const token = localStorage.getItem("token");
-
-  try {
-    const response = await fetch("https://biometa.onrender.com/api/user/me", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (response.ok) {
-      const userData = await response.json();
-
-      const userNameElement = document.getElementById("userName");
-      if (userNameElement) {
-        userNameElement.textContent = `${userData.firstName} ${userData.lastName}`;
-      }
-
-      const navbarAvatar = document.getElementById("navbarAvatar");
-      const navbarName = document.getElementById("navbarName");
-
-      if (navbarAvatar) {
-        const initials =
-          userData.firstName.charAt(0) + userData.lastName.charAt(0);
-        navbarAvatar.textContent = initials;
-      }
-
-      if (navbarName) {
-        navbarName.textContent = `${userData.firstName} ${userData.lastName}`;
-      }
-
-      const currentUser = JSON.parse(localStorage.getItem("user")) || {};
-      const updatedUser = {
-        ...currentUser,
-        ...userData,
-        id: currentUser.id || userData.id,
-      };
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-    } else if (response.status === 401) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      window.location.href = "login.html";
-    } else {
-      throw new Error("Erro ao carregar dados");
-    }
-  } catch (error) {
-    console.error("Erro ao carregar dados do usuário:", error);
-    const userData = JSON.parse(localStorage.getItem("user")) || {
-      firstName: "Usuário",
-      lastName: "BioMeta",
-    };
-
-    const userNameElement = document.getElementById("userName");
-    if (userNameElement) {
-      userNameElement.textContent = `${userData.firstName} ${userData.lastName}`;
-    }
-
-    const navbarAvatar = document.getElementById("navbarAvatar");
-    const navbarName = document.getElementById("navbarName");
-
-    if (navbarAvatar) {
-      const initials =
-        (userData.firstName?.charAt(0) || "U") +
-        (userData.lastName?.charAt(0) || "B");
-      navbarAvatar.textContent = initials;
-    }
-
-    if (navbarName) {
-      navbarName.textContent = `${userData.firstName} ${userData.lastName}`;
-    }
-  }
-}
-
-function loadSavedMeals() {
-  const meals = JSON.parse(localStorage.getItem(getUserKey("meals"))) || [];
-
-  const isValidData = meals.every(
-    (meal) => meal && typeof meal === "object" && meal.id && meal.name
-  );
-
-  if (meals.length > 0 && isValidData) {
-    document.getElementById("noMealsState").style.display = "none";
-    meals.forEach((meal) => renderMeal(meal));
-
-    if (!selectedMealId && meals.length > 0) {
-      selectMeal(meals[0].id);
-    }
-  } else {
-    console.log("Dados de refeições inválidos detectados, limpando...");
-    localStorage.setItem(getUserKey("meals"), JSON.stringify([]));
-    document.getElementById("noMealsState").style.display = "block";
-  }
-}
-
 function typeWriterEffect() {
-  const welcomeText = document.getElementById("userName").textContent;
+  const welcomeText = document.getElementById("userName")?.textContent;
   const greetingElement = document.getElementById("userName");
   const emojiElement = document.getElementById("greetingEmoji");
+  
+  if (!welcomeText || !greetingElement || !emojiElement) return;
+  
   const emoji = emojiElement.textContent;
   emojiElement.textContent = "";
 
@@ -345,10 +488,11 @@ function updateDateAndGreeting() {
     month: "long",
     day: "numeric",
   };
-  document.getElementById("currentDate").textContent = now.toLocaleDateString(
-    "pt-BR",
-    options
-  );
+  
+  const dateElement = document.getElementById("currentDate");
+  if (dateElement) {
+    dateElement.textContent = now.toLocaleDateString("pt-BR", options);
+  }
 
   const hour = now.getHours();
   let emoji = "";
@@ -361,7 +505,10 @@ function updateDateAndGreeting() {
     emoji = "🌙";
   }
 
-  document.getElementById("greetingEmoji").textContent = emoji;
+  const emojiElement = document.getElementById("greetingEmoji");
+  if (emojiElement) {
+    emojiElement.textContent = emoji;
+  }
 }
 
 function loadDailySummary() {
@@ -371,17 +518,13 @@ function loadDailySummary() {
 }
 
 function updateWorkoutSummary() {
-  const workouts =
-    JSON.parse(localStorage.getItem(getUserKey("workouts"))) || [];
+  const workouts = loadUserData("workouts", []);
   let completedExercisesToday = 0;
   const today = new Date().toDateString();
 
   workouts.forEach((workout) => {
     workout.exercises.forEach((exercise) => {
-      if (
-        exercise.completedWeight !== null &&
-        exercise.completedReps !== null
-      ) {
+      if (exercise.completedWeight !== null && exercise.completedReps !== null) {
         if (!exercise.completedDate) {
           completedExercisesToday++;
         } else {
@@ -397,81 +540,106 @@ function updateWorkoutSummary() {
   const dailyGoal = 1;
   const progress = Math.min((completedExercisesToday / dailyGoal) * 100, 100);
 
-  document.getElementById(
-    "workoutProgress"
-  ).textContent = `${completedExercisesToday} exercício${
-    completedExercisesToday !== 1 ? "s" : ""
-  } feito${completedExercisesToday !== 1 ? "s" : ""} hoje`;
-  document.getElementById("workoutProgressFill").style.width = `${progress}%`;
+  const workoutProgressElement = document.getElementById("workoutProgress");
+  const workoutProgressFillElement = document.getElementById("workoutProgressFill");
+  const workoutStatusElement = document.getElementById("workoutStatus");
+
+  if (workoutProgressElement) {
+    workoutProgressElement.textContent = `${completedExercisesToday} exercício${completedExercisesToday !== 1 ? "s" : ""} feito${completedExercisesToday !== 1 ? "s" : ""} hoje`;
+  }
+
+  if (workoutProgressFillElement) {
+    workoutProgressFillElement.style.width = `${progress}%`;
+  }
 
   let status = "Nenhum exercício hoje";
   if (completedExercisesToday > 0) {
     status = "Continue treinando!";
   }
-  document.getElementById("workoutStatus").textContent = status;
+  
+  if (workoutStatusElement) {
+    workoutStatusElement.textContent = status;
+  }
 }
 
 function updateDietSummary() {
   try {
-    const summary = JSON.parse(
-      localStorage.getItem(getUserKey("dailySummary"))
-    ) || {
+    const summary = loadUserData("dailySummary", {
       calories: 0,
       protein: 0,
       carbs: 0,
-      fat: 0,
-    };
-    const goal =
-      parseInt(localStorage.getItem(getUserKey("dailyCalorieGoal"))) || 2000;
+      fat: 0
+    });
+    
+    const goal = loadUserData("dailyCalorieGoal", 2000);
 
     const currentCalories = Number(summary.calories) || 0;
-    const progress =
-      goal > 0 ? Math.min((currentCalories / goal) * 100, 100) : 0;
+    const progress = goal > 0 ? Math.min((currentCalories / goal) * 100, 100) : 0;
 
-    document.getElementById("dietProgress").textContent = `${Math.round(
-      currentCalories
-    )}/${goal} calorias`;
-    document.getElementById("dietProgressFill").style.width = `${progress}%`;
+    const dietProgressElement = document.getElementById("dietProgress");
+    const dietProgressFillElement = document.getElementById("dietProgressFill");
+    const dietStatusElement = document.getElementById("dietStatus");
+
+    if (dietProgressElement) {
+      dietProgressElement.textContent = `${Math.round(currentCalories)}/${goal} calorias`;
+    }
+
+    if (dietProgressFillElement) {
+      dietProgressFillElement.style.width = `${progress}%`;
+    }
 
     let status = "Aguardando refeições";
     if (currentCalories > 0) {
       status = progress >= 100 ? "Meta atingida! 🎉" : "Em andamento";
     }
-    document.getElementById("dietStatus").textContent = status;
+    
+    if (dietStatusElement) {
+      dietStatusElement.textContent = status;
+    }
   } catch (error) {
     console.error("Erro ao atualizar resumo da dieta:", error);
-    document.getElementById("dietProgress").textContent = "0/2000 calorias";
-    document.getElementById("dietProgressFill").style.width = "0%";
-    document.getElementById("dietStatus").textContent = "Aguardando refeições";
+    
+    const dietProgressElement = document.getElementById("dietProgress");
+    const dietProgressFillElement = document.getElementById("dietProgressFill");
+    const dietStatusElement = document.getElementById("dietStatus");
+    
+    if (dietProgressElement) dietProgressElement.textContent = "0/2000 calorias";
+    if (dietProgressFillElement) dietProgressFillElement.style.width = "0%";
+    if (dietStatusElement) dietStatusElement.textContent = "Aguardando refeições";
   }
 }
 
 function updateHydrationSummary() {
-  const hydrationData =
-    JSON.parse(localStorage.getItem(getUserKey("hydration"))) || {};
+  const hydrationData = loadUserData("hydration", {});
   const todayConsumption = hydrationData.consumption || [];
-  const totalConsumed = todayConsumption.reduce(
-    (total, item) => total + item.ml,
-    0
-  );
+  const totalConsumed = todayConsumption.reduce((total, item) => total + item.ml, 0);
 
   const userData = JSON.parse(localStorage.getItem("user")) || {};
   const userWeight = userData.weight || 70;
   const dailyGoal = Math.round(userWeight * 35);
 
-  const progress =
-    dailyGoal > 0 ? Math.min((totalConsumed / dailyGoal) * 100, 100) : 0;
+  const progress = dailyGoal > 0 ? Math.min((totalConsumed / dailyGoal) * 100, 100) : 0;
 
-  document.getElementById("hydrationProgress").textContent = `${Math.round(
-    totalConsumed
-  )}/${dailyGoal} ml`;
-  document.getElementById("hydrationProgressFill").style.width = `${progress}%`;
+  const hydrationProgressElement = document.getElementById("hydrationProgress");
+  const hydrationProgressFillElement = document.getElementById("hydrationProgressFill");
+  const hydrationStatusElement = document.getElementById("hydrationStatus");
+
+  if (hydrationProgressElement) {
+    hydrationProgressElement.textContent = `${Math.round(totalConsumed)}/${dailyGoal} ml`;
+  }
+
+  if (hydrationProgressFillElement) {
+    hydrationProgressFillElement.style.width = `${progress}%`;
+  }
 
   let status = "Comece a beber água!";
   if (totalConsumed > 0) {
     status = progress >= 100 ? "Hidratado! 💧" : "Continue bebendo água";
   }
-  document.getElementById("hydrationStatus").textContent = status;
+  
+  if (hydrationStatusElement) {
+    hydrationStatusElement.textContent = status;
+  }
 }
 
 function loadMotivationalContent() {
@@ -492,7 +660,10 @@ function updateMotivationalQuote() {
   ];
 
   const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-  document.getElementById("motivationalQuote").textContent = randomQuote;
+  const quoteElement = document.getElementById("motivationalQuote");
+  if (quoteElement) {
+    quoteElement.textContent = randomQuote;
+  }
 }
 
 function updateDailyTip() {
@@ -528,8 +699,16 @@ function updateDailyTip() {
   ];
 
   const randomTip = tips[Math.floor(Math.random() * tips.length)];
-  document.getElementById("dailyTip").textContent = randomTip.tip;
-  document.getElementById("tipIcon").className = `fas ${randomTip.icon}`;
+  const tipElement = document.getElementById("dailyTip");
+  const tipIconElement = document.getElementById("tipIcon");
+  
+  if (tipElement) {
+    tipElement.textContent = randomTip.tip;
+  }
+  
+  if (tipIconElement) {
+    tipIconElement.className = `fas ${randomTip.icon}`;
+  }
 }
 
 function loadQuickStats() {
@@ -537,17 +716,13 @@ function loadQuickStats() {
 }
 
 function updatePersonalStats() {
-  const workouts =
-    JSON.parse(localStorage.getItem(getUserKey("workouts"))) || [];
+  const workouts = loadUserData("workouts", []);
   let completedExercisesToday = 0;
   const today = new Date().toDateString();
 
   workouts.forEach((workout) => {
     workout.exercises.forEach((exercise) => {
-      if (
-        exercise.completedWeight !== null &&
-        exercise.completedReps !== null
-      ) {
+      if (exercise.completedWeight !== null && exercise.completedReps !== null) {
         if (!exercise.completedDate) {
           completedExercisesToday++;
         } else {
@@ -559,10 +734,13 @@ function updatePersonalStats() {
       }
     });
   });
-  document.getElementById("totalWorkouts").textContent =
-    completedExercisesToday;
+  
+  const totalWorkoutsElement = document.getElementById("totalWorkouts");
+  if (totalWorkoutsElement) {
+    totalWorkoutsElement.textContent = completedExercisesToday;
+  }
 
-  const meals = JSON.parse(localStorage.getItem(getUserKey("meals"))) || [];
+  const meals = loadUserData("meals", []);
   let mealsWithFoodToday = 0;
   const todayISO = new Date().toISOString().split("T")[0];
 
@@ -576,32 +754,36 @@ function updatePersonalStats() {
       mealsWithFoodToday++;
     }
   });
-  document.getElementById("totalMeals").textContent = mealsWithFoodToday;
+  
+  const totalMealsElement = document.getElementById("totalMeals");
+  if (totalMealsElement) {
+    totalMealsElement.textContent = mealsWithFoodToday;
+  }
 
-  const hydrationData =
-    JSON.parse(localStorage.getItem(getUserKey("hydration"))) || {};
+  const hydrationData = loadUserData("hydration", {});
   const todayConsumption = hydrationData.consumption || [];
-  const totalWater =
-    todayConsumption.reduce((total, item) => total + item.ml, 0) / 1000;
-  document.getElementById("waterConsumed").textContent =
-    totalWater.toFixed(1) + "L";
+  const totalWater = todayConsumption.reduce((total, item) => total + item.ml, 0) / 1000;
+  
+  const waterConsumedElement = document.getElementById("waterConsumed");
+  if (waterConsumedElement) {
+    waterConsumedElement.textContent = totalWater.toFixed(1) + "L";
+  }
 
   const streak = calculateCurrentStreak();
-  document.getElementById("currentStreak").textContent = streak;
+  const currentStreakElement = document.getElementById("currentStreak");
+  if (currentStreakElement) {
+    currentStreakElement.textContent = streak;
+  }
 }
 
 function calculateCurrentStreak() {
-  const workouts =
-    JSON.parse(localStorage.getItem(getUserKey("workouts"))) || [];
+  const workouts = loadUserData("workouts", []);
   const today = new Date().toDateString();
   let activityToday = false;
 
   workouts.forEach((workout) => {
     workout.exercises.forEach((exercise) => {
-      if (
-        exercise.completedWeight !== null &&
-        exercise.completedReps !== null
-      ) {
+      if (exercise.completedWeight !== null && exercise.completedReps !== null) {
         if (!exercise.completedDate) {
           activityToday = true;
         } else {
@@ -624,17 +806,13 @@ function updateQuickActions() {
 }
 
 function updateWorkoutBadge() {
-  const workouts =
-    JSON.parse(localStorage.getItem(getUserKey("workouts"))) || [];
+  const workouts = loadUserData("workouts", []);
   let completedExercisesToday = 0;
   const today = new Date().toDateString();
 
   workouts.forEach((workout) => {
     workout.exercises.forEach((exercise) => {
-      if (
-        exercise.completedWeight !== null &&
-        exercise.completedReps !== null
-      ) {
+      if (exercise.completedWeight !== null && exercise.completedReps !== null) {
         if (!exercise.completedDate) {
           completedExercisesToday++;
         } else {
@@ -647,57 +825,61 @@ function updateWorkoutBadge() {
     });
   });
 
-  document.getElementById(
-    "workoutBadge"
-  ).textContent = `${completedExercisesToday} exercício${
-    completedExercisesToday !== 1 ? "s" : ""
-  } hoje`;
+  const workoutBadgeElement = document.getElementById("workoutBadge");
+  if (workoutBadgeElement) {
+    workoutBadgeElement.textContent = `${completedExercisesToday} exercício${completedExercisesToday !== 1 ? "s" : ""} hoje`;
+  }
 }
 
 function updateDietBadge() {
-  const summary = JSON.parse(
-    localStorage.getItem(getUserKey("dailySummary"))
-  ) || { calories: 0 };
-  document.getElementById("dietBadge").textContent = `${Math.round(
-    summary.calories
-  )} calorias hoje`;
+  const summary = loadUserData("dailySummary", { calories: 0 });
+  const dietBadgeElement = document.getElementById("dietBadge");
+  if (dietBadgeElement) {
+    dietBadgeElement.textContent = `${Math.round(summary.calories)} calorias hoje`;
+  }
 }
 
 function updateHydrationBadge() {
-  const hydrationData =
-    JSON.parse(localStorage.getItem(getUserKey("hydration"))) || {};
+  const hydrationData = loadUserData("hydration", {});
   const todayConsumption = hydrationData.consumption || [];
-  const totalConsumed = todayConsumption.reduce(
-    (total, item) => total + item.ml,
-    0
-  );
-  document.getElementById("hydrationBadge").textContent = `${Math.round(
-    totalConsumed
-  )} ml hoje`;
+  const totalConsumed = todayConsumption.reduce((total, item) => total + item.ml, 0);
+  
+  const hydrationBadgeElement = document.getElementById("hydrationBadge");
+  if (hydrationBadgeElement) {
+    hydrationBadgeElement.textContent = `${Math.round(totalConsumed)} ml hoje`;
+  }
 }
 
 function updatePlanningBadge() {
-  const events =
-    JSON.parse(localStorage.getItem(getUserKey("planning_events"))) || {};
+  const events = loadUserData("planning_events", {});
   const today = new Date().toISOString().split("T")[0];
   const todayEvents = events[today] || [];
-  document.getElementById("planningBadge").textContent = `${
-    todayEvents.length
-  } evento${todayEvents.length !== 1 ? "s" : ""} hoje`;
+  
+  const planningBadgeElement = document.getElementById("planningBadge");
+  if (planningBadgeElement) {
+    planningBadgeElement.textContent = `${todayEvents.length} evento${todayEvents.length !== 1 ? "s" : ""} hoje`;
+  }
 }
 
-function getCurrentUserId() {
-  const user = JSON.parse(localStorage.getItem("user"));
-  return user ? user.id : null;
+// Sistema de keep-alive do backend
+function startBackendKeepAlive() {
+  return setInterval(async () => {
+    try {
+      await fetch('https://biometa.onrender.com/api/health', {
+        method: 'GET',
+        signal: AbortSignal.timeout(3000)
+      });
+      console.log('✅ Backend mantido ativo:', new Date().toLocaleTimeString());
+    } catch (error) {
+      console.log('⚠️ Backend pode estar em cold start');
+    }
+  }, 4 * 60 * 1000); // A cada 4 minutos
 }
 
-function getUserKey(key) {
-  const userId = getCurrentUserId();
-  return userId ? `${key}_${userId}` : key;
-}
-
+// Event listeners para atualizações em tempo real
 document.addEventListener("visibilitychange", function () {
   if (!document.hidden) {
+    console.log("🔄 Página visível, atualizando dados...");
     loadDailySummary();
     updateQuickActions();
     updatePersonalStats();
@@ -705,11 +887,13 @@ document.addEventListener("visibilitychange", function () {
 });
 
 window.addEventListener("pageshow", function () {
+  console.log("🔄 Página mostrada, atualizando dados...");
   loadDailySummary();
   updateQuickActions();
   updatePersonalStats();
 });
 
+// Atualização periódica
 setInterval(() => {
   loadDailySummary();
   updateQuickActions();
